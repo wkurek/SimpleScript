@@ -1,7 +1,7 @@
 Program                         = StatementsList
                                 ;
 
-StatementsList                  = (*empty program*)
+StatementsList                  = (* empty program *)
                                 | StatementsList, Statement
                                 | Statement
                                 ;
@@ -12,7 +12,7 @@ Statement                       = ExpressionStatement
                                 | ReturnStatement
                                 | IterationStatement
                                 | ConditionalStatement
-                                | Print
+                                | CommentStatement
                                 ;
 
 ExpressionStatement             = AssignmentExpression
@@ -20,12 +20,12 @@ ExpressionStatement             = AssignmentExpression
                                 | FunctionCallExpression
                                 ;
 
-AssignmentStatement             = Idefntifier, "=", OperationExpression
-                                | Idefntifier, "=", FunctionDeclarationStatement
-                                | Idefntifier, "=", ObjectLiteral
+AssignmentStatement             = Identifier, "=", OperationExpression
+                                | Identifier, "=", FunctionDeclarationStatement
+                                | Identifier, "=", ObjectLiteral
                                 ;
 
-ObjectLiteral                   = "{", [(PropertyNameAndValue, {",", PropertyNameAndValue})], "}"
+ObjectLiteral                   = "{", PropertiesNamesAndValues, "}"
                                 ;
 
 PropertiesNamesAndValues        = (*no properties*)
@@ -33,17 +33,19 @@ PropertiesNamesAndValues        = (*no properties*)
                                 | PropertyNameAndValue
                                 ;
 
-PropertyNameAndValue            = PropertyName, ":", OperationExpression
-                                | PropertyName, ":", FunctionDeclarationStatement
-                                | PropertyName, ":", ObjectLiteral
-                                | PropertyName, ":", Idefntifier
+PropertyNameAndValue            = PropertyName, ":", OperationExpression (* a: 2 + 5 *)
+                                | PropertyName, ":", FunctionDeclarationStatement (* sum: function(a,b) { return a - b } *)
+                                | PropertyName, ":", ObjectLiteral (* a: {b : "x"} *)
+                                | PropertyName, ":", Identifier(* a: z *)
                                 ;
 
 OperationExpression             = "(", OperationExpression, ")"
-                                | Idefntifier
-                                | INTEGER
+                                | Identifier
+                                | NUMBER
                                 | BOOLEAN
                                 | STRING
+                                | OperationExpression, "&&", OperationExpression
+                                | OperationExpression, "||", OperationExpression
                                 | OperationExpression, "<", OperationExpression
                                 | OperationExpression, "<=", OperationExpression
                                 | OperationExpression, ">", OperationExpression
@@ -54,12 +56,13 @@ OperationExpression             = "(", OperationExpression, ")"
                                 | OperationExpression, "-", OperationExpression
                                 | OperationExpression, "*", OperationExpression
                                 | OperationExpression, "/", OperationExpression
+                                | "!", OperationExpression
                                 | "++", OperationExpression
                                 | "--", OperationExpression
                                 | FunctionCallExpression
                                 ;
 
-FunctionCallExpression          = Idefntifier, "(", ArgumentsList, ")"
+FunctionCallExpression          = Identifier, "(", ArgumentsList, ")" (* sum(a, 12) *)
                                 ;
 
 ArgumentsList                   = (*empty arguments list*)
@@ -68,12 +71,12 @@ ArgumentsList                   = (*empty arguments list*)
                                 ;
 
 Argument                        = OperationExpression
-                                | INTEGER
+                                | NUMBER
                                 | BOOLEAN
                                 | STRING
                                 ;
 
-VariableDeclarationStatement    = VAR, VariableDeclarationList 
+VariableDeclarationStatement    = VAR, VariableDeclarationList (* var a, b *)
                                 ;
 
 VariableDeclarationList         = VariableDeclarationList, VariableDeclaration
@@ -83,12 +86,12 @@ VariableDeclarationList         = VariableDeclarationList, VariableDeclaration
 VariableDeclaration             = AssignmentStatement
                                 ;
 
-FunctionDeclarationStatement    = FUNCTION, [Idefntifier], "(", ParametersList, ")", FunctionBody
+FunctionDeclarationStatement    = FUNCTION, (Identifier)?, "(", ParametersList, ")", FunctionBody (*function sum(a, b)*)
                                 ;
 
 ParametersList                  = (*empty parameters list*)
-                                | ParametersList, Idefntifier
-                                | Idefntifier
+                                | ParametersList, Identifier
+                                | Identifier
                                 ;
 
 FunctionBody                    = "{", StatementsList, "}"
@@ -105,17 +108,25 @@ Block                           = "{", StatementsList, "}"
                                 | Statement
                                 ;
 
-Print                           = PRINT, "(", OperationExpression, ")";
-
-Idefntifier                     = Idefntifier, ".", Idefntifier
-                                | Idefntifier, "[", Idefntifier, "]"
+Identifier                      = Identifier, ".", Identifier (* object.property *)
+                                | Identifier, "[", (NUMBER | STRING), "]" (* object["field"] *)
                                 | IDENTIFIER
+                                ;
+
+CommentStatement                = SingleLineComment (* // single line comment *)
+                                | MultipleLineComment (* /* multiple \n line \n\r comment /* *)
+                                ;
+
+SingleLineComment               = "//", SINGLE_LINE_COMMENT
+                                ;
+
+MultipleLineComment             = "/*", {MULTIPLE_LINE_COMMENT}, "*/"
                                 ;
 
 IDENTIFIER                      = [_a-zA-Z$]([_0-9a-zA-Z])*
                                 ;
 
-INTEGER                         = [0-9]+
+NUMBER                          = [0-9]+(\.[0-9]*)?
                                 ;
 
 STRING                          = "(.)*"
@@ -123,10 +134,6 @@ STRING                          = "(.)*"
 
 BOOLEAN                         = "true"
                                 | "false";
-
-
-PRINT                           = "print"
-                                ;
 
 IF                              = "if"
                                 ;
@@ -144,4 +151,10 @@ VAR                             = "var"
                                 ;
 
 RETURN                          = "return"
+                                ;
+
+SINGLE_LINE_COMMENT             = [^\r\n]*
+                                ;
+
+MULTIPLE_LINE_COMMENT           = .*
                                 ;
