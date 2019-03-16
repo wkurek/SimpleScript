@@ -16,6 +16,9 @@
 %token<bool> BOOLEAN "BOOLEAN"
 %token<stringVal> STRING "STRING"
 %token<stringVal> IDENTIFIER "IDENTIFIER"
+%token INC                  "++"
+%token DEC                  "--"
+%token NOT                  "!"
 %token OPEN_PARENTHESIS     "("
 %token CLOSE_PARENTHESIS    ")"
 %token OPEN_BRACKET         "["
@@ -75,10 +78,10 @@ properties_names_and_values     : /* empty object */ {}
                                 | property_name_and_value {}
                                 ;
 
-property_name_and_value         : property_name COLON operation_expression {}
-                                | property_name COLON function_declaration_statement {}
-                                | property_name COLON object_literal {}
-                                | property_name COLON identifier {}
+property_name_and_value         : STRING COLON operation_expression {}
+                                | STRING COLON function_declaration_statement {}
+                                | STRING COLON object_literal {}
+                                | STRING COLON identifier {}
                                 ;
 
 operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS {}
@@ -131,7 +134,8 @@ variable_declaration            : assignment_expression {}
                                 | IDENTIFIER {}
                                 ;
 
-function_declaration_statement  : FUNCTION IDENTIFIER? OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body {}
+function_declaration_statement  : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body {}
+                                | FUNCTION OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body {}
                                 ;
 
 parameters_list                 : /* empty parameters list */ {}
@@ -156,7 +160,8 @@ block                           : OPEN_BRACE statements_list CLOSE_BRACE {}
                                 ;
 
 identifier                      : identifier DOT identifier {}
-                                | identifier OPEN_BRACKET (INTEGER | STRING) CLOSE_BRACKET {}
+                                | identifier OPEN_BRACKET INTEGER CLOSE_BRACKET {}
+                                | identifier OPEN_BRACKET STRING CLOSE_BRACKET {}
                                 | IDENTIFIER {}
                                 ;
 
