@@ -28,6 +28,9 @@ string "[a-zA-Z0-9]*"
 "-"             { return MINUS; }
 "*"             { return ASTERISK; }
 "/"             { return SLASH; }
+"++"            { return INC; }
+"--"            { return DEC; }
+"!"             { return NOT; }
 "("             { return OPEN_PARENTHESIS; }
 ")"             { return CLOSE_PARENTHESIS; }
 "["             { return OPEN_BRACKET; }
@@ -39,8 +42,11 @@ string "[a-zA-Z0-9]*"
 ">"             { return GREATER_THAN; }
 "<="            { return LESS_EQUAL_THAN; }
 ">="            { return GREATER_EQUAL_THAN; }
+"||"            { return OR; }
+"&&"            { return AND; }
 ":"             { return COLON; }
 ","             { return COMMA; }
+"."             { return DOT; }
 "{"             { return OPEN_BRACE; }
 "}"             { return CLOSE_BRACE; }
 "if"            { return IF; }

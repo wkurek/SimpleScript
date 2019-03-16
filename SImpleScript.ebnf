@@ -20,7 +20,7 @@ ExpressionStatement             = AssignmentExpression
                                 | FunctionCallExpression
                                 ;
 
-AssignmentStatement             = Identifier, "=", OperationExpression
+AssignmentExpression             = Identifier, "=", OperationExpression
                                 | Identifier, "=", FunctionDeclarationStatement
                                 | Identifier, "=", ObjectLiteral
                                 ;
@@ -29,7 +29,7 @@ ObjectLiteral                   = "{", PropertiesNamesAndValues, "}"
                                 ;
 
 PropertiesNamesAndValues        = (*no properties*)
-                                | PropertiesNamesAndValues, PropertyNameAndValue
+                                | PropertiesNamesAndValues, ",", PropertyNameAndValue
                                 | PropertyNameAndValue
                                 ;
 
@@ -66,7 +66,7 @@ FunctionCallExpression          = Identifier, "(", ArgumentsList, ")" (* sum(a, 
                                 ;
 
 ArgumentsList                   = (*empty arguments list*)
-                                | ArgumentsList, Argument
+                                | ArgumentsList, ",", Argument
                                 | Argument
                                 ;
 
@@ -79,27 +79,30 @@ Argument                        = OperationExpression
 VariableDeclarationStatement    = VAR, VariableDeclarationList (* var a, b *)
                                 ;
 
-VariableDeclarationList         = VariableDeclarationList, VariableDeclaration
+VariableDeclarationList         = VariableDeclarationList, ",", VariableDeclaration
                                 | VariableDeclaration
                                 ;
 
-VariableDeclaration             = AssignmentStatement
+VariableDeclaration             = AssignmentExpression
+                                | IDENTIFIER
                                 ;
 
-FunctionDeclarationStatement    = FUNCTION, (Identifier)?, "(", ParametersList, ")", FunctionBody (*function sum(a, b)*)
+FunctionDeclarationStatement    = FUNCTION, (IDENTIFIER)?, "(", ParametersList, ")", FunctionBody (*function sum(a, b)*)
                                 ;
 
 ParametersList                  = (*empty parameters list*)
-                                | ParametersList, Identifier
-                                | Identifier
+                                | ParametersList, ",", IDENTIFIER
+                                | IDENTIFIER
                                 ;
 
 FunctionBody                    = "{", StatementsList, "}"
                                 ;
 
-ReturnStatement                 = RETURN, OperationExpression;
+ReturnStatement                 = RETURN, OperationExpression
+                                ;
 
-IterationStatement              = WHILE, "(", OperationExpression, ")", Block;
+IterationStatement              = WHILE, "(", OperationExpression, ")", Block
+                                ;
 
 ConditionalStatement            = IF, "(", OperationExpression, ")", Block, ELSE, Block
                                 ;
@@ -126,7 +129,7 @@ MultipleLineComment             = "/*", {MULTIPLE_LINE_COMMENT}, "*/"
 IDENTIFIER                      = [_a-zA-Z$]([_0-9a-zA-Z])*
                                 ;
 
-NUMBER                          = [0-9]+(\.[0-9]*)?
+NUMBER                          = [0-9]+(\.[0-9]+)?
                                 ;
 
 STRING                          = "(.)*"
