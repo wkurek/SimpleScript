@@ -16,7 +16,7 @@
 identifier [_a-zA-Z$]([_0-9a-zA-Z])*
 integer [0-9]+
 float [0-9]+\.[0-9]+
-boolean true | false
+boolean true|false
 string "[a-zA-Z0-9]*"
 
 %%
