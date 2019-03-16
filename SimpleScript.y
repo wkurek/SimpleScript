@@ -87,7 +87,6 @@ properties_names_and_values     : /* empty object */ {}
 property_name_and_value         : STRING COLON operation_expression {}
                                 | STRING COLON function_declaration_statement {}
                                 | STRING COLON object_literal {}
-                                | STRING COLON identifier {}
                                 ;
 
 operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS {}
