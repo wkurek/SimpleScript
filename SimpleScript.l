@@ -10,6 +10,7 @@
 
     using namespace std;
 
+    extern int yylex();
     extern void yyerror(const char*, char);
 %}
 
@@ -56,13 +57,13 @@ string "[a-zA-Z0-9]*"
 "function"      { return FUNCTION; }
 "return"        { return RETURN; }
 
-{identifier}    { yylval.stringVal = strdup(yytext); return IDENTIFIER; }
-
 {integer}       { istringstream(string(yytext)) >> yylval.integerVal; return INTEGER; }
 
 {float}         { istringstream(string(yytext)) >> yylval.floatVal; return FLOAT; }
 
 {boolean}       { istringstream(string(yytext)) >> boolalpha >> yylval.booleanVal; return BOOLEAN; }
+
+{identifier}    { yylval.stringVal = strdup(yytext); return IDENTIFIER; }
 
 {string}        { yylval.stringVal = strdup(yytext); return STRING; }
 

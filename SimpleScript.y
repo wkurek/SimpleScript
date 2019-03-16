@@ -2,6 +2,13 @@
 
 %{
     #include <iostream>
+
+    extern int yylex(void);
+    extern int yylineno;
+    extern int yyparse();
+
+    void yyerror(const char* s) {}
+    void yyerror(const char* s, char c) {}
 %}
 
 %union {
@@ -72,7 +79,6 @@ assignment_expression           : identifier ASSIGN operation_expression {}
 object_literal                  : OPEN_BRACE properties_names_and_values CLOSE_BRACE {}
                                 ;
 
-
 properties_names_and_values     : /* empty object */ {}
                                 | properties_names_and_values COMMA property_name_and_value {}
                                 | property_name_and_value {}
@@ -117,10 +123,6 @@ arguments_list                  : /* empty arguments list */ {}
                                 ;
 
 argument                        : operation_expression {}
-                                | INTEGER {}
-                                | FLOAT {}
-                                | BOOLEAN {}
-                                | STRING {}
                                 ;
 
 variable_declaration_statement  : VAR variable_declaration_list {}
@@ -167,3 +169,7 @@ identifier                      : identifier DOT identifier {}
 
 
 %%
+
+int main(int argc, char** argv) {
+   yyparse();
+}
