@@ -36,14 +36,9 @@
 %token<bool> BOOLEAN "BOOLEAN"
 %token<stringVal> STRING "STRING"
 %token<stringVal> IDENTIFIER "IDENTIFIER"
-%token OPEN_PARENTHESIS     "("
-%token CLOSE_PARENTHESIS    ")"
-%token OPEN_BRACKET         "["
-%token CLOSE_BRACKET        "]"
 %token ASSIGN               "="
 %token COLON                ":"
 %token COMMA                ","
-%token DOT                  "."
 %token OPEN_BRACE           "{"
 %token CLOSE_BRACE          "}"
 %token IF                   "if"
@@ -59,14 +54,16 @@
 %left PLUS MINUS
 %left ASTERISK SLASH
 %right INC DEC NOT
+%left OPEN_PARENTHESIS CLOSE_PARENTHESIS
+%left DOT OPEN_BRACKET CLOSE_BRACKET
 
 
 %%
 program                         : statements_list { cout<< "---- END ----" << endl;}
+                                | /* empty statements list */ {cout<< "empty statements_list" << endl;}
                                 ;
 
-statements_list                 : /* empty statements list */ {cout<< "empty statements_list" << endl;}
-                                | statements_list statement {cout<< "statements_list statement" << endl;}
+statements_list                 : statements_list statement {cout<< "statements_list statement" << endl;}
                                 | statement {cout<< "statement" << endl;}
                                 ;
 
