@@ -36,12 +36,12 @@ PropertiesNamesAndValues        = (*no properties*)
 PropertyNameAndValue            = PropertyName, ":", OperationExpression (* a: 2 + 5 *)
                                 | PropertyName, ":", FunctionDeclarationStatement (* sum: function(a,b) { return a - b } *)
                                 | PropertyName, ":", ObjectLiteral (* a: {b : "x"} *)
-                                | PropertyName, ":", Identifier(* a: z *)
                                 ;
 
 OperationExpression             = "(", OperationExpression, ")"
                                 | Identifier
-                                | NUMBER
+                                | INTEGER
+                                | FLOAT
                                 | BOOLEAN
                                 | STRING
                                 | OperationExpression, "&&", OperationExpression
@@ -71,9 +71,6 @@ ArgumentsList                   = (*empty arguments list*)
                                 ;
 
 Argument                        = OperationExpression
-                                | NUMBER
-                                | BOOLEAN
-                                | STRING
                                 ;
 
 VariableDeclarationStatement    = VAR, VariableDeclarationList (* var a, b *)
@@ -112,7 +109,7 @@ Block                           = "{", StatementsList, "}"
                                 ;
 
 Identifier                      = Identifier, ".", Identifier (* object.property *)
-                                | Identifier, "[", (NUMBER | STRING), "]" (* object["field"] *)
+                                | Identifier, "[", (INTEGER | STRING), "]" (* object["field"] *)
                                 | IDENTIFIER
                                 ;
 
@@ -123,20 +120,23 @@ CommentStatement                = SingleLineComment (* // single line comment *)
 SingleLineComment               = "//", SINGLE_LINE_COMMENT
                                 ;
 
-MultipleLineComment             = "/*", {MULTIPLE_LINE_COMMENT}, "*/"
+MultipleLineComment             = "/*", (MULTIPLE_LINE_COMMENT)*, "*/"
                                 ;
 
 IDENTIFIER                      = [_a-zA-Z$]([_0-9a-zA-Z])*
                                 ;
 
-NUMBER                          = [0-9]+(\.[0-9]+)?
+INTEGER                         = [0-9]+
                                 ;
 
-STRING                          = "(.)*"
+FLOAT                           = [0-9]+\.[0-9]+
                                 ;
 
-BOOLEAN                         = "true"
-                                | "false";
+STRING                          = "(.|[^"\\])*"
+                                ;
+
+BOOLEAN                         = true|false
+                                ;
 
 IF                              = "if"
                                 ;
@@ -159,5 +159,5 @@ RETURN                          = "return"
 SINGLE_LINE_COMMENT             = [^\r\n]*
                                 ;
 
-MULTIPLE_LINE_COMMENT           = .*
+MULTIPLE_LINE_COMMENT           = ([^*]|(\*+[^*\/]))*
                                 ;
