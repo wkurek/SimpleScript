@@ -12,8 +12,6 @@ function math(x, y, z) {
   }
 }
 
-dsnfkjfskjd;
-
 b = 2 * (6 - 5);
 var c = math(a, b, false);
 

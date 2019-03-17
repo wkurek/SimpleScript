@@ -36,9 +36,6 @@
 %token<bool> BOOLEAN "BOOLEAN"
 %token<stringVal> STRING "STRING"
 %token<stringVal> IDENTIFIER "IDENTIFIER"
-%token INC                  "++"
-%token DEC                  "--"
-%token NOT                  "!"
 %token OPEN_PARENTHESIS     "("
 %token CLOSE_PARENTHESIS    ")"
 %token OPEN_BRACKET         "["
@@ -50,16 +47,18 @@
 %token OPEN_BRACE           "{"
 %token CLOSE_BRACE          "}"
 %token IF                   "if"
-%token ELSE                 "else"
 %token WHILE                "while"
 %token VAR                  "var"
 %token FUNCTION             "function"
 %token RETURN               "return"
 
+%nonassoc NO_ELSE
+%nonassoc ELSE
 %left AND OR
 %left LESS_THAN LESS_EQUAL_THAN GREATER_THAN GREATER_EQUAL_THAN EQUAL NOT_EQUAL
 %left PLUS MINUS
 %left ASTERISK SLASH
+%right INC DEC NOT
 
 
 %%
@@ -165,7 +164,8 @@ return_statement                : RETURN operation_expression { cout<< "return_s
 iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block { cout<< "iteration_statement" << endl; }
                                 ;
 
-conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block { cout<< "conditional_statement" << endl; }
+conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block %prec NO_ELSE { cout<< "conditional_statement if" << endl; }
+conditional_statement           | IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block{ cout<< "conditional_statement if else" << endl; }
                                 ;
 
 block                           : OPEN_BRACE statements_list CLOSE_BRACE { cout<< "{ statements_list }" << endl; }
