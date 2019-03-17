@@ -1,12 +1,13 @@
 # SimpleScript
-Prosty język skryptowy bazowany na jezyku JavaScript.
+Prosty język skryptowy bazowany na języku JavaScript.
 
 ## Gramatyka
 Specyfikacja gramatyki języka formlanego w [formacie EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form).
-Gramatyka języka pozwala na użycie wykonywanie prostych operacji arytmetycznych oraz logicznych. Możliwe jest definiowanie i wykonywanie funkcji. Język umożliwia definiowanie obiektów w notacji zbliżonej JSON.
+Gramatyka języka pozwala na użycie wykonywanie prostych operacji arytmetycznych oraz logicznych. Możliwe jest definiowanie i wykonywanie funkcji. Język umożliwia definiowanie obiektów w notacji zbliżonej do formatu JSON.
 
 [Zobacz gramatykę!](SImpleScript.ebnf)
 
+Lexer zakłada pomijanie znaków białych oraz średnika (`[ \t\n\r;]`). Pomijane są również komentarze, zarówno jedno jak i wieloliniowe.
 
 ## Przykłady użycia
 ```
