@@ -81,7 +81,6 @@ statement                       : expression_statement { cout<< "expression_stat
 
 expression_statement            : assignment_expression { cout<< "program start" << endl; }
                                 | operation_expression { cout<< "program start" << endl; }
-                                | function_call_expression { cout<< "program start" << endl; }
                                 ;
 
 assignment_expression           : identifier ASSIGN operation_expression { cout<< "assignment_expression operation_expression" << endl; }
