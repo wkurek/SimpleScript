@@ -47,15 +47,18 @@
 %token FUNCTION             "function"
 %token RETURN               "return"
 
-%nonassoc NO_ELSE
-%nonassoc ELSE
+
+%precedence NO_ELSE
+%precedence ELSE
 %left AND OR
 %left LESS_THAN LESS_EQUAL_THAN GREATER_THAN GREATER_EQUAL_THAN EQUAL NOT_EQUAL
 %left PLUS MINUS
 %left ASTERISK SLASH
 %right INC DEC NOT
+%precedence NO_FUNCTION_CALL
 %left OPEN_PARENTHESIS CLOSE_PARENTHESIS
 %left DOT OPEN_BRACKET CLOSE_BRACKET
+
 
 
 %%
@@ -102,7 +105,6 @@ operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PA
                                 | FLOAT { cout<< "FLOAT "  << endl; }
                                 | BOOLEAN { cout<< "BOOLEAN "  << endl; }
                                 | STRING { cout<< "STRING " << $1 << endl; }
-                                | identifier { cout<< "identifier" << endl; }
                                 | operation_expression AND operation_expression { cout<< "&&" << endl; }
                                 | operation_expression OR operation_expression { cout<< "||" << endl; }
                                 | operation_expression LESS_THAN operation_expression { cout<< "<" << endl; }
@@ -119,6 +121,7 @@ operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PA
                                 | INC operation_expression { cout<< "++" << endl; }
                                 | DEC operation_expression { cout<< "--" << endl; }
                                 | function_call_expression { cout<< "program start" << endl; }
+                                | identifier %prec NO_FUNCTION_CALL { cout<< "identifier" << endl; }
                                 ;
 
 function_call_expression        : identifier OPEN_PARENTHESIS arguments_list CLOSE_PARENTHESIS { cout<< "function_call_expression" << endl; }
