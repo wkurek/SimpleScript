@@ -10,8 +10,18 @@
 
     extern FILE *yyin;
 
-    void yyerror(const char* s) {}
-    void yyerror(const char* s, char c) {}
+    bool errorReported = false;
+
+    void yyerror(const char* s) {
+      if(!errorReported) {
+         cerr << "ERROR:\t at line " << yylineno << ":\t" << s << endl;
+      }
+    }
+
+    void yyerror(const char* s, char c) {
+      cerr << "ERROR:\tat line " << yylineno << ": " << s << " \"" << c << "\"" << endl;
+      errorReported = true;
+    }
 %}
 
 %union {
@@ -61,12 +71,12 @@ statements_list                 : /* empty statements list */ {cout<< "empty sta
                                 | statement {cout<< "statement" << endl;}
                                 ;
 
-statement                       : expression_statement { cout<< "program start" << endl; }
+statement                       : expression_statement { cout<< "expression_statement" << endl; }
                                 | variable_declaration_statement { cout<< "variable_declaration_statement" << endl; }
-                                | function_declaration_statement { cout<< "program start" << endl; }
-                                | return_statement { cout<< "program start" << endl; }
-                                | iteration_statement { cout<< "program start" << endl; }
-                                | conditional_statement { cout<< "program start" << endl; }
+                                | function_declaration_statement { cout<< "function_declaration_statement" << endl; }
+                                | return_statement { cout<< "return_statement" << endl; }
+                                | iteration_statement { cout<< "iteration_statement" << endl; }
+                                | conditional_statement { cout<< "conditional_statement" << endl; }
                                 ;
 
 expression_statement            : assignment_expression { cout<< "program start" << endl; }
@@ -172,16 +182,16 @@ identifier                      : identifier DOT identifier { cout<< "program st
 
 %%
 
-int main(int, char**) {
-  // open a file handle to a particular file:
-  FILE *myfile = fopen("test.js", "r");
-  // make sure it is valid:
-  if (!myfile) {
-    cout << "I can't open test.js file!" << endl;
-    return -1;
+int main(int argc, char** argv) {
+  if(argc > 1) {
+    yyin = fopen(argv[1], "r");
+
+    if(yyin == NULL) {
+      cerr << "ERROR:\tcould not open file \"" << argv[1] << "\" for reading." << endl;
+      return 1;
+    }
+
+    int parseResult = yyparse();
+    cout << "result:\t" << parseResult << endl;
   }
-  // Set flex to read from it instead of defaulting to STDIN:
-  yyin = myfile;
-  // Parse through the input:
-  yyparse();
 }
