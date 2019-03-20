@@ -4,6 +4,7 @@ using namespace std;
 
 class Identifier
 {
+private:
   vector<string> names;
 
   Identifier();
