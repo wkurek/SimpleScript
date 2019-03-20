@@ -1,5 +1,7 @@
+#include <include/value.h>
+
 template <class T>
-class Primitive
+class Primitive : public Value
 {
   private:
     T value;

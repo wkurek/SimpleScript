@@ -3,3 +3,7 @@ SimpleScript.tab.h
 lex.yy.c
 SimpleScript
 SimpleScript.output
+
+.vscode
+bin
+build
