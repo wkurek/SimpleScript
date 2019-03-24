@@ -1,9 +1,5 @@
-SimpleScript.tab.c
-SimpleScript.tab.h
-lex.yy.c
-SimpleScript
-SimpleScript.output
-
-.vscode
-bin
-build
+bin/
+obj/
+SimpleScript.cbp
+SimpleScript.depend
+SimpleScript.layout

@@ -1,0 +1,163 @@
+Program                         = StatementsList
+                                ;
+
+StatementsList                  = (* empty program *)
+                                | StatementsList, Statement
+                                | Statement
+                                ;
+
+Statement                       = ExpressionStatement
+                                | VariableDeclarationStatement
+                                | FunctionDeclarationStatement
+                                | ReturnStatement
+                                | IterationStatement
+                                | ConditionalStatement
+                                | CommentStatement
+                                ;
+
+ExpressionStatement             = AssignmentExpression
+                                | OperationExpression
+                                | FunctionCallExpression
+                                ;
+
+AssignmentExpression             = Identifier, "=", OperationExpression
+                                | Identifier, "=", FunctionDeclarationStatement
+                                | Identifier, "=", ObjectLiteral
+                                ;
+
+ObjectLiteral                   = "{", PropertiesNamesAndValues, "}"
+                                ;
+
+PropertiesNamesAndValues        = (*no properties*)
+                                | PropertiesNamesAndValues, ",", PropertyNameAndValue
+                                | PropertyNameAndValue
+                                ;
+
+PropertyNameAndValue            = PropertyName, ":", OperationExpression (* a: 2 + 5 *)
+                                | PropertyName, ":", FunctionDeclarationStatement (* sum: function(a,b) { return a - b } *)
+                                | PropertyName, ":", ObjectLiteral (* a: {b : "x"} *)
+                                ;
+
+OperationExpression             = "(", OperationExpression, ")"
+                                | Identifier
+                                | INTEGER
+                                | FLOAT
+                                | BOOLEAN
+                                | STRING
+                                | OperationExpression, "&&", OperationExpression
+                                | OperationExpression, "||", OperationExpression
+                                | OperationExpression, "<", OperationExpression
+                                | OperationExpression, "<=", OperationExpression
+                                | OperationExpression, ">", OperationExpression
+                                | OperationExpression, ">=", OperationExpression
+                                | OperationExpression, "==", OperationExpression
+                                | OperationExpression, "!=", OperationExpression
+                                | OperationExpression, "+", OperationExpression
+                                | OperationExpression, "-", OperationExpression
+                                | OperationExpression, "*", OperationExpression
+                                | OperationExpression, "/", OperationExpression
+                                | "!", OperationExpression
+                                | "++", OperationExpression
+                                | "--", OperationExpression
+                                | FunctionCallExpression
+                                ;
+
+FunctionCallExpression          = Identifier, "(", ArgumentsList, ")" (* sum(a, 12) *)
+                                ;
+
+ArgumentsList                   = (*empty arguments list*)
+                                | ArgumentsList, ",", Argument
+                                | Argument
+                                ;
+
+Argument                        = OperationExpression
+                                ;
+
+VariableDeclarationStatement    = VAR, VariableDeclarationList (* var a, b *)
+                                ;
+
+VariableDeclarationList         = VariableDeclarationList, ",", VariableDeclaration
+                                | VariableDeclaration
+                                ;
+
+VariableDeclaration             = AssignmentExpression
+                                | IDENTIFIER
+                                ;
+
+FunctionDeclarationStatement    = FUNCTION, (IDENTIFIER)?, "(", ParametersList, ")", FunctionBody (*function sum(a, b)*)
+                                ;
+
+ParametersList                  = (*empty parameters list*)
+                                | ParametersList, ",", IDENTIFIER
+                                | IDENTIFIER
+                                ;
+
+FunctionBody                    = "{", StatementsList, "}"
+                                ;
+
+ReturnStatement                 = RETURN, OperationExpression
+                                ;
+
+IterationStatement              = WHILE, "(", OperationExpression, ")", Block
+                                ;
+
+ConditionalStatement            = IF, "(", OperationExpression, ")", Block, ELSE, Block
+                                ;
+
+Block                           = "{", StatementsList, "}"
+                                | Statement
+                                ;
+
+Identifier                      = Identifier, ".", Identifier (* object.property *)
+                                | Identifier, "[", (INTEGER | STRING), "]" (* object["field"] *)
+                                | IDENTIFIER
+                                ;
+
+CommentStatement                = SingleLineComment (* // single line comment *)
+                                | MultipleLineComment (* /* multiple \n line \n\r comment /* *)
+                                ;
+
+SingleLineComment               = "//", SINGLE_LINE_COMMENT
+                                ;
+
+MultipleLineComment             = "/*", (MULTIPLE_LINE_COMMENT)*, "*/"
+                                ;
+
+IDENTIFIER                      = [_a-zA-Z$]([_0-9a-zA-Z])*
+                                ;
+
+INTEGER                         = [0-9]+
+                                ;
+
+FLOAT                           = [0-9]+\.[0-9]+
+                                ;
+
+STRING                          = "(.|[^"\\])*"
+                                ;
+
+BOOLEAN                         = true|false
+                                ;
+
+IF                              = "if"
+                                ;
+
+ELSE                            = "else"
+                                ;
+
+WHILE                           = "while"
+                                ;
+
+FUNCTION                        = "function"
+                                ;
+
+VAR                             = "var"
+                                ;
+
+RETURN                          = "return"
+                                ;
+
+SINGLE_LINE_COMMENT             = [^\r\n]*
+                                ;
+
+MULTIPLE_LINE_COMMENT           = ([^*]|(\*+[^*\/]))*
+                                ;
