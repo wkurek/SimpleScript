@@ -12,6 +12,7 @@ int main()
     Identifier identifier("parentName");
     Identifier identifirChild(identifier, "childNameA");
     Identifier identifirChild1(identifirChild, "childNameB2");
+    Identifier identifirChild2(identifier, "childNameA2");
 
     Primitive a(71), b(10), c(true);
     Function fun;
@@ -22,10 +23,13 @@ int main()
     scope.getObject(identifier) = var;
     scope.getObject(identifirChild) = var2;
     scope.getPrimitive(identifirChild1) = str;
+    scope.getFunction(identifirChild2) = fun;
 
-    cout << scope.getPrimitive(identifirChild1) << endl;
-    scope.removeObject(identifirChild);
-    cout << scope.getPrimitive(identifirChild1) << endl;
+    cout << scope.getObject(identifier)  << endl;
+
+    //cout << scope.getPrimitive(identifirChild1) << endl;
+    //scope.removeObject(identifirChild);
+    //cout << scope.getPrimitive(identifirChild1) << endl;
 
     return 0;
 }

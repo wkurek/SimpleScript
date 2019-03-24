@@ -5,6 +5,31 @@
 #include "function.h"
 #include "primitive.h"
 
+ostream& operator<< (ostream& out, Object& object) {
+
+    out << "{ ";
+
+    map<string, Primitive>::iterator it = object.primitives.begin();
+    while(it != object.primitives.end()) {
+        out << it->first << ": " << it->second << ", ";
+        ++it;
+    }
+
+    map<string, Object>::iterator oit = object.objects.begin();
+    while(oit != object.objects.end()) {
+        out << oit->first << ": " << oit->second << ", ";
+        ++oit;
+    }
+
+    map<string, Function>::iterator fit = object.functions.begin();
+    while(fit != object.functions.end()) {
+        out << fit->first << ": " << fit->second << ", ";
+        ++fit;
+    }
+
+    return out << " }";
+}
+
 bool Object::hasObjectProperty(string propertyName) {
     map<string, Object>::iterator it =
             this->objects.find(propertyName);
