@@ -5,11 +5,11 @@
 #include "function.h"
 #include "primitive.h"
 
-bool Object::hasObjectProperty(Object object, string propertyName) {
+bool Object::hasObjectProperty(string propertyName) {
     map<string, Object>::iterator it =
-            object.objects.find(propertyName);
+            this->objects.find(propertyName);
 
-    return it != object.objects.end();
+    return it != this->objects.end();
 }
 
 Object& Object::getObject(Identifier identifier) {
@@ -17,7 +17,7 @@ Object& Object::getObject(Identifier identifier) {
         return this->objects[identifier.getHead()];
     }
 
-    if(!hasObjectProperty(*this, identifier.getHead())) {
+    if(!this->hasObjectProperty(identifier.getHead())) {
         throw invalid_argument("undefined");
     }
 
@@ -30,7 +30,7 @@ Function& Object::getFunction(Identifier identifier) {
         return this->functions[identifier.getHead()];
     }
 
-    if(!hasObjectProperty(*this, identifier.getHead())) {
+    if(!this->hasObjectProperty(identifier.getHead())) {
         throw invalid_argument("undefined");
     }
 
@@ -43,10 +43,41 @@ Primitive& Object::getPrimitive(Identifier identifier) {
         return this->primitives[identifier.getHead()];
     }
 
-    if(!hasObjectProperty(*this, identifier.getHead())) {
+    if(!this->hasObjectProperty(identifier.getHead())) {
         throw invalid_argument("undefined");
     }
 
     return this->objects[identifier.getHead()]
             .getPrimitive(identifier.getTail());
+}
+
+void Object::removeObject(Identifier identifier) {
+    if(!identifier.hasTail()) {
+        this->objects.erase(identifier.getHead());
+        return;
+    } else if(this->hasObjectProperty(identifier.getHead())) {
+        return this->objects[identifier.getHead()]
+            .removeObject(identifier.getTail());
+    }
+}
+
+void Object::removeFunction(Identifier identifier) {
+    if(!identifier.hasTail()) {
+        this->functions.erase(identifier.getHead());
+        return;
+    } else if(this->hasObjectProperty(identifier.getHead())) {
+        return this->objects[identifier.getHead()]
+            .removeFunction(identifier.getTail());
+    }
+}
+
+void Object::removePrimitive(Identifier identifier) {
+    if(!identifier.hasTail()) {
+            cout<<"remove"<<endl;
+        this->primitives.erase(identifier.getHead());
+        return;
+    } else if(this->hasObjectProperty(identifier.getHead())) {
+        return this->objects[identifier.getHead()]
+            .removePrimitive(identifier.getTail());
+    }
 }

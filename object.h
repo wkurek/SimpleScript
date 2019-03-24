@@ -15,13 +15,17 @@ class Object {
     map<string, Function> functions;
     map<string, Primitive> primitives;
 
-    bool hasObjectProperty(Object, string);
+    bool hasObjectProperty(string);
 
 public:
 
     Object& getObject(Identifier);
     Function& getFunction(Identifier);
     Primitive& getPrimitive(Identifier);
+
+    void removeObject(Identifier);
+    void removeFunction(Identifier);
+    void removePrimitive(Identifier);
 };
 
 #endif // OBJECT_H_INCLUDED

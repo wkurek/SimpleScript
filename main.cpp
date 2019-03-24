@@ -23,9 +23,9 @@ int main()
     scope.getObject(identifirChild) = var2;
     scope.getPrimitive(identifirChild1) = str;
 
-    cout << scope.getPrimitive(identifirChild) << endl;
     cout << scope.getPrimitive(identifirChild1) << endl;
-
+    scope.removeObject(identifirChild);
+    cout << scope.getPrimitive(identifirChild1) << endl;
 
     return 0;
 }
