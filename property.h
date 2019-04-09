@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 using namespace std;
 
 class Property {
@@ -18,6 +19,13 @@ public:
 
     string getName();
     Variable getVariable();
+};
+
+class PropertyList {
+    list<Property> list;
+
+public:
+    void add(Property);
 };
 
 #endif // PROPERTY_H_INCLUDED

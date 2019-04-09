@@ -11,3 +11,7 @@ string Property::getName() {
 Variable Property::getVariable() {
     return this->variable;
 }
+
+void PropertyList::add(Property property) {
+    this->list.push_back(property);
+}

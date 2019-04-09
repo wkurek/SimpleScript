@@ -39,5 +39,8 @@ int main()
 
     Property prop(str, val);
     cout << prop << endl;
+
+    PropertyList plist;
+    plist.add(prop);
     return 0;
 }
