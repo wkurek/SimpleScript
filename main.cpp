@@ -5,8 +5,10 @@
 #include "primitive.h"
 #include "function.h"
 #include "variable.h"
+#include "property.h"
 
 using namespace std;
+
 
 int main()
 {
@@ -33,6 +35,9 @@ int main()
     //cout << scope.getPrimitive(identifirChild1) << endl;
 
     Variable val(scope.getObject(identifier));
-    cout << val.getObject();
+    cout << val.getObject() << endl;
+
+    Property prop(str, val);
+    cout << prop << endl;
     return 0;
 }
