@@ -28,19 +28,22 @@ int main()
     scope.getPrimitive(identifirChild1) = str;
     scope.getFunction(identifirChild2) = fun;
 
-    cout << scope.getObject(identifier)  << endl;
+    //cout << scope.getObject(identifier)  << endl;
 
     //cout << scope.getPrimitive(identifirChild1) << endl;
     //scope.removeObject(identifirChild);
     //cout << scope.getPrimitive(identifirChild1) << endl;
 
     Variable val(scope.getObject(identifier));
-    cout << val.getObject() << endl;
+    //cout << val.getObject() << endl;
 
     Property prop(str, val);
-    cout << prop << endl;
+    //cout << prop << endl;
 
     PropertyList plist;
     plist.add(prop);
+
+    Object obliteral = plist.generateObject();
+    cout << obliteral << endl;
     return 0;
 }

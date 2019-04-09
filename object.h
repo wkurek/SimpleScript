@@ -10,6 +10,8 @@
 
 using namespace std;
 
+class PropertyList;
+
 class Object {
     map<string, Object> objects;
     map<string, Function> functions;

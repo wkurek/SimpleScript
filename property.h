@@ -8,6 +8,7 @@
 #include <list>
 using namespace std;
 
+
 class Property {
     string name;
     Variable variable;
@@ -26,6 +27,7 @@ class PropertyList {
 
 public:
     void add(Property);
+    Object generateObject();
 };
 
 #endif // PROPERTY_H_INCLUDED
