@@ -111,3 +111,42 @@ void Object::removePrimitive(Identifier identifier) {
             .removePrimitive(identifier.getTail());
     }
 }
+
+bool Object::hasObject(Identifier identifier) {
+    if(!identifier.hasTail()) {
+        return this->objects.find(identifier.getHead()) != this->objects.end();
+    }
+
+    if(!this->hasObjectProperty(identifier.getHead())) {
+        return false;
+    }
+
+    return this->objects[identifier.getHead()]
+                .hasObject(identifier.getTail());
+}
+
+bool Object::hasFunction(Identifier identifier) {
+    if(!identifier.hasTail()) {
+        return this->functions.find(identifier.getHead()) != this->functions.end();
+    }
+
+    if(!this->hasObjectProperty(identifier.getHead())) {
+         return false;
+    }
+
+    return this->objects[identifier.getHead()]
+                .hasFunction(identifier.getTail());
+}
+
+bool Object::hasPrimitive(Identifier identifier) {
+    if(!identifier.hasTail()) {
+        return this->primitives.find(identifier.getHead()) != this->primitives.end();
+    }
+
+    if(!this->hasObjectProperty(identifier.getHead())) {
+        return false;
+    }
+
+    return this->objects[identifier.getHead()]
+            .hasPrimitive(identifier.getTail());
+}

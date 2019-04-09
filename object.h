@@ -21,6 +21,10 @@ class Object {
 
 public:
 
+    bool hasObject(Identifier);
+    bool hasFunction(Identifier);
+    bool hasPrimitive(Identifier);
+
     friend ostream& operator<< (ostream&, Object);
 
     Object& getObject(Identifier);
