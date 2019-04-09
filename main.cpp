@@ -6,6 +6,7 @@
 #include "function.h"
 #include "variable.h"
 #include "property.h"
+#include "operation_expression.h"
 
 using namespace std;
 
