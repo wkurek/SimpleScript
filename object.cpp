@@ -5,7 +5,7 @@
 #include "function.h"
 #include "primitive.h"
 
-ostream& operator<< (ostream& out, Object& object) {
+ostream& operator<< (ostream& out, Object object) {
 
     out << "{ ";
 

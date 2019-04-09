@@ -4,6 +4,7 @@
 #include "object.h"
 #include "primitive.h"
 #include "function.h"
+#include "variable.h"
 
 using namespace std;
 
@@ -31,5 +32,7 @@ int main()
     //scope.removeObject(identifirChild);
     //cout << scope.getPrimitive(identifirChild1) << endl;
 
+    Variable val(scope.getObject(identifier));
+    cout << val.getObject();
     return 0;
 }

@@ -19,7 +19,7 @@ class Object {
 
 public:
 
-    friend ostream& operator<< (ostream&, Object&);
+    friend ostream& operator<< (ostream&, Object);
 
     Object& getObject(Identifier);
     Function& getFunction(Identifier);
