@@ -29,6 +29,8 @@ int main()
     scope.getPrimitive(identifirChild1) = str;
     scope.getFunction(identifirChild2) = fun;
 
+    cout << scope.hasPrimitive(identifirChild1) << endl;
+
     //cout << scope.getObject(identifier)  << endl;
 
     //cout << scope.getPrimitive(identifirChild1) << endl;
@@ -45,6 +47,6 @@ int main()
     plist.add(prop);
 
     Object obliteral = plist.generateObject();
-    cout << obliteral << endl;
+    //cout << obliteral << endl;
     return 0;
 }
