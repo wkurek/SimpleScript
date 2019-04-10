@@ -7,6 +7,7 @@
 #include "variable.h"
 #include "property.h"
 #include "operation_expression.h"
+#include "assignment.h"
 
 using namespace std;
 
