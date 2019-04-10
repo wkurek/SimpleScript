@@ -34,16 +34,30 @@ class ConstantExpression : public OperationExpression {
     Variable variable;
 
 public:
-    virtual Variable evaluate(Object) const;
     ConstantExpression(Variable var): variable(var) {}
+    virtual Variable evaluate(Object) const;
 };
 
 class IdentifierExpression : public OperationExpression {
     Identifier identifier;
 
 public:
-    virtual Variable evaluate(Object) const;
     IdentifierExpression(Identifier id) : identifier(id) {}
+    virtual Variable evaluate(Object) const;
 };
+
+class Negation : public UnaryOperationExpression {
+public:
+    Negation(OperationExpression* exp) : UnaryOperationExpression(exp) {}
+    virtual Variable evaluate(Object) const;
+};
+
+class LogicalNot : public UnaryOperationExpression {
+public:
+    LogicalNot(OperationExpression* exp) : UnaryOperationExpression(exp) {}
+    virtual Variable evaluate(Object) const;
+};
+
+
 
 #endif // OPERATION_EXPRESSION_H_INCLUDED

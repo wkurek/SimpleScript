@@ -26,3 +26,11 @@ Variable IdentifierExpression::evaluate(Object scope) {
         throw invalid_argument("undefined");
     }
 }
+
+Variable Negation::evaluate(Object scope) {
+    return -(this->expression->evaluate(scope));
+}
+
+Variable LogicalNot::evaluate(Object scope) {
+    return !(this->expression->evaluate(scope));
+}
