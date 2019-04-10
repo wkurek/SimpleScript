@@ -34,3 +34,51 @@ Variable Negation::evaluate(Object scope) {
 Variable LogicalNot::evaluate(Object scope) {
     return !(this->expression->evaluate(scope));
 }
+
+Variable Addition::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) + (this->expression2->evaluate(scope));
+}
+
+Variable Subtraction::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) - (this->expression2->evaluate(scope));
+}
+
+Variable Multiplication::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) * (this->expression2->evaluate(scope));
+}
+
+Variable Division::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) / (this->expression2->evaluate(scope));
+}
+
+Variable LessThan::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) < (this->expression2->evaluate(scope));
+}
+
+Variable GreaterThan::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) > (this->expression2->evaluate(scope));
+}
+
+Variable LessThanOrEqualTo::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) <= (this->expression2->evaluate(scope));
+}
+
+Variable GreaterThanOrEqualTo::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) >= (this->expression2->evaluate(scope));
+}
+
+Variable Equals::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) == (this->expression2->evaluate(scope));
+}
+
+Variable NotEquals::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) != (this->expression2->evaluate(scope));
+}
+
+Variable LogicalOr::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) || (this->expression2->evaluate(scope));
+}
+
+Variable LogicalAnd::evaluate(Object scope) {
+    return (this->expression1->evaluate(scope)) && (this->expression2->evaluate(scope));
+}
