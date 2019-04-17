@@ -5,8 +5,9 @@
 #include "function.h"
 #include "variable.h"
 #include "operation_expression.h"
+#include "statement.h"
 
-class OperationExpressionAssignment {
+class OperationExpressionAssignment : public Statement {
     Identifier identifier;
     OperationExpression* expression;
 
