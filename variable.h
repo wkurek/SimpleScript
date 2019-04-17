@@ -24,6 +24,31 @@ public:
     Variable(Object object):type(OBJECT), object(object) {}
     Variable(Function funct):type(FUNCTION), funct(funct) {}
 
+    friend ostream& operator<< (ostream&, Variable&);
+    friend bool     operator== (const Variable&, const Variable&);
+    friend bool     operator!= (const Variable&, const Variable&);
+    friend bool     operator<  (const Variable&, const Variable&);
+    friend bool     operator>  (const Variable&, const Variable&);
+    friend bool     operator<= (const Variable&, const Variable&);
+    friend bool     operator>= (const Variable&, const Variable&);
+
+    operator bool() const;
+
+    Variable& operator=  (const Variable&);
+
+    Variable  operator+  (const Variable&) const;
+    Variable  operator-  (const Variable&) const;
+    Variable  operator*  (const Variable&) const;
+    Variable  operator/  (const Variable&) const;
+    Variable  operator-  () const;
+    Variable  operator++ () const;
+    Variable  operator-- () const;
+    Variable  operator! () const;
+
+    bool isPrimitive() const;
+    bool isObject()const;
+    bool isFunction()const;
+
     VariableTypes getType();
     Primitive getPrimitive();
     Object getObject();
