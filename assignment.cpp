@@ -5,12 +5,9 @@
 #include "operation_expression.h"
 #include "statement.h"
 
-OperationExpressionAssignment::~OperationExpressionAssignment() {
-    delete this->expression;
-}
 
 void OperationExpressionAssignment::evaluate(Object scope) const {
-    Variable var = this->expression->evaluate(scope);
+    Variable var = this->expressionPtr->evaluate(scope);
 
     if(var.isPrimitive()) {
         scope.getPrimitive(this->identifier) = var.getPrimitive();

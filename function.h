@@ -33,10 +33,15 @@ public:
 };
 
 class Function {
-    ParametersList parametersList;
-    StatementsList* statementList;
+    shared_ptr<ParametersList> parametersListPtr;
+    shared_ptr<StatementsList> statementListPtr;
 
 public:
+    Function() : parametersListPtr(nullptr), statementListPtr(nullptr) {}
+
+    Function(shared_ptr<ParametersList> plPtr, shared_ptr<StatementsList> slPtr)
+        : parametersListPtr(move(plPtr)), statementListPtr(move(slPtr)) {}
+
     friend ostream& operator<< (ostream&, Function&);
 
     Variable call(ArgumentsList args);

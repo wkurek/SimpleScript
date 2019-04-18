@@ -2,10 +2,11 @@
 #define STATEMENT_H_INCLUDED
 
 #include <iostream>
+#include <memory>
 #include <list>
+using namespace std;
 
 #include "object.h"
-#include "variable.h"
 
 class Object;
 
@@ -15,12 +16,11 @@ public:
 };
 
 class StatementsList {
-    list<Statement*> statements;
+    list<shared_ptr<Statement>> statements;
 
 public:
-    ~StatementsList();
 
-    void add(Statement*);
+    void add(shared_ptr<Statement>);
 };
 
 #endif // STATEMENT_H_INCLUDED

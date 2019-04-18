@@ -19,22 +19,22 @@ public:
 class UnaryOperationExpression : public OperationExpression {
 public:
     virtual Variable evaluate(Object) const = 0;
-    UnaryOperationExpression(OperationExpression* exp) : expression(exp) {}
-    ~UnaryOperationExpression();
+    UnaryOperationExpression(shared_ptr<OperationExpression> ePtr)
+        : expressionPtr(move(ePtr)) {}
 
 protected:
-    OperationExpression* expression;
+    shared_ptr<OperationExpression> expressionPtr;
 };
 
 class BinaryOperationExpression : public OperationExpression {
 public:
     virtual Variable evaluate(Object) const = 0;
-    BinaryOperationExpression(OperationExpression* exp1, OperationExpression* exp2) : expression1(exp1), expression2(exp2) {}
-    ~BinaryOperationExpression();
+    BinaryOperationExpression(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : expression1Ptr(move(e1Ptr)), expression2Ptr(move(e2Ptr)) {}
 
 protected:
-    OperationExpression* expression1;
-    OperationExpression* expression2;
+    shared_ptr<OperationExpression> expression1Ptr;
+    shared_ptr<OperationExpression> expression2Ptr;
 };
 
 class ConstantExpression : public OperationExpression {
@@ -55,85 +55,99 @@ public:
 
 class Negation : public UnaryOperationExpression {
 public:
-    Negation(OperationExpression* exp) : UnaryOperationExpression(exp) {}
+    Negation(shared_ptr<OperationExpression> ePtr)
+        : UnaryOperationExpression(move(ePtr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class LogicalNot : public UnaryOperationExpression {
 public:
-    LogicalNot(OperationExpression* exp) : UnaryOperationExpression(exp) {}
+    LogicalNot(shared_ptr<OperationExpression> ePtr)
+        : UnaryOperationExpression(move(ePtr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class Addition : public BinaryOperationExpression {
 public:
-    Addition(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    Addition(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class Subtraction : public BinaryOperationExpression {
 public:
-    Subtraction (OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    Subtraction (shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class Multiplication : public BinaryOperationExpression {
 public:
-    Multiplication(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    Multiplication(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class Division : public BinaryOperationExpression {
 public:
-    Division(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    Division(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class LessThan : public BinaryOperationExpression {
 public:
-    LessThan(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    LessThan(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class GreaterThan : public BinaryOperationExpression {
 public:
-    GreaterThan(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    GreaterThan(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class LessThanOrEqualTo : public BinaryOperationExpression {
 public:
-    LessThanOrEqualTo(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    LessThanOrEqualTo(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class GreaterThanOrEqualTo : public BinaryOperationExpression {
 public:
-    GreaterThanOrEqualTo(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    GreaterThanOrEqualTo(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class Equals : public BinaryOperationExpression {
 public:
-    Equals(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    Equals(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class NotEquals : public BinaryOperationExpression {
 public:
-    NotEquals(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    NotEquals(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class LogicalOr : public BinaryOperationExpression {
 public:
-    LogicalOr(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    LogicalOr(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 
 class LogicalAnd : public BinaryOperationExpression {
 public:
-    LogicalAnd(OperationExpression* exp1, OperationExpression* exp2) : BinaryOperationExpression(exp1, exp2) {}
+    LogicalAnd(shared_ptr<OperationExpression> e1Ptr, shared_ptr<OperationExpression> e2Ptr)
+        : BinaryOperationExpression(move(e1Ptr), move(e2Ptr)) {}
     virtual Variable evaluate(Object) const;
 };
 

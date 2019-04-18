@@ -4,15 +4,6 @@
 #include "object.h"
 #include "variable.h"
 
-UnaryOperationExpression::~UnaryOperationExpression() {
-    delete this->expression;
-}
-
-BinaryOperationExpression::~BinaryOperationExpression() {
-    delete this->expression1;
-    delete this->expression2;
-}
-
 Variable ConstantExpression::evaluate(Object scope) const {
     return *(this->variablePtr);
 }
@@ -34,57 +25,57 @@ Variable IdentifierExpression::evaluate(Object scope) const {
 }
 
 Variable Negation::evaluate(Object scope) const {
-    return -(this->expression->evaluate(scope));
+    return -(this->expressionPtr->evaluate(scope));
 }
 
 Variable LogicalNot::evaluate(Object scope) const {
-    return !(this->expression->evaluate(scope));
+    return !(this->expressionPtr->evaluate(scope));
 }
 
 Variable Addition::evaluate(Object scope) const {
-    return (this->expression1->evaluate(scope)) + (this->expression2->evaluate(scope));
+    return (this->expression1Ptr->evaluate(scope)) + (this->expression2Ptr->evaluate(scope));
 }
 
 Variable Subtraction::evaluate(Object scope) const {
-    return (this->expression1->evaluate(scope)) - (this->expression2->evaluate(scope));
+    return (this->expression1Ptr->evaluate(scope)) - (this->expression2Ptr->evaluate(scope));
 }
 
 Variable Multiplication::evaluate(Object scope) const {
-    return (this->expression1->evaluate(scope)) * (this->expression2->evaluate(scope));
+    return (this->expression1Ptr->evaluate(scope)) * (this->expression2Ptr->evaluate(scope));
 }
 
 Variable Division::evaluate(Object scope) const {
-    return (this->expression1->evaluate(scope)) / (this->expression2->evaluate(scope));
+    return (this->expression1Ptr->evaluate(scope)) / (this->expression2Ptr->evaluate(scope));
 }
 
 Variable LessThan::evaluate(Object scope) const {
-    return Variable((this->expression1->evaluate(scope)) < (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) < (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable GreaterThan::evaluate(Object scope) const {
-    return Variable((this->expression1->evaluate(scope)) > (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) > (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable LessThanOrEqualTo::evaluate(Object scope) const {
-    return Variable((this->expression1->evaluate(scope)) <= (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) <= (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable GreaterThanOrEqualTo::evaluate(Object scope)  const{
-    return Variable((this->expression1->evaluate(scope)) >= (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) >= (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable Equals::evaluate(Object scope)  const{
-    return Variable((this->expression1->evaluate(scope)) == (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) == (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable NotEquals::evaluate(Object scope)  const{
-    return Variable((this->expression1->evaluate(scope)) != (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) != (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable LogicalOr::evaluate(Object scope)  const{
-    return Variable((this->expression1->evaluate(scope)) || (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) || (this->expression2Ptr->evaluate(scope)));
 }
 
 Variable LogicalAnd::evaluate(Object scope)  const{
-    return Variable((this->expression1->evaluate(scope)) && (this->expression2->evaluate(scope)));
+    return Variable((this->expression1Ptr->evaluate(scope)) && (this->expression2Ptr->evaluate(scope)));
 }

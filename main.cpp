@@ -20,7 +20,6 @@ int main()
     Identifier identifirChild2(identifier, "childNameA2");
 
     Primitive a(71), b(10), c(true);
-    Function fun;
     Object scope, var, var2;
     string str = "abcdef";
 
@@ -28,7 +27,6 @@ int main()
     scope.getObject(identifier) = var;
     scope.getObject(identifirChild) = var2;
     scope.getPrimitive(identifirChild1) = str;
-    scope.getFunction(identifirChild2) = fun;
 
     cout << scope.hasPrimitive(identifirChild1) << endl;
 
