@@ -1,6 +1,8 @@
 #include <stdexcept>
 
 #include "operation_expression.h"
+#include "object.h"
+#include "variable.h"
 
 UnaryOperationExpression::~UnaryOperationExpression() {
     delete this->expression;
@@ -12,14 +14,18 @@ BinaryOperationExpression::~BinaryOperationExpression() {
 }
 
 Variable ConstantExpression::evaluate(Object scope) const {
-    return this->variable;
+    return *(this->variablePtr);
 }
 
 Variable IdentifierExpression::evaluate(Object scope) const {
     if(scope.hasObject(this->identifier)) {
-        return scope.getObject(this->identifier);
+        Object *obj = new Object();
+        *obj = scope.getObject(this->identifier);
+        return Variable(shared_ptr<Object>(obj));
     } else if(scope.hasFunction(this->identifier)) {
-        return scope.getFunction(this->identifier);
+        Function *func = new Function();
+        *func = scope.getFunction(this->identifier);
+        return Variable(shared_ptr<Function>(func));
     } else if(scope.hasPrimitive(this->identifier)) {
         return scope.getPrimitive(this->identifier);
     } else {

@@ -1,8 +1,15 @@
 #ifndef OPERATION_EXPRESSION_H_INCLUDED
 #define OPERATION_EXPRESSION_H_INCLUDED
 
-#include "variable.h"
+#include <iostream>
+#include <memory>
+using namespace std;
+
 #include "object.h"
+#include "variable.h"
+
+class Object;
+class Variable;
 
 class OperationExpression {
 public:
@@ -31,10 +38,10 @@ protected:
 };
 
 class ConstantExpression : public OperationExpression {
-    Variable variable;
+    shared_ptr<Variable> variablePtr;
 
 public:
-    ConstantExpression(Variable var): variable(var) {}
+    ConstantExpression(shared_ptr<Variable> varPtr): variablePtr(move(varPtr)) {}
     virtual Variable evaluate(Object) const;
 };
 

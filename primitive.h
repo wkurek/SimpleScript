@@ -7,15 +7,6 @@ using namespace std;
 
 typedef enum PrimitiveTypes { INTEGER, FLOAT, BOOLEAN, STRING } PrimitiveTypes;
 
-typedef union Value {
-    Value(int i):intVal(i) {}
-    Value(float f):floatVal(f) {}
-    Value(bool b):boolVal(b) {}
-    int intVal;
-    float floatVal;
-    bool boolVal;
-} Value;
-
 class Primitive {
     PrimitiveTypes type;
 
@@ -24,8 +15,8 @@ class Primitive {
     bool boolVal;
     string stringVal;
 
-
 public:
+    Primitive(const Primitive &p):type(p.type), intVal(p.intVal), floatVal(p.floatVal), boolVal(p.boolVal), stringVal(p.stringVal) {}
     Primitive():type(INTEGER), intVal(0) {}
     Primitive(const int i):type(INTEGER), intVal(i) {}
     Primitive(const float f):type(FLOAT), floatVal(f) {}

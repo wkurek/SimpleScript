@@ -5,17 +5,20 @@
 #include <list>
 
 #include "object.h"
+#include "variable.h"
+
+class Object;
 
 class Statement {
 public:
     virtual void evaluate(Object) const = 0;
 };
 
-class StatementList {
+class StatementsList {
     list<Statement*> statements;
 
 public:
-    ~StatementList();
+    ~StatementsList();
 
     void add(Statement*);
 };

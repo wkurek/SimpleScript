@@ -38,16 +38,16 @@ int main()
     //scope.removeObject(identifirChild);
     //cout << scope.getPrimitive(identifirChild1) << endl;
 
-    Variable val(scope.getObject(identifier));
+    //Variable val(scope.getObject(identifier));
     //cout << val.getObject() << endl;
 
-    Property prop(str, val);
+    //Property prop(str, val);
     //cout << prop << endl;
 
     PropertyList plist;
-    plist.add(prop);
+//    plist.add(prop);
 
-    Object obliteral = plist.generateObject();
+//    Object obliteral = plist.generateObject();
     //cout << obliteral << endl;
     return 0;
 }

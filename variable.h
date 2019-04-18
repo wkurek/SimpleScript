@@ -1,28 +1,34 @@
 #ifndef VALUE_H_INCLUDED
 #define VALUE_H_INCLUDED
 
-#include "function.h"
-#include "identifier.h"
-#include "object.h"
-
 #include <iostream>
+#include <memory>
 using namespace std;
+
+#include "identifier.h"
+#include "primitive.h"
+#include "object.h"
+#include "function.h"
 
 typedef enum VariableTypes { PRIMITIVE, OBJECT, FUNCTION } ValueTypes;
 
+class Object;
+class Function;
+
 class Variable {
     VariableTypes type;
-    Primitive primitive;
-    Object object;
-    Function funct;
+    shared_ptr<Primitive> primitivePtr;
+    shared_ptr<Object> objectPtr;
+    shared_ptr<Function> functionPtr;
 
     friend ostream& operator<< (ostream&, Variable);
 
 public:
-    Variable():type(PRIMITIVE), primitive() {}
-    Variable(Primitive primitive):type(PRIMITIVE), primitive(primitive) {}
-    Variable(Object object):type(OBJECT), object(object) {}
-    Variable(Function funct):type(FUNCTION), funct(funct) {}
+    Variable():type(PRIMITIVE), primitivePtr(new Primitive()) {}
+    Variable(Primitive p):type(PRIMITIVE), primitivePtr(new Primitive(p)) {}
+    Variable(shared_ptr<Primitive> pPtr):type(PRIMITIVE), primitivePtr(move(pPtr)) {}
+    Variable(shared_ptr<Object> oPtr):type(OBJECT), objectPtr(move(oPtr)) {}
+    Variable(shared_ptr<Function> fPtr):type(FUNCTION), functionPtr(move(fPtr)) {}
 
     friend ostream& operator<< (ostream&, Variable&);
     friend bool     operator== (const Variable&, const Variable&);
@@ -49,7 +55,6 @@ public:
     bool isObject()const;
     bool isFunction()const;
 
-    VariableTypes getType();
     Primitive getPrimitive();
     Object getObject();
     Function getFunction();

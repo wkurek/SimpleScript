@@ -1,4 +1,5 @@
 #include "property.h"
+#include "variable.h"
 
 ostream& operator<< (ostream& out, const Property property) {
     return out << "{ " << property.name << ": " << property.variable << " }";
@@ -22,9 +23,9 @@ Object PropertyList::generateObject() {
     for (std::list<Property>::iterator it = this->list.begin(); it != this->list.end(); ++it){
         Identifier name(it->getName());
 
-        if(it->getVariable().getType() == OBJECT) {
+        if(it->getVariable().isObject()) {
             object.getObject(name) = it->getVariable().getObject();
-        } else if(it->getVariable().getType() == FUNCTION) {
+        } else if(it->getVariable().isFunction()) {
             object.getFunction(name) = it->getVariable().getFunction();
         } else {
             object.getPrimitive(name) = it->getVariable().getPrimitive();
