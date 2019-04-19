@@ -38,3 +38,10 @@ void ReturnStatement::evaluate(Object& scope) {
 
     throw ReturnVariable(make_shared<Variable>(var));
 }
+
+void FunctionDeclarationStatement::evaluate(Object& scope) {
+    if(scope.hasPrimitive(this->identifier)) scope.removePrimitive(this->identifier);
+    if(scope.hasObject(this->identifier)) scope.removeObject(this->identifier);
+
+    scope.getFunction(this->identifier) = *(this->functionPtr);
+}

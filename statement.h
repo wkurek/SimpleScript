@@ -9,8 +9,10 @@ using namespace std;
 #include "object.h"
 #include "operation_expression.h"
 #include "exception.h"
+#include "function.h"
 
 class Object;
+class Function;
 class OperationExpression;
 
 class Statement {
@@ -62,6 +64,17 @@ class ReturnStatement {
 public:
     ReturnStatement(shared_ptr<OperationExpression> exprPtr)
         : expressionPtr(move(exprPtr)) {}
+
+    void evaluate(Object&);
+};
+
+class FunctionDeclarationStatement {
+    shared_ptr<Function> functionPtr;
+    Identifier identifier;
+
+public:
+    FunctionDeclarationStatement(shared_ptr<Function> functPtr, Identifier id)
+        : functionPtr(move(functPtr)), identifier(id) {}
 
     void evaluate(Object&);
 };
