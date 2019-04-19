@@ -180,7 +180,6 @@
     <ClInclude Include="variable.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
     <None Include="SimpleScript.ebnf" />
   </ItemGroup>
   <ItemGroup>

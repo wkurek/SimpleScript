@@ -91,7 +91,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
     <None Include="SimpleScript.ebnf" />
   </ItemGroup>
   <ItemGroup>

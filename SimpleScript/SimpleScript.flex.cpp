@@ -351,11 +351,14 @@ FILE *yyin = NULL, *yyout = NULL;
 
 typedef int yy_state_type;
 
-#define YY_FLEX_LEX_COMPAT
 extern int yylineno;
 int yylineno = 1;
 
-extern char yytext[];
+extern char *yytext;
+#ifdef yytext_ptr
+#undef yytext_ptr
+#endif
+#define yytext_ptr yytext
 
 static yy_state_type yy_get_previous_state ( void );
 static yy_state_type yy_try_NUL_trans ( yy_state_type current_state  );
@@ -370,9 +373,6 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	yyleng = (int) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
-	if ( yyleng >= YYLMAX ) \
-		YY_FATAL_ERROR( "token too large, exceeds YYLMAX" ); \
-	yy_flex_strncpy( yytext, (yytext_ptr), yyleng + 1 ); \
 	(yy_c_buf_p) = yy_cp;
 #define YY_NUM_RULES 41
 #define YY_END_OF_BUFFER 42
@@ -525,12 +525,7 @@ int yy_flex_debug = 0;
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#ifndef YYLMAX
-#define YYLMAX 8192
-#endif
-
-char yytext[YYLMAX];
-char *yytext_ptr;
+char *yytext;
 #line 1 "SimpleScript.l"
 #line 5 "SimpleScript.l"
     #include <iostream>
@@ -543,8 +538,8 @@ char *yytext_ptr;
 
     extern int yylex();
     extern void yyerror(const char*, char);
-#line 546 "SimpleScript.flex.cpp"
-#line 547 "SimpleScript.flex.cpp"
+#line 541 "SimpleScript.flex.cpp"
+#line 542 "SimpleScript.flex.cpp"
 
 #define INITIAL 0
 
@@ -761,7 +756,7 @@ YY_DECL
 #line 23 "SimpleScript.l"
 
 
-#line 764 "SimpleScript.flex.cpp"
+#line 759 "SimpleScript.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1036,7 +1031,7 @@ YY_RULE_SETUP
 #line 72 "SimpleScript.l"
 ECHO;
 	YY_BREAK
-#line 1039 "SimpleScript.flex.cpp"
+#line 1034 "SimpleScript.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
