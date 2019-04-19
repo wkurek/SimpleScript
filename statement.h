@@ -8,20 +8,21 @@ using namespace std;
 
 #include "object.h"
 #include "operation_expression.h"
+#include "exception.h"
 
 class Object;
 class OperationExpression;
 
 class Statement {
 public:
-    virtual void evaluate(Object) const = 0;
+    virtual void evaluate(Object&) const = 0;
 };
 
 class StatementsList {
     list<shared_ptr<Statement>> statements;
 
 public:
-    void evaluate(Object);
+    void evaluate(Object&);
 
     void add(shared_ptr<Statement>);
 };
@@ -41,7 +42,7 @@ public:
     ConditionalStatement(shared_ptr<OperationExpression> oePtr, StatementsList trueStmtList)
         : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList) {}
 
-    void evaluate(Object);
+    void evaluate(Object&);
 };
 
 class IterationStatement {
@@ -52,7 +53,17 @@ public:
     IterationStatement(shared_ptr<OperationExpression> conditionExprPtr, StatementsList stmtList)
         : conditionExpressionPtr(move(conditionExprPtr)), statementsList(stmtList) {}
 
-    void evaluate(Object);
+    void evaluate(Object&);
+};
+
+class ReturnStatement {
+    shared_ptr<OperationExpression> expressionPtr;
+
+public:
+    ReturnStatement(shared_ptr<OperationExpression> exprPtr)
+        : expressionPtr(move(exprPtr)) {}
+
+    void evaluate(Object&);
 };
 
 
