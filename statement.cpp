@@ -23,3 +23,9 @@ void ConditionalStatement::evaluate(Object scope) {
         this->trueStatementList.evaluate(scope);
     }
 }
+
+void IterationStatement::evaluate(Object scope) {
+    while(this->conditionExpressionPtr->evaluate(scope)) {
+        this->statementsList.evaluate(scope);
+    }
+}

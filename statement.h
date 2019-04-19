@@ -44,5 +44,16 @@ public:
     void evaluate(Object);
 };
 
+class IterationStatement {
+    shared_ptr<OperationExpression> conditionExpressionPtr;
+    StatementsList statementsList;
+
+public:
+    IterationStatement(shared_ptr<OperationExpression> conditionExprPtr, StatementsList stmtList)
+        : conditionExpressionPtr(move(conditionExprPtr)), statementsList(stmtList) {}
+
+    void evaluate(Object);
+};
+
 
 #endif // STATEMENT_H_INCLUDED
