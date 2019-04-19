@@ -1,5 +1,40 @@
 #include "primitive.h"
 
+bool Primitive::isInteger() {
+	return this->type == INTEGER;
+}
+
+bool Primitive::isFloat() {
+	return this->type == FLOAT;
+}
+
+
+bool Primitive::isBoolean() {
+	return this->type == BOOLEAN;
+}
+
+
+bool Primitive::isString() {
+	return this->type == STRING;
+}
+
+
+int Primitive::getInteger() {
+	return this->intVal;
+}
+
+float Primitive::getFloat() {
+	return this->floatVal;
+}
+
+bool Primitive::getBoolean() {
+	return this->boolVal;
+}
+
+string Primitive::getString() {
+	return this->stringVal;
+}
+
 ostream& operator<<(ostream& out, const Primitive& primitive) {
     if(primitive.type == INTEGER) {
         return out << primitive.intVal;

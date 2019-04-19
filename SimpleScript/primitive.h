@@ -17,11 +17,21 @@ class Primitive {
 
 public:
     Primitive(const Primitive &p):type(p.type), intVal(p.intVal), floatVal(p.floatVal), boolVal(p.boolVal), stringVal(p.stringVal) {}
-    Primitive():type(INTEGER), intVal(0) {}
-    Primitive(const int i):type(INTEGER), intVal(i) {}
-    Primitive(const float f):type(FLOAT), floatVal(f) {}
-    Primitive(const bool b):type(BOOLEAN), boolVal(b) {}
-    Primitive(const string str):type(STRING), stringVal(str) {}
+    Primitive():type(INTEGER), intVal(0), floatVal(0.0), boolVal(false), stringVal("") {}
+    Primitive(const int i):type(INTEGER), intVal(i), floatVal(0.0), boolVal(false), stringVal("") {}
+    Primitive(const float f):type(FLOAT), intVal(0), floatVal(f), boolVal(false), stringVal("") {}
+    Primitive(const bool b):type(BOOLEAN), intVal(0), floatVal(0.0), boolVal(b), stringVal("") {}
+    Primitive(const string str):type(STRING), intVal(0), floatVal(0.0), boolVal(false), stringVal(str) {}
+
+	bool isInteger();
+	bool isFloat();
+	bool isBoolean();
+	bool isString();
+
+	int getInteger();
+	float getFloat();
+	bool getBoolean();
+	string getString();
 
     friend ostream& operator<< (ostream&, const Primitive&);
     friend bool     operator== (const Primitive&, const Primitive&);
