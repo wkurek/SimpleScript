@@ -12,6 +12,7 @@ using namespace std;
 #include "variable.h"
 #include "operation_expression.h"
 #include "object.h"
+#include "exception.h"
 
 class Statement;
 class StatementsList;

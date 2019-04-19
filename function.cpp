@@ -79,7 +79,11 @@ Object Function::generateLocalScope(Object parentScope, ArgumentsList args) {
 Variable Function::call(Object parentScope, ArgumentsList args) {
     Object localScope = generateLocalScope(parentScope, args);
 
-    this->statementListPtr->evaluate(localScope);
+    try {
+        this->statementListPtr->evaluate(localScope);
+    } catch (ReturnVariable returnVariable) {
+        return returnVariable.getVariable();
+    }
 
     return Variable();
 }
