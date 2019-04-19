@@ -1,5 +1,8 @@
-bin/
-obj/
-SimpleScript.cbp
-SimpleScript.depend
-SimpleScript.layout
+.vs/
+SimpleScript/Debug/
+SimpleScript/x64/
+SimpleScript/packages/
+SimpleScript/SimpleScript.report.txt
+SimpleScript/SimpleScript.graph.dot
+SimpleScriptTest/Debug/
+SimpleScriptTest/x64/

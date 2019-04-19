@@ -165,7 +165,7 @@ iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CL
                                 ;
 
 conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block %prec NO_ELSE { cout<< "conditional_statement if" << endl; }
-conditional_statement           | IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block{ cout<< "conditional_statement if else" << endl; }
+					            | IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block{ cout<< "conditional_statement if else" << endl; }
                                 ;
 
 block                           : OPEN_BRACE statements_list CLOSE_BRACE { cout<< "{ statements_list }" << endl; }
@@ -180,17 +180,3 @@ identifier                      : identifier DOT identifier { cout<< "program st
 
 
 %%
-
-int main(int argc, char** argv) {
-  if(argc > 1) {
-    yyin = fopen(argv[1], "r");
-
-    if(yyin == NULL) {
-      cerr << "ERROR:\tcould not open file \"" << argv[1] << "\" for reading." << endl;
-      return 1;
-    }
-
-    int parseResult = yyparse();
-    cout << "result:\t" << parseResult << endl;
-  }
-}

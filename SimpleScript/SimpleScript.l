@@ -63,9 +63,9 @@ string \"(\\.|[^"\\])*\"
 
 {boolean}       { istringstream(string(yytext)) >> boolalpha >> yylval.booleanVal; return BOOLEAN; }
 
-{identifier}    { yylval.stringVal = strdup(yytext); return IDENTIFIER; }
+{identifier}    { yylval.stringVal = _strdup(yytext); return IDENTIFIER; }
 
-{string}        { yylval.stringVal = strdup(yytext); return STRING; }
+{string}        { yylval.stringVal = _strdup(yytext); return STRING; }
 
 .               { yyerror("undefined token", yytext[0]); yyterminate(); }
 
