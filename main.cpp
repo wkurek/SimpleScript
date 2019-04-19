@@ -28,7 +28,7 @@ int main()
     scope.getObject(identifirChild) = var2;
     scope.getPrimitive(identifirChild1) = str;
 
-    cout << scope.hasPrimitive(identifirChild1) << endl;
+    cout << scope.getObject(identifier) << endl;
 
     //cout << scope.getObject(identifier)  << endl;
 

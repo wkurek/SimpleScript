@@ -40,8 +40,6 @@ ostream& operator<< (ostream& out, Variable variable) {
 
 bool operator== (const Variable& var1, const Variable& var2) {
     if(var1.isPrimitive() && var2.isPrimitive()) return *(var1.primitivePtr) == *(var2.primitivePtr);
-    //else if(var1.isFunction() && var2.isFunction()) return *(var1.functionPtr) == *(var2.functionPtr);
-    //else if(var1.isObject() && var2.isObject()) return *(var1.objectPtr) == *(var2.objectPtr);
     else return false;
 }
 

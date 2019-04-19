@@ -19,6 +19,7 @@ class StatementsList {
     list<shared_ptr<Statement>> statements;
 
 public:
+    void evaluate(Object);
 
     void add(shared_ptr<Statement>);
 };

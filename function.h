@@ -4,11 +4,14 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <memory>
+#include <stdexcept>
 using namespace std;
 
 #include "statement.h"
 #include "variable.h"
 #include "operation_expression.h"
+#include "object.h"
 
 class Statement;
 class StatementsList;
@@ -19,22 +22,28 @@ class ParametersList {
 
 public:
     void add(string&);
-    unsigned int getSize() const;
+    list<string>::iterator begin();
+    list<string>::iterator end();
+
+    unsigned int size() const;
 };
 
 class ArgumentsList {
-    list<OperationExpression*> argumentsList;
+    list<shared_ptr<OperationExpression>> argumentsList;
 
 public:
-    ~ArgumentsList();
+    void add(shared_ptr<OperationExpression>);
+    list<shared_ptr<OperationExpression>>::iterator begin();
+    list<shared_ptr<OperationExpression>>::iterator end();
 
-    void add(OperationExpression&);
-    unsigned int getSize() const;
+    unsigned int size() const;
 };
 
 class Function {
     shared_ptr<ParametersList> parametersListPtr;
     shared_ptr<StatementsList> statementListPtr;
+
+    Object generateLocalScope(Object, ArgumentsList);
 
 public:
     Function() : parametersListPtr(nullptr), statementListPtr(nullptr) {}
@@ -44,7 +53,7 @@ public:
 
     friend ostream& operator<< (ostream&, Function&);
 
-    Variable call(ArgumentsList args);
+    Variable call(Object, ArgumentsList);
 };
 
 #endif // FUNCTION_H_INCLUDED
