@@ -7,8 +7,10 @@
 using namespace std;
 
 #include "object.h"
+#include "operation_expression.h"
 
 class Object;
+class OperationExpression;
 
 class Statement {
 public:
@@ -23,5 +25,24 @@ public:
 
     void add(shared_ptr<Statement>);
 };
+
+class ConditionalStatement : public Statement {
+    shared_ptr<OperationExpression> conditionExpressionPtr;
+
+    StatementsList trueStatementList;
+    StatementsList falseStatementList;
+
+public:
+    ConditionalStatement(shared_ptr<OperationExpression> oePtr,
+        StatementsList trueStmtList, StatementsList falseStmtList)
+            : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList),
+                falseStatementList(falseStmtList) {}
+
+    ConditionalStatement(shared_ptr<OperationExpression> oePtr, StatementsList trueStmtList)
+        : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList) {}
+
+    void evaluate(Object);
+};
+
 
 #endif // STATEMENT_H_INCLUDED
