@@ -22,6 +22,9 @@ int main()
 	Object scope, var, var2;
 	string str = "abcdef";
 
+	Primitive strPrimitive(str);
+	cout << strPrimitive.isString() << endl;
+
 
 	scope.getObject(identifier) = var;
 	scope.getObject(identifirChild) = var2;

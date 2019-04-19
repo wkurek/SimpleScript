@@ -21,7 +21,7 @@ public:
     Primitive(const int i):type(INTEGER), intVal(i), floatVal(0.0), boolVal(false), stringVal("") {}
     Primitive(const float f):type(FLOAT), intVal(0), floatVal(f), boolVal(false), stringVal("") {}
     Primitive(const bool b):type(BOOLEAN), intVal(0), floatVal(0.0), boolVal(b), stringVal("") {}
-    Primitive(const string str):type(STRING), intVal(0), floatVal(0.0), boolVal(false), stringVal(str) {}
+    Primitive(const string str):type(STRING), intVal(0), floatVal(0.0), boolVal(false), stringVal(move(str)) {}
 
 	bool isInteger();
 	bool isFloat();
