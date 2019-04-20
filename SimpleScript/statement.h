@@ -17,14 +17,14 @@ class OperationExpression;
 
 class Statement {
 public:
-    virtual void evaluate(Object&) const = 0;
+    virtual void evaluate(Object&) = 0;
 };
 
 class StatementsList {
     list<shared_ptr<Statement>> statements;
 
 public:
-    void evaluate(Object&);
+	void evaluate(Object&);
 
     void add(shared_ptr<Statement>);
 };
@@ -44,7 +44,7 @@ public:
     ConditionalStatement(shared_ptr<OperationExpression> oePtr, StatementsList trueStmtList)
         : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList) {}
 
-    void evaluate(Object&);
+	virtual void evaluate(Object&);
 };
 
 class IterationStatement : public Statement {
@@ -55,7 +55,7 @@ public:
     IterationStatement(shared_ptr<OperationExpression> conditionExprPtr, StatementsList stmtList)
         : conditionExpressionPtr(move(conditionExprPtr)), statementsList(stmtList) {}
 
-    void evaluate(Object&);
+	virtual void evaluate(Object&);
 };
 
 class ReturnStatement : public Statement {
@@ -65,7 +65,7 @@ public:
     ReturnStatement(shared_ptr<OperationExpression> exprPtr)
         : expressionPtr(move(exprPtr)) {}
 
-    void evaluate(Object&);
+	virtual void evaluate(Object&);
 };
 
 class FunctionDeclarationStatement : public Statement {
@@ -76,7 +76,7 @@ public:
     FunctionDeclarationStatement(shared_ptr<Function> functPtr, Identifier id)
         : functionPtr(move(functPtr)), identifier(id) {}
 
-    void evaluate(Object&);
+	virtual void evaluate(Object&);
 };
 
 class ExpressionStatement : public Statement {
@@ -86,10 +86,7 @@ public:
 	ExpressionStatement(shared_ptr<OperationExpression> opExprPtr)
         : operationExpressionPtr(move(opExprPtr)) {}
 
-    void evaluate(Object&);
+	virtual void evaluate(Object&);
 };
-
-
-
 
 #endif // STATEMENT_H_INCLUDED

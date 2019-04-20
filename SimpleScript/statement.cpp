@@ -23,7 +23,7 @@ void ConditionalStatement::evaluate(Object& scope) {
     if(this->conditionExpressionPtr->evaluate(scope)) {
         this->trueStatementList.evaluate(scope);
     } {
-        this->trueStatementList.evaluate(scope);
+        this->falseStatementList.evaluate(scope);
     }
 }
 
