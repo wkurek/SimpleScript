@@ -45,3 +45,7 @@ void FunctionDeclarationStatement::evaluate(Object& scope) {
 
     scope.getFunction(this->identifier) = *(this->functionPtr);
 }
+
+void ExpressionStatement::evaluate(Object& scope) {
+	this->operationExpressionPtr->evaluate(scope);
+}

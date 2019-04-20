@@ -47,7 +47,7 @@ public:
     void evaluate(Object&);
 };
 
-class IterationStatement {
+class IterationStatement : public Statement {
     shared_ptr<OperationExpression> conditionExpressionPtr;
     StatementsList statementsList;
 
@@ -58,7 +58,7 @@ public:
     void evaluate(Object&);
 };
 
-class ReturnStatement {
+class ReturnStatement : public Statement {
     shared_ptr<OperationExpression> expressionPtr;
 
 public:
@@ -68,7 +68,7 @@ public:
     void evaluate(Object&);
 };
 
-class FunctionDeclarationStatement {
+class FunctionDeclarationStatement : public Statement {
     shared_ptr<Function> functionPtr;
     Identifier identifier;
 
@@ -78,6 +78,18 @@ public:
 
     void evaluate(Object&);
 };
+
+class ExpressionStatement : public Statement {
+    shared_ptr<OperationExpression> operationExpressionPtr;
+
+public:
+	ExpressionStatement(shared_ptr<OperationExpression> opExprPtr)
+        : operationExpressionPtr(move(opExprPtr)) {}
+
+    void evaluate(Object&);
+};
+
+
 
 
 #endif // STATEMENT_H_INCLUDED
