@@ -26,7 +26,7 @@ public:
     list<string>::iterator begin();
     list<string>::iterator end();
 
-    unsigned int size() const;
+    size_t size() const;
 };
 
 class ArgumentsList {
@@ -37,7 +37,7 @@ public:
     list<shared_ptr<OperationExpression>>::iterator begin();
     list<shared_ptr<OperationExpression>>::iterator end();
 
-    unsigned int size() const;
+	size_t size() const;
 };
 
 class Function {

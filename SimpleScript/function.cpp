@@ -23,7 +23,7 @@ list<string>::iterator ParametersList::end() {
     return this->parametersList.end();
 }
 
-unsigned int ParametersList::size() const {
+size_t ParametersList::size() const {
     return this->parametersList.size();
 }
 
@@ -40,7 +40,7 @@ list<shared_ptr<OperationExpression>>::iterator ArgumentsList::end() {
     return this->argumentsList.end();
 }
 
-unsigned int ArgumentsList::size() const {
+size_t ArgumentsList::size() const {
     return this->argumentsList.size();
 }
 
