@@ -20,7 +20,7 @@ Variable IdentifierExpression::evaluate(Object& scope) const {
     } else if(scope.hasPrimitive(this->identifier)) {
         return scope.getPrimitive(this->identifier);
     } else {
-        throw invalid_argument("undefined");
+		return Variable();
     }
 }
 
