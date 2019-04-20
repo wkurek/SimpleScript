@@ -1,6 +1,20 @@
 #include "pch.h"
 #include "../SimpleScript/primitive.h"
 #include "../SimpleScript/primitive.cpp"
+#include "../SimpleScript/identifier.h"
+#include "../SimpleScript/identifier.cpp"
+#include "../SimpleScript/object.h"
+#include "../SimpleScript/object.cpp"
+#include "../SimpleScript/function.h"
+#include "../SimpleScript/function.cpp"
+#include "../SimpleScript/variable.h"
+#include "../SimpleScript/variable.cpp"
+#include "../SimpleScript/exception.h"
+#include "../SimpleScript/exception.cpp"
+#include "../SimpleScript/operation_expression.h"
+#include "../SimpleScript/operation_expression.cpp"
+#include "../SimpleScript/statement.h"
+#include "../SimpleScript/statement.cpp"
 
 #include <string>
 
@@ -125,6 +139,7 @@ TEST(Primitive, Should_Cast_To_False_When_String) {
 
 	EXPECT_FALSE(primitive.operator bool());
 }
+
 TEST(Primitive, Should_Cast_To_Value_When_Bool) {
 
 	Primitive primitive1 = Primitive(BOOLEAN_VALUE_TRUE);
@@ -132,4 +147,178 @@ TEST(Primitive, Should_Cast_To_Value_When_Bool) {
 
 	EXPECT_TRUE(primitive1.operator bool());
 	EXPECT_FALSE(primitive2.operator bool());
+}
+
+
+/* OBJECT TESTS */
+TEST(Object, Should_Preserve_Last_Assignment) {
+
+	Object scope;
+
+	Identifier id = "id1";
+
+	Primitive primitive = Primitive(INTEGER_VALUE_A);
+	Function funct = Function();
+	Object obj = Object();
+
+	scope.getFunction(id) = funct;
+	scope.getObject(id) = obj;
+	scope.getPrimitive(id) = primitive;
+
+	EXPECT_TRUE(scope.hasPrimitive(id));
+	EXPECT_EQ(scope.getPrimitive(id).getInteger(), INTEGER_VALUE_A);
+}
+
+TEST(Object, Should_Not_Contain_Entity_After_Removal) {
+
+	Object scope;
+
+	Identifier id = "id1";
+	Function funct = Function();
+
+	scope.getFunction(id) = funct;
+
+	EXPECT_FALSE(scope.hasPrimitive(id));
+}
+
+TEST(Object, Should_Be_Able_To_Nest_Objects) {
+
+	Object scope;
+
+	Identifier id1 = "function";
+	Identifier id2 = "object";
+	Identifier id3 = Identifier(id2, "primitive");
+	Identifier id4 = Identifier(id2, "object2");
+	Identifier id5 = Identifier(id4, "primitive2");
+	Identifier id6 = Identifier(id4, "object3");
+	Identifier id7 = Identifier(id6, "function2");
+
+	Primitive primitive = Primitive(INTEGER_VALUE_A);
+	Primitive primitive2 = Primitive(BOOLEAN_VALUE_FALSE);
+	Function funct = Function();
+	Function funct2 = Function();
+	Object obj = Object();
+	Object obj2 = Object();
+	Object obj3 = Object();
+
+	scope.getFunction(id1) = funct;
+	scope.getObject(id2) = obj;
+	scope.getPrimitive(id3) = primitive;
+	scope.getObject(id4) = obj2;
+	scope.getPrimitive(id5) = primitive2;
+	scope.getObject(id6) = obj3;
+	scope.getFunction(id7) = funct2;
+
+	EXPECT_TRUE(scope.hasFunction(id1));
+	EXPECT_TRUE(scope.hasObject(id2));
+	EXPECT_TRUE(scope.hasPrimitive(id3));
+	EXPECT_TRUE(scope.hasObject(id4));
+	EXPECT_TRUE(scope.hasPrimitive(id5));
+	EXPECT_TRUE(scope.hasObject(id6));
+	EXPECT_TRUE(scope.hasFunction(id7));
+
+	EXPECT_EQ(scope.getPrimitive(id3).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(scope.getPrimitive(id5).getBoolean(), BOOLEAN_VALUE_FALSE);
+}
+
+TEST(Object, Should_Throw_Exception_When_Identifier_Nested_Not_To_Object_Identifier_Assignment) {
+
+	Object scope;
+
+	Identifier id1 = "function";
+	Identifier id2 = Identifier(id1, "primitive");
+
+	Primitive primitive = Primitive(INTEGER_VALUE_A);
+	Function funct = Function();
+
+	scope.getFunction(id1) = funct;
+
+	EXPECT_ANY_THROW(scope.getPrimitive(id2) = primitive);
+}
+
+TEST(Object, Should_Remove_Function_Correctly) {
+
+	Object scope;
+
+	Identifier id1 = "function";
+	Function funct = Function();
+
+	scope.getFunction(id1) = funct;
+	scope.removeFunction(id1);
+
+	EXPECT_FALSE(scope.hasFunction(id1));
+}
+TEST(Object, Should_Remove_Nested_Primitive) {
+
+	Object scope;
+
+	Identifier id1 = "object1";
+	Identifier id2 = Identifier(id1, "object2");
+	Identifier id3 = Identifier(id2, "primitive");
+
+	Primitive primitive = Primitive(INTEGER_VALUE_A);
+	Object obj1 = Object();
+	Object obj2 = Object();
+
+	scope.getObject(id1) = obj1;
+	scope.getObject(id2) = obj2;
+	scope.getPrimitive(id3) = primitive;
+
+	scope.removePrimitive(id3);
+
+	EXPECT_TRUE(scope.hasObject(id1));
+	EXPECT_TRUE(scope.hasObject(id2));
+	EXPECT_FALSE(scope.hasPrimitive(id3));
+}
+
+TEST(Object, Should_Not_Throw_Exception_When_Removing_Not_Existing_Entity) {
+
+	Object scope;
+
+	Identifier id1 = "function";
+	Identifier id2 = "primitive";
+
+	Function funct = Function();
+
+	scope.getFunction(id1) = funct;
+
+	EXPECT_NO_THROW(scope.removePrimitive(id2));
+}
+
+/* IDENTIFIER TESTS */
+
+TEST(Identifier, Should_Be_Able_To_Nest) {
+
+	std::string id1 = "id1";
+	std::string id2 = "id2";
+
+	Identifier identifier1 = Identifier(id1);
+	Identifier identifier2 = Identifier(id1, id2);
+
+	EXPECT_FALSE(identifier1.hasTail());
+	EXPECT_TRUE(identifier2.hasTail());
+
+	EXPECT_EQ(identifier1.getHead(), id1);
+	EXPECT_EQ(identifier2.getHead(), id1);
+}
+
+TEST(Identifier, Should_Generate_Tail_Properly) {
+
+	std::string id1 = "id1";
+	std::string id2 = "id2";
+	std::string id3 = "id3";
+
+	Identifier identifier1 = Identifier(id1);
+	Identifier identifier2 = Identifier(identifier1, id2);
+	Identifier identifier3 = Identifier(identifier2, id3);
+
+	Identifier tail = identifier3.getTail();
+
+	EXPECT_FALSE(identifier1.hasTail());
+	EXPECT_TRUE(identifier2.hasTail());
+	EXPECT_TRUE(identifier3.hasTail());
+
+	EXPECT_EQ(identifier3.getHead(), id1);
+	EXPECT_EQ(tail.getHead(), id2);
+	EXPECT_EQ(tail.getTail().getHead(), id3);
 }
