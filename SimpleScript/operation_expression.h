@@ -19,6 +19,19 @@ public:
     virtual Variable evaluate(Object&) const = 0;
 };
 
+class OperationExpressionsList {
+	list<shared_ptr<OperationExpression>> operationExpressionsList;
+
+public:
+	void add(shared_ptr<OperationExpression>);
+	list<shared_ptr<OperationExpression>>::iterator begin();
+	list<shared_ptr<OperationExpression>>::iterator end();
+
+	size_t size() const;
+
+	void evaluate(Object&);
+};
+
 class UnaryOperationExpression : public OperationExpression {
 public:
     virtual Variable evaluate(Object&) const = 0;

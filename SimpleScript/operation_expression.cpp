@@ -83,3 +83,25 @@ Variable LogicalOr::evaluate(Object& scope)  const{
 Variable LogicalAnd::evaluate(Object& scope)  const{
     return Variable((this->expression1Ptr->evaluate(scope)) && (this->expression2Ptr->evaluate(scope)));
 }
+
+void OperationExpressionsList::add(shared_ptr<OperationExpression> oex) {
+	this->operationExpressionsList.push_back(oex);
+}
+
+list<shared_ptr<OperationExpression>>::iterator OperationExpressionsList::begin() {
+	return this->operationExpressionsList.begin();
+}
+
+list<shared_ptr<OperationExpression>>::iterator OperationExpressionsList::end() {
+	return this->operationExpressionsList.end();
+}
+
+size_t OperationExpressionsList::size() const {
+	return this->operationExpressionsList.size();
+}
+
+void OperationExpressionsList::evaluate(Object& scope) {
+	for (auto it = this->begin(); it != this->end(); ++it) {
+		(*it)->evaluate(scope);
+	}
+}

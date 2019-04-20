@@ -14,6 +14,7 @@ using namespace std;
 class Object;
 class Function;
 class OperationExpression;
+class OperationExpressionsList;
 
 class Statement {
 public:
@@ -85,6 +86,16 @@ class ExpressionStatement : public Statement {
 public:
 	ExpressionStatement(shared_ptr<OperationExpression> opExprPtr)
         : operationExpressionPtr(move(opExprPtr)) {}
+
+	virtual void evaluate(Object&);
+};
+
+class VariableDeclarationStatement : public Statement {
+    shared_ptr<OperationExpressionsList> operationExpressionsListPtr;
+
+public:
+	VariableDeclarationStatement(shared_ptr<OperationExpressionsList> opExprListPtr)
+        : operationExpressionsListPtr(move(opExprListPtr)) {}
 
 	virtual void evaluate(Object&);
 };

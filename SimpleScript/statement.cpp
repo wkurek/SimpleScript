@@ -48,3 +48,7 @@ void FunctionDeclarationStatement::evaluate(Object& scope) {
 void ExpressionStatement::evaluate(Object& scope) {
 	this->operationExpressionPtr->evaluate(scope);
 }
+
+void VariableDeclarationStatement::evaluate(Object& scope) {
+	this->operationExpressionsListPtr->evaluate(scope);
+}
