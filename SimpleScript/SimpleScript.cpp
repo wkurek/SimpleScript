@@ -13,42 +13,22 @@ using namespace std;
 
 int main()
 {
-	Identifier identifier("parentName");
-	Identifier identifirChild(identifier, "childNameA");
-	Identifier identifirChild1(identifirChild, "childNameB2");
-	Identifier identifirChild2(identifier, "childNameA2");
+	Object globalScope = Object();
 
-	Primitive a(-71), b(10), c(true);
-	Object scope, var, var2;
-	string str = "abcdef";
+	Identifier aIdentifier = Identifier("a");
+	Variable aVariable = Variable(4);
+	ConstantExpression aConstantExpression =
+		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
-	Primitive strPrimitive(str);
-	cout << b.operator bool() << endl;
+	OperationExpressionAssignment aExpressionAssignment =
+		OperationExpressionAssignment(aIdentifier,
+			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
-	scope.getObject(identifier) = var;
-	scope.getObject(identifirChild) = var2;
-	scope.getPrimitive(identifirChild1) = str;
+	Variable result = aExpressionAssignment.evaluate(globalScope);
 
-	cout << scope.getObject(identifier) << endl;
+	cout << globalScope << endl;
 
-	//cout << scope.getObject(identifier)  << endl;
-
-	//cout << scope.getPrimitive(identifirChild1) << endl;
-	//scope.removeObject(identifirChild);
-	//cout << scope.getPrimitive(identifirChild1) << endl;
-
-	//Variable val(scope.getObject(identifier));
-	//cout << val.getObject() << endl;
-
-	//Property prop(str, val);
-	//cout << prop << endl;
-
-	PropertyList plist;
-	//    plist.add(prop);
-
-	//    Object obliteral = plist.generateObject();
-		//cout << obliteral << endl;
 	return 0;
 }
 

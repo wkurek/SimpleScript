@@ -7,7 +7,7 @@ using namespace std;
 #include "operation_expression.h"
 #include "assignment.h"
 
-Variable OperationExpressionAssignment::evaluate(Object scope) const {
+Variable OperationExpressionAssignment::evaluate(Object& scope) const {
     Variable var = this->expressionPtr->evaluate(scope);
 
     if(var.isPrimitive()) {
@@ -30,13 +30,13 @@ Variable OperationExpressionAssignment::evaluate(Object scope) const {
 	return var;
 }
 
-Variable FunctionAssignment::evaluate(Object scope) const {
+Variable FunctionAssignment::evaluate(Object& scope) const {
     scope.getFunction(this->identifier) = this->funct;
 
 	return Variable(shared_ptr<Function>(new Function(this->funct)));
 }
 
-Variable ObjectAssignment::evaluate(Object scope) const {
+Variable ObjectAssignment::evaluate(Object& scope) const {
     scope.getObject(this->identifier) = this->object;
 
 	return Variable(shared_ptr<Object>(new Object(this->object)));

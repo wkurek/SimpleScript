@@ -17,7 +17,7 @@ public:
     OperationExpressionAssignment(Identifier id, shared_ptr<OperationExpression> ePtr)
         : identifier(id), expressionPtr(move(ePtr)) {}
 
-    Variable evaluate(Object) const;
+    Variable evaluate(Object&) const;
 };
 
 class FunctionAssignment : public OperationExpression {
@@ -28,7 +28,7 @@ public:
     FunctionAssignment(Identifier id, Function f)
         : identifier(id), funct(f) {}
 
-	Variable evaluate(Object) const;
+	Variable evaluate(Object&) const;
 };
 
 class ObjectAssignment : public OperationExpression {
@@ -39,7 +39,7 @@ public:
     ObjectAssignment(Identifier id, Object obj)
         : identifier(id), object(obj) {}
 
-	Variable evaluate(Object) const;
+	Variable evaluate(Object&) const;
 };
 
 #endif // ASSIGNMENT_H_INCLUDED
