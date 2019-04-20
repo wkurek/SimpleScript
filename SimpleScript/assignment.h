@@ -8,9 +8,8 @@ using namespace std;
 #include "function.h"
 #include "variable.h"
 #include "operation_expression.h"
-#include "statement.h"
 
-class OperationExpressionAssignment : public Statement {
+class OperationExpressionAssignment : public OperationExpression {
     Identifier identifier;
     shared_ptr<OperationExpression> expressionPtr;
 
@@ -18,10 +17,10 @@ public:
     OperationExpressionAssignment(Identifier id, shared_ptr<OperationExpression> ePtr)
         : identifier(id), expressionPtr(move(ePtr)) {}
 
-    void evaluate(Object) const;
+    Variable evaluate(Object) const;
 };
 
-class FunctionAssignment {
+class FunctionAssignment : public OperationExpression {
     Identifier identifier;
     Function funct;
 
@@ -29,10 +28,10 @@ public:
     FunctionAssignment(Identifier id, Function f)
         : identifier(id), funct(f) {}
 
-    void evaluate(Object) const;
+	Variable evaluate(Object) const;
 };
 
-class ObjectAssignment {
+class ObjectAssignment : public OperationExpression {
     Identifier identifier;
     Object object;
 
@@ -40,7 +39,7 @@ public:
     ObjectAssignment(Identifier id, Object obj)
         : identifier(id), object(obj) {}
 
-    void evaluate(Object) const;
+	Variable evaluate(Object) const;
 };
 
 #endif // ASSIGNMENT_H_INCLUDED

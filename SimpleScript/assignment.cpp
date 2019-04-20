@@ -1,12 +1,13 @@
-#include "assignment.h"
+#include <memory>
+using namespace std;
+
 #include "object.h"
 #include "function.h"
 #include "variable.h"
 #include "operation_expression.h"
-#include "statement.h"
+#include "assignment.h"
 
-
-void OperationExpressionAssignment::evaluate(Object scope) const {
+Variable OperationExpressionAssignment::evaluate(Object scope) const {
     Variable var = this->expressionPtr->evaluate(scope);
 
     if(var.isPrimitive()) {
@@ -25,12 +26,18 @@ void OperationExpressionAssignment::evaluate(Object scope) const {
         scope.removePrimitive(this->identifier);
         scope.removeObject(this->identifier);
     }
+
+	return var;
 }
 
-void FunctionAssignment::evaluate(Object scope) const {
+Variable FunctionAssignment::evaluate(Object scope) const {
     scope.getFunction(this->identifier) = this->funct;
+
+	return Variable(shared_ptr<Function>(new Function(this->funct)));
 }
 
-void ObjectAssignment::evaluate(Object scope) const {
+Variable ObjectAssignment::evaluate(Object scope) const {
     scope.getObject(this->identifier) = this->object;
+
+	return Variable(shared_ptr<Object>(new Object(this->object)));
 }
