@@ -34,9 +34,8 @@ void IterationStatement::evaluate(Object& scope) {
 }
 
 void ReturnStatement::evaluate(Object& scope) {
-    Variable *var = new Variable(this->expressionPtr->evaluate(scope));
-
-    throw ReturnVariable(make_shared<Variable>(var));
+    throw ReturnVariable(shared_ptr<Variable>(
+		new Variable(this->expressionPtr->evaluate(scope))));
 }
 
 void FunctionDeclarationStatement::evaluate(Object& scope) {
