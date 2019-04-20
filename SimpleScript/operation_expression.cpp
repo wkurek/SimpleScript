@@ -24,6 +24,10 @@ Variable IdentifierExpression::evaluate(Object& scope) const {
     }
 }
 
+Variable FunctionCallExpression::evaluate(Object& scope) const {
+	return this->functionPtr->call(scope, *(this->argumentsPtr));
+}
+
 Variable Negation::evaluate(Object& scope) const {
     return -(this->expressionPtr->evaluate(scope));
 }

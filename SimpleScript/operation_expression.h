@@ -7,9 +7,12 @@ using namespace std;
 
 #include "object.h"
 #include "variable.h"
+#include "function.h"
 
 class Object;
 class Variable;
+class Function;
+class ArgumentsList;
 
 class OperationExpression {
 public:
@@ -51,6 +54,18 @@ class IdentifierExpression : public OperationExpression {
 public:
     IdentifierExpression(Identifier id) : identifier(id) {}
     virtual Variable evaluate(Object&) const;
+};
+
+class FunctionCallExpression : public OperationExpression {
+	shared_ptr<Function> functionPtr;
+	shared_ptr<ArgumentsList> argumentsPtr;
+
+public:
+	FunctionCallExpression(shared_ptr<Function> functPtr, 
+		shared_ptr<ArgumentsList> args)
+		: functionPtr(move(functPtr)), argumentsPtr(move(args)) {}
+
+	virtual Variable evaluate(Object&) const;
 };
 
 class Negation : public UnaryOperationExpression {
