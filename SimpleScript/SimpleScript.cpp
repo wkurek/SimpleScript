@@ -18,12 +18,12 @@ int main()
 	Identifier identifirChild1(identifirChild, "childNameB2");
 	Identifier identifirChild2(identifier, "childNameA2");
 
-	Primitive a(71), b(10), c(true);
+	Primitive a(-71), b(10), c(true);
 	Object scope, var, var2;
 	string str = "abcdef";
 
 	Primitive strPrimitive(str);
-	cout << strPrimitive.isString() << endl;
+	cout << b.operator bool() << endl;
 
 
 	scope.getObject(identifier) = var;
