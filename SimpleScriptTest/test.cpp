@@ -1396,3 +1396,109 @@ TEST(Function, Should_Throw_Exception_When_Passed_Not_Enough_Arguments) {
 			Variable functionResult = function.call(globalScope, argumentsList);
 		});
 }
+
+TEST(Function, Should_Create_Isolated_Scope) {
+
+	Object globalScope = Object();
+
+	StatementsList statementsList = StatementsList();
+	ParametersList parametersList = ParametersList();
+
+	Identifier aIdentifier = Identifier("a");
+	Variable aVariable = Variable(INTEGER_VALUE_A);
+	ConstantExpression aConstantExpression =
+		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
+
+	OperationExpressionAssignment aExpressionAssignment =
+		OperationExpressionAssignment(aIdentifier,
+			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
+
+	ExpressionStatement expressionAssignmentStatement = ExpressionStatement(
+		std::shared_ptr<OperationExpression>(
+			new OperationExpressionAssignment(aExpressionAssignment))
+	);
+
+	statementsList.add(
+		std::shared_ptr<Statement>(
+			new ExpressionStatement(expressionAssignmentStatement))
+	);
+
+	ArgumentsList argumentsList = ArgumentsList();
+
+
+	Function function = Function(
+		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
+		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
+
+
+	FunctionCallExpression functionCallExpression = FunctionCallExpression(
+		std::shared_ptr<Function>(new Function(function)),
+		std::shared_ptr<ArgumentsList>(new ArgumentsList(argumentsList))
+	);
+
+	ExpressionStatement expressionStatement = ExpressionStatement(
+		std::shared_ptr<OperationExpression>(
+			new FunctionCallExpression(functionCallExpression))
+	);
+
+	expressionStatement.evaluate(globalScope);
+
+	EXPECT_FALSE(globalScope.hasPrimitive(aIdentifier));
+}
+
+TEST(Function, Should_Return_Variables_Properly) {
+
+	Object globalScope = Object();
+
+	StatementsList statementsList = StatementsList();
+	ParametersList parametersList = ParametersList();
+
+	Identifier aIdentifier = Identifier("a");
+	Variable aVariable = Variable(INTEGER_VALUE_A);
+	ConstantExpression aConstantExpression =
+		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
+
+	OperationExpressionAssignment aExpressionAssignment =
+		OperationExpressionAssignment(aIdentifier,
+			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
+
+	ExpressionStatement expressionAssignmentStatement = ExpressionStatement(
+		std::shared_ptr<OperationExpression>(
+			new OperationExpressionAssignment(aExpressionAssignment))
+	);
+
+	statementsList.add(
+		std::shared_ptr<Statement>(
+			new ExpressionStatement(expressionAssignmentStatement))
+	);
+
+	IdentifierExpression aIdentifierExpression = IdentifierExpression(aIdentifier);
+
+	ReturnStatement returnStatement = ReturnStatement(
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifierExpression))
+	);
+
+	statementsList.add(
+		std::shared_ptr<Statement>(
+			new ReturnStatement(returnStatement))
+	);
+
+	ArgumentsList argumentsList = ArgumentsList();
+
+
+	Function function = Function(
+		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
+		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
+
+
+	FunctionCallExpression functionCallExpression = FunctionCallExpression(
+		std::shared_ptr<Function>(new Function(function)),
+		std::shared_ptr<ArgumentsList>(new ArgumentsList(argumentsList))
+	);
+
+	Variable result = functionCallExpression.evaluate(globalScope);
+
+	EXPECT_TRUE(result.isPrimitive());
+	EXPECT_TRUE(result.getPrimitive().isInteger());
+	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A);
+}
