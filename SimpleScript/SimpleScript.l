@@ -6,9 +6,18 @@
     #include <string>
     #include <sstream>
 
+	#include "primitive.h"
+	#include "identifier.h"
+	#include "object.h"
+	#include "function.h"
+	#include "variable.h"
+	#include "exception.h"
+	#include "operation_expression.h"
+	#include "statement.h"
+	#include "assignment.h"
+
     #include "SimpleScript.tab.h"
 
-    using namespace std;
 
     extern int yylex();
     extern void yyerror(const char*, char);
@@ -54,14 +63,14 @@ string \"(\\.|[^"\\])*\"
 "else"                      { return ELSE; }
 "while"                     { return WHILE; }
 "var"                       { return VAR; }
-"function"                  { return FUNCTION; }
+"function"                  { return FUNCTION_T; }
 "return"                    { return RETURN; }
 
-{integer}       { istringstream(string(yytext)) >> yylval.integerVal; return INTEGER; }
+{integer}       { istringstream(string(yytext)) >> yylval.integerVal; return INTEGER_T; }
 
-{float}         { istringstream(string(yytext)) >> yylval.floatVal; return FLOAT; }
+{float}         { istringstream(string(yytext)) >> yylval.floatVal; return FLOAT_T; }
 
-{boolean}       { istringstream(string(yytext)) >> boolalpha >> yylval.booleanVal; return BOOLEAN; }
+{boolean}       { istringstream(string(yytext)) >> boolalpha >> yylval.booleanVal; return BOOLEAN_T; }
 
 {identifier}    { yylval.stringVal = _strdup(yytext); return IDENTIFIER; }
 

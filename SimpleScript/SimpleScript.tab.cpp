@@ -71,6 +71,16 @@
     #include <iostream>
     using namespace std;
 
+	#include "primitive.h"
+	#include "identifier.h"
+	#include "object.h"
+	#include "function.h"
+	#include "variable.h"
+	#include "exception.h"
+	#include "operation_expression.h"
+	#include "statement.h"
+	#include "assignment.h"
+
     extern int yylex(void);
     extern int yylineno;
     extern int yyparse();
@@ -90,7 +100,7 @@
       errorReported = true;
     }
 
-#line 94 "SimpleScript.tab.cpp" /* yacc.c:337  */
+#line 104 "SimpleScript.tab.cpp" /* yacc.c:337  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -128,10 +138,10 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INTEGER = 258,
-    FLOAT = 259,
-    BOOLEAN = 260,
-    STRING = 261,
+    INTEGER_T = 258,
+    FLOAT_T = 259,
+    BOOLEAN_T = 260,
+    STRING_T = 261,
     IDENTIFIER = 262,
     ASSIGN = 263,
     COLON = 264,
@@ -141,7 +151,7 @@ extern int yydebug;
     IF = 268,
     WHILE = 269,
     VAR = 270,
-    FUNCTION = 271,
+    FUNCTION_T = 271,
     RETURN = 272,
     NO_ELSE = 273,
     ELSE = 274,
@@ -174,14 +184,15 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 27 "SimpleScript.y" /* yacc.c:352  */
+#line 37 "SimpleScript.y" /* yacc.c:352  */
 
     int integerVal;
     float floatVal;
     bool booleanVal;
     char* stringVal;
+	Identifier* identifierVal;
 
-#line 185 "SimpleScript.tab.cpp" /* yacc.c:352  */
+#line 196 "SimpleScript.tab.cpp" /* yacc.c:352  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -429,16 +440,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  43
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   292
+#define YYLAST   264
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  41
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  24
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  71
+#define YYNRULES  70
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  126
+#define YYNSTATES  124
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   295
@@ -488,14 +499,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    65,    65,    66,    69,    70,    73,    74,    75,    76,
-      77,    78,    81,    82,    85,    86,    87,    90,    93,    94,
-      95,    98,    99,   100,   103,   104,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   114,   115,   116,   117,   118,
-     119,   120,   121,   122,   123,   124,   127,   130,   131,   132,
-     135,   138,   141,   142,   145,   146,   149,   150,   153,   154,
-     155,   158,   161,   164,   167,   168,   171,   172,   175,   176,
-     177,   178
+       0,    78,    78,    79,    82,    83,    86,    87,    88,    89,
+      90,    91,    94,    95,    98,    99,   100,   103,   106,   107,
+     108,   111,   112,   113,   116,   117,   118,   119,   120,   121,
+     122,   123,   124,   125,   126,   127,   128,   129,   130,   131,
+     132,   133,   134,   135,   136,   137,   140,   143,   144,   145,
+     148,   151,   154,   155,   158,   159,   162,   163,   166,   167,
+     168,   171,   174,   177,   180,   181,   184,   185,   188,   195,
+     202
 };
 #endif
 
@@ -504,7 +515,7 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "\"INTEGER\"", "\"FLOAT\"",
+  "$end", "error", "$undefined", "\"integer\"", "\"FLOAT\"",
   "\"BOOLEAN\"", "\"STRING\"", "\"IDENTIFIER\"", "\"=\"", "\":\"", "\",\"",
   "\"{\"", "\"}\"", "\"if\"", "\"while\"", "\"var\"", "\"function\"",
   "\"return\"", "NO_ELSE", "ELSE", "AND", "OR", "LESS_THAN",
@@ -536,12 +547,12 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -87
+#define YYPACT_NINF -86
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-87)))
+  (!!((Yystate) == (-86)))
 
-#define YYTABLE_NINF -72
+#define YYTABLE_NINF -71
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -550,19 +561,19 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     208,   -87,   -87,   -87,   -87,   -87,   -29,   -19,    54,     7,
-     136,   136,   136,   136,   136,    62,   208,   -87,   -87,   -87,
-     261,   -87,   -87,   -87,   -87,   -87,   -87,    -7,   136,   136,
-      -4,   -87,    65,   -87,    33,    37,    71,   261,   -13,   -87,
-     -87,   -87,   206,   -87,   -87,   136,   136,   136,   136,   136,
-     136,   136,   136,   136,   136,   136,   136,    63,   136,    86,
-      30,   225,   243,    54,    71,   -87,     5,   -87,    58,    58,
-      -9,    -9,    -9,    -9,    -9,    -9,     9,     9,   -87,   -87,
-      93,   -87,   261,   -87,   261,    27,   -87,   -87,    66,    67,
-     116,   116,   -87,    28,    98,    97,   102,    82,   -87,   136,
-     -87,   -87,   -87,   208,   -87,    94,   -87,    97,   -87,   208,
-     -87,    63,    93,   -87,   -87,   150,   116,   -87,   184,   -87,
-     261,   -87,   -87,   -87,   -87,   -87
+     206,   -86,   -86,   -86,   -86,   -86,   -32,   -11,    19,    -6,
+      28,    28,    28,    28,    28,    43,   206,   -86,   -86,   -86,
+     223,   -86,   -86,   -86,   -86,   -86,   -86,    73,    28,    28,
+      -2,   -86,    64,   -86,    32,    36,    72,   223,    44,   -86,
+     -86,   -86,   112,   -86,   -86,    28,    28,    28,    28,    28,
+      28,    28,    28,    28,    28,    28,    28,    62,    28,    77,
+      79,   146,   204,    19,    72,   -86,     4,   -86,   233,   233,
+     -10,   -10,   -10,   -10,   -10,   -10,     8,     8,   -86,   -86,
+      80,   -86,   223,   -86,   223,     5,   -86,   -86,    46,   114,
+     114,   -86,    67,    81,    82,    83,    12,   -86,    28,   -86,
+     -86,   206,   -86,    84,   -86,    82,   -86,   206,   -86,    62,
+      80,   -86,   -86,   148,   114,   -86,   182,   -86,   223,   -86,
+     -86,   -86,   -86,   -86
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -570,7 +581,7 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,    25,    26,    27,    28,    71,     0,     0,     0,     0,
+       3,    25,    26,    27,    28,    70,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     2,     5,     6,    12,
       13,    44,     7,     8,     9,    10,    11,    45,     0,     0,
       55,    54,    51,    53,     0,     0,    58,    62,    45,    42,
@@ -579,26 +590,26 @@ static const yytype_uint8 yydefact[] =
        0,     0,     0,     0,    58,    60,     0,    24,    29,    30,
       31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
       18,    16,    14,    15,    50,     0,    49,    68,     0,     0,
-       0,     0,    52,     0,     0,     0,     0,     0,    20,     0,
-      46,    69,    70,     0,    67,    64,    63,     0,    59,     0,
-      57,     0,     0,    17,    48,     0,     0,    56,     0,    23,
-      21,    22,    19,    66,    65,    61
+       0,    52,     0,     0,     0,     0,     0,    20,     0,    46,
+      69,     0,    67,    64,    63,     0,    59,     0,    57,     0,
+       0,    17,    48,     0,     0,    56,     0,    23,    21,    22,
+      19,    66,    65,    61
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -87,   -87,   -85,   -14,   -87,    -5,     1,   -87,     2,    -1,
-     -87,   -87,    18,   -87,   -87,    61,   -51,    64,    19,   -87,
-     -87,   -87,   -86,     0
+     -86,   -86,   -84,   -14,   -86,    -5,   -18,   -86,    -4,    -1,
+     -86,   -86,     7,   -86,   -86,    47,   -50,    51,    17,   -86,
+     -86,   -86,   -85,     0
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    15,    16,    17,    18,    19,    81,    97,    98,    20,
-      21,    85,    86,    22,    32,    33,    23,    66,   110,    24,
-      25,    26,   105,    38
+      -1,    15,    16,    17,    18,    19,    81,    96,    97,    20,
+      21,    85,    86,    22,    32,    33,    23,    66,   108,    24,
+      25,    26,   103,    38
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -606,70 +617,64 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      27,    57,    44,    31,   -71,   106,    83,    28,    34,    37,
-      39,    40,    41,    42,    35,    94,    27,    29,   115,    53,
-      54,    55,    56,    58,   118,    59,    60,    61,    62,    58,
-     124,    59,    60,    88,   -71,   -71,    89,    99,    94,    55,
-      56,    57,    95,    36,    68,    69,    70,    71,    72,    73,
-      74,    75,    76,    77,    78,    79,    82,    84,    31,    87,
-     121,    30,    43,    34,   100,   107,     1,     2,     3,     4,
-       5,    59,    60,    64,    80,    63,   104,   104,    65,     9,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
-      27,    27,   112,     5,   113,    11,    12,    13,    84,    14,
-      96,    44,   104,    27,    44,   108,   101,   102,   109,    27,
-     120,   111,   119,   116,   122,    27,    27,   114,    27,     1,
-       2,     3,     4,     5,    92,     0,   117,   103,    93,     6,
-       7,     8,     9,    10,     0,     0,     0,     0,     0,     1,
-       2,     3,     4,     5,     0,     0,     0,     0,    11,    12,
-      13,     0,    14,     1,     2,     3,     4,     5,     0,     0,
-       0,     0,   123,     6,     7,     8,     9,    10,    11,    12,
-      13,     0,    14,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    11,    12,    13,     0,    14,     1,     2,     3,
-       4,     5,     0,     0,     0,     0,   125,     6,     7,     8,
-       9,    10,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     1,     2,     3,     4,     5,    11,    12,    13,     0,
-      14,     6,     7,     8,     9,    10,    45,    46,    47,    48,
+      27,    35,    44,    31,    28,   104,   -70,    83,    34,    37,
+      39,    40,    41,    42,    93,    98,    27,   113,    53,    54,
+      55,    56,   110,   116,   111,    29,    30,    61,    62,   122,
+      36,     1,     2,     3,     4,     5,   -70,   -70,    55,    56,
+      57,    94,    99,    43,    68,    69,    70,    71,    72,    73,
+      74,    75,    76,    77,    78,    79,    82,    84,    31,   119,
+      11,    12,    13,    34,    14,     1,     2,     3,     4,     5,
+      59,    60,    64,    80,    63,   102,   102,    93,     9,    65,
+      58,    57,    59,    60,    87,    88,   100,    95,   106,    27,
+      27,   117,   109,   107,    11,    12,    13,    84,    14,    44,
+     102,    27,    44,   114,   105,   112,   120,    27,   118,    58,
+      91,    59,    60,    27,    27,    92,    27,     1,     2,     3,
+       4,     5,   115,     0,     0,   101,     0,     6,     7,     8,
+       9,    10,    45,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,     0,     0,    11,    12,    13,    67,
+      14,     1,     2,     3,     4,     5,     0,     0,     0,     0,
+     121,     6,     7,     8,     9,    10,    45,    46,    47,    48,
       49,    50,    51,    52,    53,    54,    55,    56,     0,     0,
-      11,    12,    13,    67,    14,    45,    46,    47,    48,    49,
-      50,    51,    52,    53,    54,    55,    56,     0,     0,     0,
-       0,     0,    90,    45,    46,    47,    48,    49,    50,    51,
-      52,    53,    54,    55,    56,     0,     0,     0,     0,     0,
-      91,    45,    46,    47,    48,    49,    50,    51,    52,    53,
-      54,    55,    56
+      11,    12,    13,    89,    14,     1,     2,     3,     4,     5,
+       0,     0,     0,     0,   123,     6,     7,     8,     9,    10,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     1,
+       2,     3,     4,     5,    11,    12,    13,     0,    14,     6,
+       7,     8,     9,    10,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55,    56,     0,     0,    11,    12,
+      13,    90,    14,    45,    46,    47,    48,    49,    50,    51,
+      52,    53,    54,    55,    56,    47,    48,    49,    50,    51,
+      52,    53,    54,    55,    56
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     8,    16,     8,     8,    91,    57,    36,     8,    10,
-      11,    12,    13,    14,     7,    10,    16,    36,   103,    28,
-      29,    30,    31,    36,   109,    38,    39,    28,    29,    36,
-     116,    38,    39,     3,    38,    39,     6,    10,    10,    30,
-      31,     8,    37,    36,    45,    46,    47,    48,    49,    50,
-      51,    52,    53,    54,    55,    56,    57,    58,    63,    59,
-     111,     7,     0,    63,    37,    37,     3,     4,     5,     6,
-       7,    38,    39,    36,    11,    10,    90,    91,     7,    16,
-      22,    23,    24,    25,    26,    27,    28,    29,    30,    31,
-      90,    91,    10,     7,    12,    32,    33,    34,    99,    36,
-       7,   115,   116,   103,   118,     7,    40,    40,    11,   109,
-     111,     9,   111,    19,   112,   115,   116,    99,   118,     3,
-       4,     5,     6,     7,    63,    -1,   107,    11,    64,    13,
-      14,    15,    16,    17,    -1,    -1,    -1,    -1,    -1,     3,
-       4,     5,     6,     7,    -1,    -1,    -1,    -1,    32,    33,
-      34,    -1,    36,     3,     4,     5,     6,     7,    -1,    -1,
-      -1,    -1,    12,    13,    14,    15,    16,    17,    32,    33,
-      34,    -1,    36,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    32,    33,    34,    -1,    36,     3,     4,     5,
-       6,     7,    -1,    -1,    -1,    -1,    12,    13,    14,    15,
-      16,    17,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,     3,     4,     5,     6,     7,    32,    33,    34,    -1,
-      36,    13,    14,    15,    16,    17,    20,    21,    22,    23,
+       0,     7,    16,     8,    36,    90,     8,    57,     8,    10,
+      11,    12,    13,    14,    10,    10,    16,   101,    28,    29,
+      30,    31,    10,   107,    12,    36,     7,    28,    29,   114,
+      36,     3,     4,     5,     6,     7,    38,    39,    30,    31,
+       8,    37,    37,     0,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55,    56,    57,    58,    63,   109,
+      32,    33,    34,    63,    36,     3,     4,     5,     6,     7,
+      38,    39,    36,    11,    10,    89,    90,    10,    16,     7,
+      36,     8,    38,    39,     7,     6,    40,     7,     7,    89,
+      90,   109,     9,    11,    32,    33,    34,    98,    36,   113,
+     114,   101,   116,    19,    37,    98,   110,   107,   109,    36,
+      63,    38,    39,   113,   114,    64,   116,     3,     4,     5,
+       6,     7,   105,    -1,    -1,    11,    -1,    13,    14,    15,
+      16,    17,    20,    21,    22,    23,    24,    25,    26,    27,
+      28,    29,    30,    31,    -1,    -1,    32,    33,    34,    37,
+      36,     3,     4,     5,     6,     7,    -1,    -1,    -1,    -1,
+      12,    13,    14,    15,    16,    17,    20,    21,    22,    23,
       24,    25,    26,    27,    28,    29,    30,    31,    -1,    -1,
-      32,    33,    34,    37,    36,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    -1,    -1,    -1,
-      -1,    -1,    37,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    -1,    -1,    -1,    -1,    -1,
-      37,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    31
+      32,    33,    34,    37,    36,     3,     4,     5,     6,     7,
+      -1,    -1,    -1,    -1,    12,    13,    14,    15,    16,    17,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,     3,
+       4,     5,     6,     7,    32,    33,    34,    -1,    36,    13,
+      14,    15,    16,    17,    20,    21,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    31,    -1,    -1,    32,    33,
+      34,    37,    36,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    22,    23,    24,    25,    26,
+      27,    28,    29,    30,    31
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -684,11 +689,11 @@ static const yytype_uint8 yystos[] =
       25,    26,    27,    28,    29,    30,    31,     8,    36,    38,
       39,    50,    50,    10,    36,     7,    58,    37,    50,    50,
       50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
-      11,    47,    50,    57,    50,    52,    53,    64,     3,     6,
-      37,    37,    56,    58,    10,    37,     7,    48,    49,    10,
-      37,    40,    40,    11,    44,    63,    63,    37,     7,    11,
-      59,     9,    10,    12,    53,    43,    19,    59,    43,    47,
-      50,    57,    49,    12,    63,    12
+      11,    47,    50,    57,    50,    52,    53,     7,     6,    37,
+      37,    56,    58,    10,    37,     7,    48,    49,    10,    37,
+      40,    11,    44,    63,    63,    37,     7,    11,    59,     9,
+      10,    12,    53,    43,    19,    59,    43,    47,    50,    57,
+      49,    12,    63,    12
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -701,7 +706,7 @@ static const yytype_uint8 yyr1[] =
       50,    50,    50,    50,    50,    50,    51,    52,    52,    52,
       53,    54,    55,    55,    56,    56,    57,    57,    58,    58,
       58,    59,    60,    61,    62,    62,    63,    63,    64,    64,
-      64,    64
+      64
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -714,7 +719,7 @@ static const yytype_uint8 yyr2[] =
        3,     2,     2,     2,     1,     1,     4,     0,     3,     1,
        1,     2,     3,     1,     1,     1,     6,     5,     0,     3,
        1,     3,     2,     5,     5,     7,     3,     1,     3,     4,
-       4,     1
+       1
 };
 
 
@@ -1400,427 +1405,437 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 65 "SimpleScript.y" /* yacc.c:1652  */
+#line 78 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "---- END ----" << endl;}
-#line 1406 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1411 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 3:
-#line 66 "SimpleScript.y" /* yacc.c:1652  */
+#line 79 "SimpleScript.y" /* yacc.c:1652  */
     {cout<< "empty statements_list" << endl;}
-#line 1412 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1417 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 4:
-#line 69 "SimpleScript.y" /* yacc.c:1652  */
+#line 82 "SimpleScript.y" /* yacc.c:1652  */
     {cout<< "statements_list statement" << endl;}
-#line 1418 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1423 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 5:
-#line 70 "SimpleScript.y" /* yacc.c:1652  */
+#line 83 "SimpleScript.y" /* yacc.c:1652  */
     {cout<< "statement" << endl;}
-#line 1424 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1429 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 6:
-#line 73 "SimpleScript.y" /* yacc.c:1652  */
+#line 86 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "expression_statement" << endl; }
-#line 1430 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1435 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 7:
-#line 74 "SimpleScript.y" /* yacc.c:1652  */
+#line 87 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration_statement" << endl; }
-#line 1436 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1441 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 8:
-#line 75 "SimpleScript.y" /* yacc.c:1652  */
+#line 88 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "function_declaration_statement" << endl; }
-#line 1442 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1447 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 9:
-#line 76 "SimpleScript.y" /* yacc.c:1652  */
+#line 89 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "return_statement" << endl; }
-#line 1448 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1453 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 10:
-#line 77 "SimpleScript.y" /* yacc.c:1652  */
+#line 90 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "iteration_statement" << endl; }
-#line 1454 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1459 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 11:
-#line 78 "SimpleScript.y" /* yacc.c:1652  */
+#line 91 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "conditional_statement" << endl; }
-#line 1460 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1465 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 12:
-#line 81 "SimpleScript.y" /* yacc.c:1652  */
+#line 94 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1466 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1471 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 13:
-#line 82 "SimpleScript.y" /* yacc.c:1652  */
+#line 95 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1472 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1477 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 14:
-#line 85 "SimpleScript.y" /* yacc.c:1652  */
+#line 98 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "assignment_expression operation_expression" << endl; }
-#line 1478 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1483 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 15:
-#line 86 "SimpleScript.y" /* yacc.c:1652  */
+#line 99 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "identifier ASSIGN function_declaration_statement" << endl; }
-#line 1484 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1489 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 16:
-#line 87 "SimpleScript.y" /* yacc.c:1652  */
+#line 100 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "identifier ASSIGN object_literal" << endl; }
-#line 1490 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1495 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 17:
-#line 90 "SimpleScript.y" /* yacc.c:1652  */
+#line 103 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "object_literal" << endl; }
-#line 1496 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1501 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 18:
-#line 93 "SimpleScript.y" /* yacc.c:1652  */
+#line 106 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "empty properties_names_and_values" << endl; }
-#line 1502 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1507 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 19:
-#line 94 "SimpleScript.y" /* yacc.c:1652  */
+#line 107 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "properties_names_and_values COMMA property_name_and_value" << endl; }
-#line 1508 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1513 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 20:
-#line 95 "SimpleScript.y" /* yacc.c:1652  */
+#line 108 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1514 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1519 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 21:
-#line 98 "SimpleScript.y" /* yacc.c:1652  */
+#line 111 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1520 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1525 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 22:
-#line 99 "SimpleScript.y" /* yacc.c:1652  */
+#line 112 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1526 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1531 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 23:
-#line 100 "SimpleScript.y" /* yacc.c:1652  */
+#line 113 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1532 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1537 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 24:
-#line 103 "SimpleScript.y" /* yacc.c:1652  */
+#line 116 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "( operation_expression )" << endl; }
-#line 1538 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1543 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 25:
-#line 104 "SimpleScript.y" /* yacc.c:1652  */
+#line 117 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "integer " << (yyvsp[0].integerVal) <<endl; }
-#line 1544 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1549 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 26:
-#line 105 "SimpleScript.y" /* yacc.c:1652  */
+#line 118 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "FLOAT "  << endl; }
-#line 1550 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1555 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 27:
-#line 106 "SimpleScript.y" /* yacc.c:1652  */
+#line 119 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "BOOLEAN "  << endl; }
-#line 1556 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1561 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 28:
-#line 107 "SimpleScript.y" /* yacc.c:1652  */
+#line 120 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "STRING " << (yyvsp[0].stringVal) << endl; }
-#line 1562 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1567 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 29:
-#line 108 "SimpleScript.y" /* yacc.c:1652  */
+#line 121 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "&&" << endl; }
-#line 1568 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1573 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 30:
-#line 109 "SimpleScript.y" /* yacc.c:1652  */
+#line 122 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "||" << endl; }
-#line 1574 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1579 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 31:
-#line 110 "SimpleScript.y" /* yacc.c:1652  */
+#line 123 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "<" << endl; }
-#line 1580 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1585 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 32:
-#line 111 "SimpleScript.y" /* yacc.c:1652  */
+#line 124 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "<=" << endl; }
-#line 1586 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1591 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 33:
-#line 112 "SimpleScript.y" /* yacc.c:1652  */
+#line 125 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< ">" << endl; }
-#line 1592 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1597 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 34:
-#line 113 "SimpleScript.y" /* yacc.c:1652  */
+#line 126 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< ">=" << endl; }
-#line 1598 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1603 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 35:
-#line 114 "SimpleScript.y" /* yacc.c:1652  */
+#line 127 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "==" << endl; }
-#line 1604 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1609 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 36:
-#line 115 "SimpleScript.y" /* yacc.c:1652  */
+#line 128 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "!=" << endl; }
-#line 1610 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1615 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 37:
-#line 116 "SimpleScript.y" /* yacc.c:1652  */
+#line 129 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "+" << endl; }
-#line 1616 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1621 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 38:
-#line 117 "SimpleScript.y" /* yacc.c:1652  */
+#line 130 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "-" << endl; }
-#line 1622 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1627 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 39:
-#line 118 "SimpleScript.y" /* yacc.c:1652  */
+#line 131 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "*" << endl; }
-#line 1628 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1633 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 40:
-#line 119 "SimpleScript.y" /* yacc.c:1652  */
+#line 132 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "/" << endl; }
-#line 1634 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1639 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 41:
-#line 120 "SimpleScript.y" /* yacc.c:1652  */
+#line 133 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "!" << endl; }
-#line 1640 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1645 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 42:
-#line 121 "SimpleScript.y" /* yacc.c:1652  */
+#line 134 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "++" << endl; }
-#line 1646 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1651 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 43:
-#line 122 "SimpleScript.y" /* yacc.c:1652  */
+#line 135 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "--" << endl; }
-#line 1652 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1657 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 44:
-#line 123 "SimpleScript.y" /* yacc.c:1652  */
+#line 136 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1658 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1663 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 45:
-#line 124 "SimpleScript.y" /* yacc.c:1652  */
+#line 137 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "identifier" << endl; }
-#line 1664 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1669 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 46:
-#line 127 "SimpleScript.y" /* yacc.c:1652  */
+#line 140 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "function_call_expression" << endl; }
-#line 1670 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1675 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 47:
-#line 130 "SimpleScript.y" /* yacc.c:1652  */
+#line 143 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1676 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1681 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 48:
-#line 131 "SimpleScript.y" /* yacc.c:1652  */
+#line 144 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "arguments_list COMMA argument" << endl; }
-#line 1682 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1687 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 49:
-#line 132 "SimpleScript.y" /* yacc.c:1652  */
+#line 145 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "argument" << endl; }
-#line 1688 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1693 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 50:
-#line 135 "SimpleScript.y" /* yacc.c:1652  */
+#line 148 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "operation_expression" << endl; }
-#line 1694 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1699 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 51:
-#line 138 "SimpleScript.y" /* yacc.c:1652  */
+#line 151 "SimpleScript.y" /* yacc.c:1652  */
     { cout<<"VAR variable declaration"<<endl;}
-#line 1700 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1705 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 52:
-#line 141 "SimpleScript.y" /* yacc.c:1652  */
+#line 154 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration_list COMMA" << endl; }
-#line 1706 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1711 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 53:
-#line 142 "SimpleScript.y" /* yacc.c:1652  */
+#line 155 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration in variable_declaration_list" << endl; }
-#line 1712 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1717 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 54:
-#line 145 "SimpleScript.y" /* yacc.c:1652  */
+#line 158 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration =" << endl; }
-#line 1718 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1723 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 55:
-#line 146 "SimpleScript.y" /* yacc.c:1652  */
+#line 159 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration id" << (yyvsp[0].stringVal) << endl; }
-#line 1724 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1729 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 56:
-#line 149 "SimpleScript.y" /* yacc.c:1652  */
+#line 162 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1730 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1735 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 57:
-#line 150 "SimpleScript.y" /* yacc.c:1652  */
+#line 163 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1736 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1741 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 58:
-#line 153 "SimpleScript.y" /* yacc.c:1652  */
+#line 166 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1742 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1747 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 59:
-#line 154 "SimpleScript.y" /* yacc.c:1652  */
+#line 167 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1748 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1753 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 60:
-#line 155 "SimpleScript.y" /* yacc.c:1652  */
+#line 168 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1754 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1759 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 61:
-#line 158 "SimpleScript.y" /* yacc.c:1652  */
+#line 171 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1760 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1765 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 62:
-#line 161 "SimpleScript.y" /* yacc.c:1652  */
+#line 174 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "return_statement" << endl; }
-#line 1766 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1771 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 63:
-#line 164 "SimpleScript.y" /* yacc.c:1652  */
+#line 177 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "iteration_statement" << endl; }
-#line 1772 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1777 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 64:
-#line 167 "SimpleScript.y" /* yacc.c:1652  */
+#line 180 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "conditional_statement if" << endl; }
-#line 1778 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1783 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 65:
-#line 168 "SimpleScript.y" /* yacc.c:1652  */
+#line 181 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "conditional_statement if else" << endl; }
-#line 1784 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1789 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 66:
-#line 171 "SimpleScript.y" /* yacc.c:1652  */
+#line 184 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "{ statements_list }" << endl; }
-#line 1790 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1795 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 67:
-#line 172 "SimpleScript.y" /* yacc.c:1652  */
+#line 185 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "program start" << endl; }
-#line 1796 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1801 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 68:
-#line 175 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1802 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 188 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Identifier* id = new Identifier(*((yyvsp[-2].identifierVal)), (yyvsp[0].stringVal));
+										(yyval.identifierVal) = id;
+
+										delete (yyvsp[-2].identifierVal);
+										delete [] (yyvsp[0].stringVal);
+									}
+#line 1813 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 69:
-#line 176 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1808 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 195 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Identifier* id = new Identifier(*((yyvsp[-3].identifierVal)), (yyvsp[-1].stringVal));
+										(yyval.identifierVal) = id;
+
+										delete (yyvsp[-3].identifierVal);
+										delete [] (yyvsp[-1].stringVal);
+									}
+#line 1825 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 70:
-#line 177 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<<" [] " << (yyvsp[-1].stringVal) << endl; }
-#line 1814 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 202 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Identifier* id = new Identifier((yyvsp[0].stringVal));
+										(yyval.identifierVal) = id;
+										delete [] (yyvsp[0].stringVal);
+									}
+#line 1835 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
-  case 71:
-#line 178 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "IDENTIFIER! " << (yyvsp[0].stringVal) << endl; }
-#line 1820 "SimpleScript.tab.cpp" /* yacc.c:1652  */
-    break;
 
-
-#line 1824 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1839 "SimpleScript.tab.cpp" /* yacc.c:1652  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2051,5 +2066,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 182 "SimpleScript.y" /* yacc.c:1918  */
+#line 210 "SimpleScript.y" /* yacc.c:1918  */
 

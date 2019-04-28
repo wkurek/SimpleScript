@@ -49,10 +49,10 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INTEGER = 258,
-    FLOAT = 259,
-    BOOLEAN = 260,
-    STRING = 261,
+    INTEGER_T = 258,
+    FLOAT_T = 259,
+    BOOLEAN_T = 260,
+    STRING_T = 261,
     IDENTIFIER = 262,
     ASSIGN = 263,
     COLON = 264,
@@ -62,7 +62,7 @@ extern int yydebug;
     IF = 268,
     WHILE = 269,
     VAR = 270,
-    FUNCTION = 271,
+    FUNCTION_T = 271,
     RETURN = 272,
     NO_ELSE = 273,
     ELSE = 274,
@@ -95,14 +95,15 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 27 "SimpleScript.y" /* yacc.c:1921  */
+#line 37 "SimpleScript.y" /* yacc.c:1921  */
 
     int integerVal;
     float floatVal;
     bool booleanVal;
     char* stringVal;
+	Identifier* identifierVal;
 
-#line 106 "SimpleScript.tab.h" /* yacc.c:1921  */
+#line 107 "SimpleScript.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

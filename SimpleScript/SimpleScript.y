@@ -4,6 +4,16 @@
     #include <iostream>
     using namespace std;
 
+	#include "primitive.h"
+	#include "identifier.h"
+	#include "object.h"
+	#include "function.h"
+	#include "variable.h"
+	#include "exception.h"
+	#include "operation_expression.h"
+	#include "statement.h"
+	#include "assignment.h"
+
     extern int yylex(void);
     extern int yylineno;
     extern int yyparse();
@@ -29,12 +39,13 @@
     float floatVal;
     bool booleanVal;
     char* stringVal;
+	Identifier* identifierVal;
 }
 
-%token<integerVal> INTEGER "INTEGER"
-%token<floatVal> FLOAT "FLOAT"
-%token<bool> BOOLEAN "BOOLEAN"
-%token<stringVal> STRING "STRING"
+%token<integerVal> INTEGER_T "integer"
+%token<floatVal> FLOAT_T "FLOAT"
+%token<bool> BOOLEAN_T "BOOLEAN"
+%token<stringVal> STRING_T "STRING"
 %token<stringVal> IDENTIFIER "IDENTIFIER"
 %token ASSIGN               "="
 %token COLON                ":"
@@ -44,7 +55,7 @@
 %token IF                   "if"
 %token WHILE                "while"
 %token VAR                  "var"
-%token FUNCTION             "function"
+%token FUNCTION_T             "function"
 %token RETURN               "return"
 
 
@@ -59,6 +70,8 @@
 %left OPEN_PARENTHESIS CLOSE_PARENTHESIS
 %left DOT OPEN_BRACKET CLOSE_BRACKET
 
+
+%type<identifierVal> identifier
 
 
 %%
@@ -101,10 +114,10 @@ property_name_and_value         : IDENTIFIER COLON operation_expression { cout<<
                                 ;
 
 operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS { cout<< "( operation_expression )" << endl; }
-                                | INTEGER { cout<< "integer " << $1 <<endl; }
-                                | FLOAT { cout<< "FLOAT "  << endl; }
-                                | BOOLEAN { cout<< "BOOLEAN "  << endl; }
-                                | STRING { cout<< "STRING " << $1 << endl; }
+                                | INTEGER_T { cout<< "integer " << $1 <<endl; }
+                                | FLOAT_T { cout<< "FLOAT "  << endl; }
+                                | BOOLEAN_T { cout<< "BOOLEAN "  << endl; }
+                                | STRING_T { cout<< "STRING " << $1 << endl; }
                                 | operation_expression AND operation_expression { cout<< "&&" << endl; }
                                 | operation_expression OR operation_expression { cout<< "||" << endl; }
                                 | operation_expression LESS_THAN operation_expression { cout<< "<" << endl; }
@@ -146,8 +159,8 @@ variable_declaration            : assignment_expression { cout<< "variable_decla
                                 | IDENTIFIER { cout<< "variable_declaration id" << $1 << endl; }
                                 ;
 
-function_declaration_statement  : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
-                                | FUNCTION OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
+function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
+                                | FUNCTION_T OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
                                 ;
 
 parameters_list                 : /* empty parameters list */ { cout<< "program start" << endl; }
@@ -172,10 +185,25 @@ block                           : OPEN_BRACE statements_list CLOSE_BRACE { cout<
                                 | statement { cout<< "program start" << endl; }
                                 ;
 
-identifier                      : identifier DOT identifier { cout<< "program start" << endl; }
-                                | identifier OPEN_BRACKET INTEGER CLOSE_BRACKET { cout<< "program start" << endl; }
-                                | identifier OPEN_BRACKET STRING CLOSE_BRACKET { cout<<" [] " << $3 << endl; }
-                                | IDENTIFIER { cout<< "IDENTIFIER! " << $1 << endl; }
+identifier                      : identifier DOT IDENTIFIER { 
+										Identifier* id = new Identifier(*($1), $3);
+										$$ = id;
+
+										delete $1;
+										delete [] $3;
+									}
+                                | identifier OPEN_BRACKET STRING_T CLOSE_BRACKET { 
+										Identifier* id = new Identifier(*($1), $3);
+										$$ = id;
+
+										delete $1;
+										delete [] $3;
+									}
+                                | IDENTIFIER { 
+										Identifier* id = new Identifier($1);
+										$$ = id;
+										delete [] $1;
+									}
                                 ;
 
 
