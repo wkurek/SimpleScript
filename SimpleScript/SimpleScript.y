@@ -2,6 +2,7 @@
 
 %{
     #include <iostream>
+	#include <memory>
     using namespace std;
 
 	#include "primitive.h"
@@ -40,6 +41,9 @@
     bool booleanVal;
     char* stringVal;
 	Identifier* identifierVal;
+	StatementsList* statementsListVal;
+	Statement* statementVal;
+	OperationExpression* operationExpressionVal;
 }
 
 %token<integerVal> INTEGER_T "integer"
@@ -72,6 +76,14 @@
 
 
 %type<identifierVal> identifier
+%type<statementsListVal> block
+%type<statementsListVal> statements_list
+%type<statementsListVal> function_body
+%type<statementVal> statement
+%type<statementVal> conditional_statement
+%type<statementVal> iteration_statement
+%type<statementVal> return_statement
+%type<operationExpressionVal> operation_expression
 
 
 %%
@@ -79,16 +91,24 @@ program                         : statements_list { cout<< "---- END ----" << en
                                 | /* empty statements list */ {cout<< "empty statements_list" << endl;}
                                 ;
 
-statements_list                 : statements_list statement {cout<< "statements_list statement" << endl;}
-                                | statement {cout<< "statement" << endl;}
+statements_list                 : statements_list statement {
+										$1->add(std::shared_ptr<Statement>($2));
+										$$ = $1;
+									}
+                                | statement {
+										StatementsList* stmtsList = new StatementsList();
+										stmtsList->add(std::shared_ptr<Statement>($1));
+
+										$$ = stmtsList;
+									}
                                 ;
 
-statement                       : expression_statement { cout<< "expression_statement" << endl; }
-                                | variable_declaration_statement { cout<< "variable_declaration_statement" << endl; }
-                                | function_declaration_statement { cout<< "function_declaration_statement" << endl; }
-                                | return_statement { cout<< "return_statement" << endl; }
-                                | iteration_statement { cout<< "iteration_statement" << endl; }
-                                | conditional_statement { cout<< "conditional_statement" << endl; }
+statement                       : expression_statement
+                                | variable_declaration_statement
+                                | function_declaration_statement
+                                | return_statement
+                                | iteration_statement
+                                | conditional_statement
                                 ;
 
 expression_statement            : assignment_expression { cout<< "program start" << endl; }
@@ -168,21 +188,38 @@ parameters_list                 : /* empty parameters list */ { cout<< "program 
                                 | IDENTIFIER { cout<< "program start" << endl; }
                                 ;
 
-function_body                   : OPEN_BRACE statements_list CLOSE_BRACE { cout<< "program start" << endl; }
+function_body                   : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $1; }
                                 ;
 
-return_statement                : RETURN operation_expression { cout<< "return_statement" << endl; }
+return_statement                : RETURN operation_expression { 
+										$$ = new ReturnStatement(std::shared_ptr<OperationExpression>($2));
+									}
                                 ;
 
-iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block { cout<< "iteration_statement" << endl; }
+iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block { 
+										cout<< "iteration_statement" << endl; 
+										$$ = new IterationStatement(std::shared_ptr<OperationExpression>($3), 
+												std::shared_ptr<StatementsList>($5));
+									}
                                 ;
 
-conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block %prec NO_ELSE { cout<< "conditional_statement if" << endl; }
-					            | IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block{ cout<< "conditional_statement if else" << endl; }
+conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block %prec NO_ELSE { 
+										$$ = new ConditionalStatement(std::shared_ptr<OperationExpression>($3), 
+												std::shared_ptr<StatementsList>($5));
+									}
+					            | IF OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block ELSE block { 
+										$$ = new ConditionalStatement(std::shared_ptr<OperationExpression>($3), 
+												std::shared_ptr<StatementsList>($5), std::shared_ptr<StatementsList>($7));
+									}
                                 ;
 
-block                           : OPEN_BRACE statements_list CLOSE_BRACE { cout<< "{ statements_list }" << endl; }
-                                | statement { cout<< "program start" << endl; }
+block                           : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $1; }
+                                | statement { 
+										StatementsList* stmtsList = new StatementsList();
+										stmtsList->add(std::shared_ptr<Statement>($1));
+
+										$$ = stmtsList;
+									}
                                 ;
 
 identifier                      : identifier DOT IDENTIFIER { 
