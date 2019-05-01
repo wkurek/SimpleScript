@@ -29,6 +29,11 @@ int main()
 
 	cout << globalScope << endl;
 
+	Statement* stmt = new FunctionDeclarationStatement(std::shared_ptr<Function>(new Function()));
+
+	FunctionDeclarationStatement* fdstmtPtr = dynamic_cast<FunctionDeclarationStatement*> (stmt);
+	fdstmtPtr->getFunction();
+
 	return 0;
 }
 

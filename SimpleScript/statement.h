@@ -71,17 +71,17 @@ public:
 
 class FunctionDeclarationStatement : public Statement {
     shared_ptr<Function> functionPtr;
-    Identifier identifier;
+	shared_ptr<Identifier> identifierPtr;
 
 public:
-    FunctionDeclarationStatement(shared_ptr<Function> functPtr, Identifier id)
-        : functionPtr(move(functPtr)), identifier(id) {}
+    FunctionDeclarationStatement(shared_ptr<Function> functPtr, shared_ptr<Identifier> idPtr)
+        : functionPtr(move(functPtr)), identifierPtr(move(idPtr)) {}
 
 	FunctionDeclarationStatement(shared_ptr<Function> functPtr)
-		: functionPtr(move(functPtr)), identifier(nullptr) {}
+		: functionPtr(move(functPtr)), identifierPtr(nullptr) {}
 
 	virtual void evaluate(Object&);
-	Variable getFunctionVariable();
+	Function getFunction();
 };
 
 class ExpressionStatement : public Statement {

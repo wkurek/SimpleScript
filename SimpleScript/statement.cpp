@@ -42,14 +42,14 @@ void FunctionDeclarationStatement::evaluate(Object& scope) {
 	//Check for anonymous function declaration
 	if (this->functionPtr == nullptr) return;
 
-    if(scope.hasPrimitive(this->identifier)) scope.removePrimitive(this->identifier);
-    if(scope.hasObject(this->identifier)) scope.removeObject(this->identifier);
+    if(scope.hasPrimitive(*(this->identifierPtr))) scope.removePrimitive(*(this->identifierPtr));
+    if(scope.hasObject(*(this->identifierPtr))) scope.removeObject(*(this->identifierPtr));
 
-    scope.getFunction(this->identifier) = *(this->functionPtr);
+    scope.getFunction(*(this->identifierPtr)) = *(this->functionPtr);
 }
 
-Variable FunctionDeclarationStatement::getFunctionVariable() {
-	return Variable(this->functionPtr);
+Function FunctionDeclarationStatement::getFunction() {
+	return *(this->functionPtr);
 }
 
 void ExpressionStatement::evaluate(Object& scope) {

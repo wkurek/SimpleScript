@@ -129,7 +129,13 @@ assignment_expression           : identifier ASSIGN operation_expression {
 										$$ = new OperationExpressionAssignment(std::shared_ptr<Identifier>($1), 
 												std::shared_ptr<OperationExpression>($3));
 									}
-                                | identifier ASSIGN function_declaration_statement { cout<< "identifier ASSIGN function_declaration_statement" << endl; }
+                                | identifier ASSIGN function_declaration_statement {
+										FunctionDeclarationStatement* fdstmtPtr = dynamic_cast<FunctionDeclarationStatement*> ($3);
+										Function funct = fdstmtPtr->getFunction();
+
+										$$ = new FunctionAssignment(std::shared_ptr<Identifier>($1), funct);
+
+									}
                                 | identifier ASSIGN object_literal { cout<< "identifier ASSIGN object_literal" << endl; }
                                 ;
 
@@ -197,8 +203,9 @@ function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS paramet
 											std::shared_ptr<StatementsList>($6));
 
 										$$ = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr), 
-											Identifier($2));
+											std::shared_ptr<Identifier>(new Identifier($2)));
 
+										delete [] $2;
 									}
                                 | FUNCTION_T OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { 
 										Function* functionPtr = new Function(std::shared_ptr<ParametersList>($3), 
