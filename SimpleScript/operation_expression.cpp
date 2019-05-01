@@ -9,23 +9,25 @@ Variable ConstantExpression::evaluate(Object& scope) const {
 }
 
 Variable IdentifierExpression::evaluate(Object& scope) const {
-    if(scope.hasObject(this->identifier)) {
+    if(scope.hasObject(*(this->identifierPtr))) {
         Object *obj = new Object();
-        *obj = scope.getObject(this->identifier);
+        *obj = scope.getObject(*(this->identifierPtr));
         return Variable(shared_ptr<Object>(obj));
-    } else if(scope.hasFunction(this->identifier)) {
+    } else if(scope.hasFunction(*(this->identifierPtr))) {
         Function *func = new Function();
-        *func = scope.getFunction(this->identifier);
+        *func = scope.getFunction(*(this->identifierPtr));
         return Variable(shared_ptr<Function>(func));
-    } else if(scope.hasPrimitive(this->identifier)) {
-        return scope.getPrimitive(this->identifier);
+    } else if(scope.hasPrimitive(*(this->identifierPtr))) {
+        return scope.getPrimitive(*(this->identifierPtr));
     } else {
 		return Variable();
     }
 }
 
 Variable FunctionCallExpression::evaluate(Object& scope) const {
-	return this->functionPtr->call(scope, *(this->argumentsPtr));
+	Function function = scope.getFunction(*(this->identifierPtr));
+
+	return function.call(scope, *(this->argumentsPtr));
 }
 
 Variable Negation::evaluate(Object& scope) const {

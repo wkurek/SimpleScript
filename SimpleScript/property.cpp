@@ -13,22 +13,22 @@ Variable Property::getVariable() {
     return this->variable;
 }
 
-void PropertyList::add(Property property) {
+void PropertyList::add(shared_ptr<Property> property) {
     this->list.push_back(property);
 }
 
 Object PropertyList::generateObject() {
     Object object;
 
-    for (std::list<Property>::iterator it = this->list.begin(); it != this->list.end(); ++it){
-        Identifier name(it->getName());
+    for (std::list<shared_ptr<Property>>::iterator it = this->list.begin(); it != this->list.end(); ++it){
+        Identifier name((*it)->getName());
 
-        if(it->getVariable().isObject()) {
-            object.getObject(name) = it->getVariable().getObject();
-        } else if(it->getVariable().isFunction()) {
-            object.getFunction(name) = it->getVariable().getFunction();
+        if((*it)->getVariable().isObject()) {
+            object.getObject(name) = (*it)->getVariable().getObject();
+        } else if((*it)->getVariable().isFunction()) {
+            object.getFunction(name) = (*it)->getVariable().getFunction();
         } else {
-            object.getPrimitive(name) = it->getVariable().getPrimitive();
+            object.getPrimitive(name) = (*it)->getVariable().getPrimitive();
         }
     }
 

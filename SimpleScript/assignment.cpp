@@ -37,7 +37,7 @@ Variable FunctionAssignment::evaluate(Object& scope) const {
 }
 
 Variable ObjectAssignment::evaluate(Object& scope) const {
-    scope.getObject(*(this->identifierPtr)) = this->object;
+    scope.getObject(*(this->identifierPtr)) = *(this->objectPtr);
 
-	return Variable(shared_ptr<Object>(new Object(this->object)));
+	return Variable(this->objectPtr);
 }

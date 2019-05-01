@@ -14,6 +14,7 @@
 	#include "operation_expression.h"
 	#include "statement.h"
 	#include "assignment.h"
+	#include "property.h"
 
     extern int yylex(void);
     extern int yylineno;
@@ -45,11 +46,15 @@
 	Statement* statementVal;
 	OperationExpression* operationExpressionVal;
 	ParametersList* parametersListVal;
+	Object* objectVal;
+	PropertyList* propertyListVal;
+	Property* propertyVal;
+	ArgumentsList* argumentsListyVal;
 }
 
 %token<integerVal> INTEGER_T "integer"
 %token<floatVal> FLOAT_T "FLOAT"
-%token<bool> BOOLEAN_T "BOOLEAN"
+%token<booleanVal> BOOLEAN_T "BOOLEAN"
 %token<stringVal> STRING_T "STRING"
 %token<stringVal> IDENTIFIER "IDENTIFIER"
 %token ASSIGN               "="
@@ -89,7 +94,13 @@
 %type<statementVal> variable_declaration_statement
 %type<operationExpressionVal> operation_expression
 %type<operationExpressionVal> assignment_expression
+%type<operationExpressionVal> argument
+%type<operationExpressionVal> function_call_expression
 %type<parametersListVal> parameters_list
+%type<objectVal> object_literal
+%type<propertyListVal> properties_names_and_values
+%type<propertyVal> property_name_and_value
+%type<argumentsListyVal> arguments_list
 
 
 %%
@@ -136,55 +147,163 @@ assignment_expression           : identifier ASSIGN operation_expression {
 										$$ = new FunctionAssignment(std::shared_ptr<Identifier>($1), funct);
 
 									}
-                                | identifier ASSIGN object_literal { cout<< "identifier ASSIGN object_literal" << endl; }
+                                | identifier ASSIGN object_literal { 
+										$$ = new ObjectAssignment(std::shared_ptr<Identifier>($1), std::shared_ptr<Object>($3));
+									}
+								| INC identifier {
+										Variable one = Variable(1);
+										ConstantExpression oneConstantExpression =
+											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
+
+										OperationExpression* expression = new Addition(
+											std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>($2))),
+											std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)));
+										
+										$$ = new OperationExpressionAssignment(std::shared_ptr<Identifier>($2), 
+												std::shared_ptr<OperationExpression>(expression));
+									}
+                                | DEC identifier {
+										Variable one = Variable(1);
+										ConstantExpression oneConstantExpression =
+											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
+
+										OperationExpression* expression = new Subtraction(
+											std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>($2))),
+											std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)));
+										
+										$$ = new OperationExpressionAssignment(std::shared_ptr<Identifier>($2), 
+												std::shared_ptr<OperationExpression>(expression));
+									}
                                 ;
 
-object_literal                  : OPEN_BRACE properties_names_and_values CLOSE_BRACE { cout<< "object_literal" << endl; }
+object_literal                  : OPEN_BRACE properties_names_and_values CLOSE_BRACE { 
+										Object obj = $2->generateObject();
+										$$ = new Object(obj);
+									}
                                 ;
 
-properties_names_and_values     : /* empty object */ { cout<< "empty properties_names_and_values" << endl; }
-                                | properties_names_and_values COMMA property_name_and_value { cout<< "properties_names_and_values COMMA property_name_and_value" << endl; }
-                                | property_name_and_value { cout<< "program start" << endl; }
+properties_names_and_values     : /* empty object */ {
+										PropertyList* propertyList = new PropertyList();
+										$$ =  propertyList;
+									}
+                                | properties_names_and_values COMMA property_name_and_value {
+										$1->add(std::shared_ptr<Property>($3));
+										$$ = $1;
+									}
+                                | property_name_and_value { 
+										PropertyList* propertyList = new PropertyList();
+										propertyList->add(std::shared_ptr<Property>($1));
+
+										$$ = propertyList;
+									}
                                 ;
 
-property_name_and_value         : IDENTIFIER COLON operation_expression { cout<< "program start" << endl; }
+property_name_and_value         : IDENTIFIER COLON operation_expression { 
+										//Variable var = $3->
+										//$$ = new Property();
+									}
                                 | IDENTIFIER COLON function_declaration_statement { cout<< "program start" << endl; }
                                 | IDENTIFIER COLON object_literal { cout<< "program start" << endl; }
                                 ;
 
-operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS { cout<< "( operation_expression )" << endl; }
-                                | INTEGER_T { cout<< "integer " << $1 <<endl; }
-                                | FLOAT_T { cout<< "FLOAT "  << endl; }
-                                | BOOLEAN_T { cout<< "BOOLEAN "  << endl; }
-                                | STRING_T { cout<< "STRING " << $1 << endl; }
-                                | operation_expression AND operation_expression { cout<< "&&" << endl; }
-                                | operation_expression OR operation_expression { cout<< "||" << endl; }
-                                | operation_expression LESS_THAN operation_expression { cout<< "<" << endl; }
-                                | operation_expression LESS_EQUAL_THAN operation_expression { cout<< "<=" << endl; }
-                                | operation_expression GREATER_THAN operation_expression { cout<< ">" << endl; }
-                                | operation_expression GREATER_EQUAL_THAN operation_expression { cout<< ">=" << endl; }
-                                | operation_expression EQUAL operation_expression { cout<< "==" << endl; }
-                                | operation_expression NOT_EQUAL operation_expression { cout<< "!=" << endl; }
-                                | operation_expression PLUS operation_expression { cout<< "+" << endl; }
-                                | operation_expression MINUS operation_expression { cout<< "-" << endl; }
-                                | operation_expression ASTERISK operation_expression { cout<< "*" << endl; }
-                                | operation_expression SLASH operation_expression { cout<< "/" << endl; }
-                                | NOT operation_expression { cout<< "!" << endl; }
-                                | INC operation_expression { cout<< "++" << endl; }
-                                | DEC operation_expression { cout<< "--" << endl; }
-                                | function_call_expression { cout<< "program start" << endl; }
-                                | identifier %prec NO_FUNCTION_CALL { cout<< "identifier" << endl; }
+operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS { $$ = $2; }
+                                | INTEGER_T { 
+										Primitive primitive = Primitive($1);
+										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+                                | FLOAT_T { 
+										Primitive primitive = Primitive($1);
+										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+                                | BOOLEAN_T { 
+										Primitive primitive = Primitive($1);
+										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+                                | STRING_T { 
+										Primitive primitive = Primitive($1);
+										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+                                | operation_expression AND operation_expression { 
+										$$ = new LogicalAnd(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression OR operation_expression { 
+										$$ = new LogicalOr(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression LESS_THAN operation_expression { 
+										$$ = new LessThan(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression LESS_EQUAL_THAN operation_expression { 
+										$$ = new LessThanOrEqualTo(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression GREATER_THAN operation_expression { 
+										$$ = new GreaterThan(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression GREATER_EQUAL_THAN operation_expression { 
+										$$ = new GreaterThanOrEqualTo(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression EQUAL operation_expression { 
+										$$ = new Equals(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression NOT_EQUAL operation_expression { 
+										$$ = new NotEquals(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression PLUS operation_expression { 
+										$$ = new Addition(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression MINUS operation_expression { 
+										$$ = new Subtraction(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression ASTERISK operation_expression { 
+										$$ = new Multiplication(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | operation_expression SLASH operation_expression { 
+										$$ = new Division(std::shared_ptr<OperationExpression>($1), 
+											std::shared_ptr<OperationExpression>($3)); 
+									}
+                                | NOT operation_expression { 
+										$$ = new LogicalNot(std::shared_ptr<OperationExpression>($2)); 
+									}
+                                | function_call_expression { $$ = $1; }
+                                | identifier %prec NO_FUNCTION_CALL { 
+										$$ = new IdentifierExpression(std::shared_ptr<Identifier>($1)); 
+									}
                                 ;
 
-function_call_expression        : identifier OPEN_PARENTHESIS arguments_list CLOSE_PARENTHESIS { cout<< "function_call_expression" << endl; }
+function_call_expression        : identifier OPEN_PARENTHESIS arguments_list CLOSE_PARENTHESIS { 
+										$$ = new FunctionCallExpression(
+											std::shared_ptr<Identifier>($1), 
+											std::shared_ptr<ArgumentsList>($3));
+									}
                                 ;
 
-arguments_list                  : /* empty arguments list */ { cout<< "program start" << endl; }
-                                | arguments_list COMMA argument { cout<< "arguments_list COMMA argument" << endl; }
-                                | argument { cout<< "argument" << endl; }
+arguments_list                  : /* empty arguments list */ { 
+										ArgumentsList* argsList = new ArgumentsList();
+										$$ = argsList;
+									}
+                                | arguments_list COMMA argument { 
+										$1->add(std::shared_ptr<OperationExpression>($3));
+										$$ = $1;
+									}
+                                | argument { 
+										ArgumentsList* argsList = new ArgumentsList();
+										argsList->add(std::shared_ptr<OperationExpression>($1));
+
+										$$ = argsList;
+									}
                                 ;
 
-argument                        : operation_expression { cout<< "operation_expression" << endl; }
+argument                        : operation_expression { $$ = $1; }
                                 ;
 
 variable_declaration_statement  : VAR variable_declaration_list { cout<<"VAR variable declaration"<<endl;}

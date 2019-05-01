@@ -62,21 +62,23 @@ public:
 };
 
 class IdentifierExpression : public OperationExpression {
-    Identifier identifier;
+	shared_ptr<Identifier> identifierPtr;
 
 public:
-    IdentifierExpression(Identifier id) : identifier(id) {}
+    IdentifierExpression(shared_ptr<Identifier> idPtr) 
+		: identifierPtr(move(idPtr)) {}
+
     virtual Variable evaluate(Object&) const;
 };
 
 class FunctionCallExpression : public OperationExpression {
-	shared_ptr<Function> functionPtr;
+	shared_ptr<Identifier> identifierPtr;
 	shared_ptr<ArgumentsList> argumentsPtr;
 
 public:
-	FunctionCallExpression(shared_ptr<Function> functPtr, 
+	FunctionCallExpression(shared_ptr<Identifier> idPtr,
 		shared_ptr<ArgumentsList> args)
-		: functionPtr(move(functPtr)), argumentsPtr(move(args)) {}
+		: identifierPtr(move(idPtr)), argumentsPtr(move(args)) {}
 
 	virtual Variable evaluate(Object&) const;
 };

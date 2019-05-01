@@ -81,6 +81,7 @@
 	#include "operation_expression.h"
 	#include "statement.h"
 	#include "assignment.h"
+	#include "property.h"
 
     extern int yylex(void);
     extern int yylineno;
@@ -101,7 +102,7 @@
       errorReported = true;
     }
 
-#line 105 "SimpleScript.tab.cpp" /* yacc.c:337  */
+#line 106 "SimpleScript.tab.cpp" /* yacc.c:337  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -185,7 +186,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 38 "SimpleScript.y" /* yacc.c:352  */
+#line 39 "SimpleScript.y" /* yacc.c:352  */
 
     int integerVal;
     float floatVal;
@@ -196,8 +197,12 @@ union YYSTYPE
 	Statement* statementVal;
 	OperationExpression* operationExpressionVal;
 	ParametersList* parametersListVal;
+	Object* objectVal;
+	PropertyList* propertyListVal;
+	Property* propertyVal;
+	ArgumentsList* argumentsListyVal;
 
-#line 201 "SimpleScript.tab.cpp" /* yacc.c:352  */
+#line 206 "SimpleScript.tab.cpp" /* yacc.c:352  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -504,14 +509,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    96,    96,    97,   100,   104,   112,   113,   114,   115,
-     116,   117,   120,   123,   128,   132,   139,   142,   145,   146,
-     147,   150,   151,   152,   155,   156,   157,   158,   159,   160,
-     161,   162,   163,   164,   165,   166,   167,   168,   169,   170,
-     171,   172,   173,   174,   175,   176,   179,   182,   183,   184,
-     187,   190,   193,   194,   197,   198,   201,   210,   219,   224,
-     228,   236,   239,   244,   250,   254,   260,   261,   269,   276,
-     283
+       0,   107,   107,   108,   111,   115,   123,   124,   125,   126,
+     127,   128,   131,   134,   139,   143,   150,   153,   165,   179,
+     185,   189,   193,   201,   205,   206,   209,   210,   214,   218,
+     222,   226,   230,   234,   238,   242,   246,   250,   254,   258,
+     262,   266,   270,   274,   277,   278,   283,   290,   294,   298,
+     306,   309,   312,   313,   316,   317,   320,   329,   338,   343,
+     347,   355,   358,   363,   369,   373,   379,   380,   388,   395,
+     402
 };
 #endif
 
@@ -552,10 +557,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -86
+#define YYPACT_NINF -89
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-86)))
+  (!!((Yystate) == (-89)))
 
 #define YYTABLE_NINF -71
 
@@ -566,19 +571,19 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     206,   -86,   -86,   -86,   -86,   -86,   -32,   -11,    19,    -6,
-      28,    28,    28,    28,    28,    43,   206,   -86,   -86,   -86,
-     223,   -86,   -86,   -86,   -86,   -86,   -86,    73,    28,    28,
-      -2,   -86,    64,   -86,    32,    36,    72,   223,    44,   -86,
-     -86,   -86,   112,   -86,   -86,    28,    28,    28,    28,    28,
-      28,    28,    28,    28,    28,    28,    28,    62,    28,    77,
-      79,   146,   204,    19,    72,   -86,     4,   -86,   233,   233,
-     -10,   -10,   -10,   -10,   -10,   -10,     8,     8,   -86,   -86,
-      80,   -86,   223,   -86,   223,     5,   -86,   -86,    46,   114,
-     114,   -86,    67,    81,    82,    83,    12,   -86,    28,   -86,
-     -86,   206,   -86,    84,   -86,    82,   -86,   206,   -86,    62,
-      80,   -86,   -86,   148,   114,   -86,   182,   -86,   223,   -86,
-     -86,   -86,   -86,   -86
+     206,   -89,   -89,   -89,   -89,   -89,   -32,   -22,    71,    24,
+      61,    25,    25,    61,    61,    73,   206,   -89,   -89,   -89,
+     223,   -89,   -89,   -89,   -89,   -89,   -89,    -3,    61,    61,
+      -1,   -89,    67,   -89,    32,    45,    77,   223,   -21,    41,
+      41,   -89,   112,   -89,   -89,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    23,    61,    80,
+      85,   146,   204,    71,    77,   -89,    48,   -89,   233,   233,
+      -8,    -8,    -8,    -8,    -8,    -8,    52,    52,   -89,   -89,
+      86,   -89,   223,   -89,   223,    51,   -89,   -89,    58,   114,
+     114,   -89,    59,    99,    81,   100,    62,   -89,    61,   -89,
+     -89,   206,   -89,    89,   -89,    81,   -89,   206,   -89,    23,
+      86,   -89,   -89,   148,   114,   -89,   182,   -89,   223,   -89,
+     -89,   -89,   -89,   -89
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -586,27 +591,27 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,    25,    26,    27,    28,    70,     0,     0,     0,     0,
+       3,    27,    28,    29,    30,    70,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     2,     5,     6,    12,
       13,    44,     7,     8,     9,    10,    11,    45,     0,     0,
-      55,    54,    51,    53,     0,     0,    58,    62,    45,    42,
-      43,    41,     0,     1,     4,     0,     0,     0,     0,     0,
+      55,    54,    51,    53,     0,     0,    58,    62,    45,    17,
+      18,    43,     0,     1,     4,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,    47,     0,
-       0,     0,     0,     0,    58,    60,     0,    24,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-      18,    16,    14,    15,    50,     0,    49,    68,     0,     0,
-       0,    52,     0,     0,     0,     0,     0,    20,     0,    46,
+       0,     0,     0,     0,    58,    60,     0,    26,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
+      20,    16,    14,    15,    50,     0,    49,    68,     0,     0,
+       0,    52,     0,     0,     0,     0,     0,    22,     0,    46,
       69,     0,    67,    64,    63,     0,    59,     0,    57,     0,
-       0,    17,    48,     0,     0,    56,     0,    23,    21,    22,
-      19,    66,    65,    61
+       0,    19,    48,     0,     0,    56,     0,    25,    23,    24,
+      21,    66,    65,    61
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -86,   -86,   -84,   -14,   -86,    -5,   -18,   -86,    -4,    -1,
-     -86,   -86,     7,   -86,   -86,    47,   -50,    51,    17,   -86,
-     -86,   -86,   -85,     0
+     -89,   -89,   -88,   -14,   -89,    -7,     1,   -89,     2,    -4,
+     -89,   -89,    13,   -89,   -89,    60,   -54,    92,    10,   -89,
+     -89,   -89,   -28,     0
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -622,22 +627,22 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      27,    35,    44,    31,    28,   104,   -70,    83,    34,    37,
-      39,    40,    41,    42,    93,    98,    27,   113,    53,    54,
-      55,    56,   110,   116,   111,    29,    30,    61,    62,   122,
-      36,     1,     2,     3,     4,     5,   -70,   -70,    55,    56,
-      57,    94,    99,    43,    68,    69,    70,    71,    72,    73,
-      74,    75,    76,    77,    78,    79,    82,    84,    31,   119,
-      11,    12,    13,    34,    14,     1,     2,     3,     4,     5,
-      59,    60,    64,    80,    63,   102,   102,    93,     9,    65,
-      58,    57,    59,    60,    87,    88,   100,    95,   106,    27,
-      27,   117,   109,   107,    11,    12,    13,    84,    14,    44,
-     102,    27,    44,   114,   105,   112,   120,    27,   118,    58,
-      91,    59,    60,    27,    27,    92,    27,     1,     2,     3,
-       4,     5,   115,     0,     0,   101,     0,     6,     7,     8,
+      27,    31,    44,    83,    28,    57,    37,   -70,    34,    41,
+      42,    39,    40,   113,    29,    58,    27,    59,    60,   116,
+      53,    54,    55,    56,    61,    62,     1,     2,     3,     4,
+       5,    35,     5,    58,    80,    59,    60,   -70,   -70,     9,
+      57,    68,    69,    70,    71,    72,    73,    74,    75,    76,
+      77,    78,    79,    82,    84,   119,    31,    13,    93,    14,
+      36,    98,   104,    34,     1,     2,     3,     4,     5,    93,
+      59,    60,   110,    43,   111,   102,   102,    63,    30,    59,
+      60,    64,    55,    56,    65,    94,   122,    87,    99,    27,
+      27,    88,   107,    95,    84,    13,   105,    14,   100,    44,
+     102,    27,    44,    11,    12,   118,   106,    27,   114,   109,
+     117,   112,   120,    27,    27,   115,    27,     1,     2,     3,
+       4,     5,     0,    91,     0,   101,     0,     6,     7,     8,
        9,    10,    45,    46,    47,    48,    49,    50,    51,    52,
       53,    54,    55,    56,     0,     0,    11,    12,    13,    67,
-      14,     1,     2,     3,     4,     5,     0,     0,     0,     0,
+      14,     1,     2,     3,     4,     5,    92,     0,     0,     0,
      121,     6,     7,     8,     9,    10,    45,    46,    47,    48,
       49,    50,    51,    52,    53,    54,    55,    56,     0,     0,
       11,    12,    13,    89,    14,     1,     2,     3,     4,     5,
@@ -653,22 +658,22 @@ static const yytype_int8 yytable[] =
 
 static const yytype_int8 yycheck[] =
 {
-       0,     7,    16,     8,    36,    90,     8,    57,     8,    10,
-      11,    12,    13,    14,    10,    10,    16,   101,    28,    29,
-      30,    31,    10,   107,    12,    36,     7,    28,    29,   114,
-      36,     3,     4,     5,     6,     7,    38,    39,    30,    31,
-       8,    37,    37,     0,    45,    46,    47,    48,    49,    50,
-      51,    52,    53,    54,    55,    56,    57,    58,    63,   109,
-      32,    33,    34,    63,    36,     3,     4,     5,     6,     7,
-      38,    39,    36,    11,    10,    89,    90,    10,    16,     7,
-      36,     8,    38,    39,     7,     6,    40,     7,     7,    89,
-      90,   109,     9,    11,    32,    33,    34,    98,    36,   113,
-     114,   101,   116,    19,    37,    98,   110,   107,   109,    36,
-      63,    38,    39,   113,   114,    64,   116,     3,     4,     5,
-       6,     7,   105,    -1,    -1,    11,    -1,    13,    14,    15,
+       0,     8,    16,    57,    36,     8,    10,     8,     8,    13,
+      14,    11,    12,   101,    36,    36,    16,    38,    39,   107,
+      28,    29,    30,    31,    28,    29,     3,     4,     5,     6,
+       7,     7,     7,    36,    11,    38,    39,    38,    39,    16,
+       8,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,   109,    63,    34,    10,    36,
+      36,    10,    90,    63,     3,     4,     5,     6,     7,    10,
+      38,    39,    10,     0,    12,    89,    90,    10,     7,    38,
+      39,    36,    30,    31,     7,    37,   114,     7,    37,    89,
+      90,     6,    11,     7,    98,    34,    37,    36,    40,   113,
+     114,   101,   116,    32,    33,   109,     7,   107,    19,     9,
+     109,    98,   110,   113,   114,   105,   116,     3,     4,     5,
+       6,     7,    -1,    63,    -1,    11,    -1,    13,    14,    15,
       16,    17,    20,    21,    22,    23,    24,    25,    26,    27,
       28,    29,    30,    31,    -1,    -1,    32,    33,    34,    37,
-      36,     3,     4,     5,     6,     7,    -1,    -1,    -1,    -1,
+      36,     3,     4,     5,     6,     7,    64,    -1,    -1,    -1,
       12,    13,    14,    15,    16,    17,    20,    21,    22,    23,
       24,    25,    26,    27,    28,    29,    30,    31,    -1,    -1,
       32,    33,    34,    37,    36,     3,     4,     5,     6,     7,
@@ -689,8 +694,8 @@ static const yytype_uint8 yystos[] =
        0,     3,     4,     5,     6,     7,    13,    14,    15,    16,
       17,    32,    33,    34,    36,    42,    43,    44,    45,    46,
       50,    51,    54,    57,    60,    61,    62,    64,    36,    36,
-       7,    46,    55,    56,    64,     7,    36,    50,    64,    50,
-      50,    50,    50,     0,    44,    20,    21,    22,    23,    24,
+       7,    46,    55,    56,    64,     7,    36,    50,    64,    64,
+      64,    50,    50,     0,    44,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,     8,    36,    38,
       39,    50,    50,    10,    36,     7,    58,    37,    50,    50,
       50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
@@ -705,8 +710,8 @@ static const yytype_uint8 yystos[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    41,    42,    42,    43,    43,    44,    44,    44,    44,
-      44,    44,    45,    45,    46,    46,    46,    47,    48,    48,
-      48,    49,    49,    49,    50,    50,    50,    50,    50,    50,
+      44,    44,    45,    45,    46,    46,    46,    46,    46,    47,
+      48,    48,    48,    49,    49,    49,    50,    50,    50,    50,
       50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
       50,    50,    50,    50,    50,    50,    51,    52,    52,    52,
       53,    54,    55,    55,    56,    56,    57,    57,    58,    58,
@@ -718,10 +723,10 @@ static const yytype_uint8 yyr1[] =
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     0,     2,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     3,     3,     3,     3,     0,     3,
-       1,     3,     3,     3,     3,     1,     1,     1,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     2,     2,     2,     1,     1,     4,     0,     3,     1,
+       1,     1,     1,     1,     3,     3,     3,     2,     2,     3,
+       0,     3,     1,     3,     3,     3,     3,     1,     1,     1,
+       1,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     2,     1,     1,     4,     0,     3,     1,
        1,     2,     3,     1,     1,     1,     6,     5,     0,     3,
        1,     3,     2,     5,     5,     7,     3,     1,     3,     4,
        1
@@ -1410,64 +1415,64 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 96 "SimpleScript.y" /* yacc.c:1652  */
+#line 107 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "---- END ----" << endl;}
-#line 1416 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1421 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 3:
-#line 97 "SimpleScript.y" /* yacc.c:1652  */
+#line 108 "SimpleScript.y" /* yacc.c:1652  */
     {cout<< "empty statements_list" << endl;}
-#line 1422 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1427 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 4:
-#line 100 "SimpleScript.y" /* yacc.c:1652  */
+#line 111 "SimpleScript.y" /* yacc.c:1652  */
     {
 										(yyvsp[-1].statementsListVal)->add(std::shared_ptr<Statement>((yyvsp[0].statementVal)));
 										(yyval.statementsListVal) = (yyvsp[-1].statementsListVal);
 									}
-#line 1431 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1436 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 5:
-#line 104 "SimpleScript.y" /* yacc.c:1652  */
+#line 115 "SimpleScript.y" /* yacc.c:1652  */
     {
 										StatementsList* stmtsList = new StatementsList();
 										stmtsList->add(std::shared_ptr<Statement>((yyvsp[0].statementVal)));
 
 										(yyval.statementsListVal) = stmtsList;
 									}
-#line 1442 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1447 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 12:
-#line 120 "SimpleScript.y" /* yacc.c:1652  */
+#line 131 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ExpressionStatement(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
 									}
-#line 1450 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1455 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 13:
-#line 123 "SimpleScript.y" /* yacc.c:1652  */
+#line 134 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ExpressionStatement(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
 									}
-#line 1458 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1463 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 14:
-#line 128 "SimpleScript.y" /* yacc.c:1652  */
+#line 139 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.operationExpressionVal) = new OperationExpressionAssignment(std::shared_ptr<Identifier>((yyvsp[-2].identifierVal)), 
 												std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal)));
 									}
-#line 1467 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1472 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 15:
-#line 132 "SimpleScript.y" /* yacc.c:1652  */
+#line 143 "SimpleScript.y" /* yacc.c:1652  */
     {
 										FunctionDeclarationStatement* fdstmtPtr = dynamic_cast<FunctionDeclarationStatement*> ((yyvsp[0].statementVal));
 										Function funct = fdstmtPtr->getFunction();
@@ -1475,251 +1480,359 @@ yyreduce:
 										(yyval.operationExpressionVal) = new FunctionAssignment(std::shared_ptr<Identifier>((yyvsp[-2].identifierVal)), funct);
 
 									}
-#line 1479 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1484 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 16:
-#line 139 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "identifier ASSIGN object_literal" << endl; }
-#line 1485 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 150 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new ObjectAssignment(std::shared_ptr<Identifier>((yyvsp[-2].identifierVal)), std::shared_ptr<Object>((yyvsp[0].objectVal)));
+									}
+#line 1492 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 17:
-#line 142 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "object_literal" << endl; }
-#line 1491 "SimpleScript.tab.cpp" /* yacc.c:1652  */
-    break;
+#line 153 "SimpleScript.y" /* yacc.c:1652  */
+    {
+										Variable one = Variable(1);
+										ConstantExpression oneConstantExpression =
+											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
-  case 18:
-#line 145 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "empty properties_names_and_values" << endl; }
-#line 1497 "SimpleScript.tab.cpp" /* yacc.c:1652  */
-    break;
-
-  case 19:
-#line 146 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "properties_names_and_values COMMA property_name_and_value" << endl; }
-#line 1503 "SimpleScript.tab.cpp" /* yacc.c:1652  */
-    break;
-
-  case 20:
-#line 147 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
+										OperationExpression* expression = new Addition(
+											std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>((yyvsp[0].identifierVal)))),
+											std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)));
+										
+										(yyval.operationExpressionVal) = new OperationExpressionAssignment(std::shared_ptr<Identifier>((yyvsp[0].identifierVal)), 
+												std::shared_ptr<OperationExpression>(expression));
+									}
 #line 1509 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
+  case 18:
+#line 165 "SimpleScript.y" /* yacc.c:1652  */
+    {
+										Variable one = Variable(1);
+										ConstantExpression oneConstantExpression =
+											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
+
+										OperationExpression* expression = new Subtraction(
+											std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>((yyvsp[0].identifierVal)))),
+											std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)));
+										
+										(yyval.operationExpressionVal) = new OperationExpressionAssignment(std::shared_ptr<Identifier>((yyvsp[0].identifierVal)), 
+												std::shared_ptr<OperationExpression>(expression));
+									}
+#line 1526 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+    break;
+
+  case 19:
+#line 179 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Object obj = (yyvsp[-1].propertyListVal)->generateObject();
+										(yyval.objectVal) = new Object(obj);
+									}
+#line 1535 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+    break;
+
+  case 20:
+#line 185 "SimpleScript.y" /* yacc.c:1652  */
+    {
+										PropertyList* propertyList = new PropertyList();
+										(yyval.propertyListVal) =  propertyList;
+									}
+#line 1544 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+    break;
+
   case 21:
-#line 150 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1515 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 189 "SimpleScript.y" /* yacc.c:1652  */
+    {
+										(yyvsp[-2].propertyListVal)->add(std::shared_ptr<Property>((yyvsp[0].propertyVal)));
+										(yyval.propertyListVal) = (yyvsp[-2].propertyListVal);
+									}
+#line 1553 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 22:
-#line 151 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1521 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 193 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										PropertyList* propertyList = new PropertyList();
+										propertyList->add(std::shared_ptr<Property>((yyvsp[0].propertyVal)));
+
+										(yyval.propertyListVal) = propertyList;
+									}
+#line 1564 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 23:
-#line 152 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1527 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 201 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										//Variable var = $3->
+										//$$ = new Property();
+									}
+#line 1573 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 24:
-#line 155 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "( operation_expression )" << endl; }
-#line 1533 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 205 "SimpleScript.y" /* yacc.c:1652  */
+    { cout<< "program start" << endl; }
+#line 1579 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 25:
-#line 156 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "integer " << (yyvsp[0].integerVal) <<endl; }
-#line 1539 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 206 "SimpleScript.y" /* yacc.c:1652  */
+    { cout<< "program start" << endl; }
+#line 1585 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 26:
-#line 157 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "FLOAT "  << endl; }
-#line 1545 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 209 "SimpleScript.y" /* yacc.c:1652  */
+    { (yyval.operationExpressionVal) = (yyvsp[-1].operationExpressionVal); }
+#line 1591 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 27:
-#line 158 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "BOOLEAN "  << endl; }
-#line 1551 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 210 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Primitive primitive = Primitive((yyvsp[0].integerVal));
+										(yyval.operationExpressionVal) = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+#line 1600 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 28:
-#line 159 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "STRING " << (yyvsp[0].stringVal) << endl; }
-#line 1557 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 214 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Primitive primitive = Primitive((yyvsp[0].floatVal));
+										(yyval.operationExpressionVal) = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+#line 1609 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 29:
-#line 160 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "&&" << endl; }
-#line 1563 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 218 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										//Primitive primitive = Primitive($1);
+										(yyval.operationExpressionVal) = new ConstantExpression(std::shared_ptr<Variable>(new Variable())); 
+									}
+#line 1618 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 30:
-#line 161 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "||" << endl; }
-#line 1569 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 222 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										Primitive primitive = Primitive((yyvsp[0].stringVal));
+										(yyval.operationExpressionVal) = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+									}
+#line 1627 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 31:
-#line 162 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "<" << endl; }
-#line 1575 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 226 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new LogicalAnd(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1636 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 32:
-#line 163 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "<=" << endl; }
-#line 1581 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 230 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new LogicalOr(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1645 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 33:
-#line 164 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< ">" << endl; }
-#line 1587 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 234 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new LessThan(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1654 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 34:
-#line 165 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< ">=" << endl; }
-#line 1593 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 238 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new LessThanOrEqualTo(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1663 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 35:
-#line 166 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "==" << endl; }
-#line 1599 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 242 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new GreaterThan(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1672 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 36:
-#line 167 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "!=" << endl; }
-#line 1605 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 246 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new GreaterThanOrEqualTo(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1681 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 37:
-#line 168 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "+" << endl; }
-#line 1611 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 250 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new Equals(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1690 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 38:
-#line 169 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "-" << endl; }
-#line 1617 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 254 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new NotEquals(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1699 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 39:
-#line 170 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "*" << endl; }
-#line 1623 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 258 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new Addition(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1708 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 40:
-#line 171 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "/" << endl; }
-#line 1629 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 262 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new Subtraction(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1717 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 41:
-#line 172 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "!" << endl; }
-#line 1635 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 266 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new Multiplication(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1726 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 42:
-#line 173 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "++" << endl; }
-#line 1641 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 270 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new Division(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
+											std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1735 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 43:
-#line 174 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "--" << endl; }
-#line 1647 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 274 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new LogicalNot(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal))); 
+									}
+#line 1743 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 44:
-#line 175 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1653 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 277 "SimpleScript.y" /* yacc.c:1652  */
+    { (yyval.operationExpressionVal) = (yyvsp[0].operationExpressionVal); }
+#line 1749 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 45:
-#line 176 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "identifier" << endl; }
-#line 1659 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 278 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new IdentifierExpression(std::shared_ptr<Identifier>((yyvsp[0].identifierVal))); 
+									}
+#line 1757 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 46:
-#line 179 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "function_call_expression" << endl; }
-#line 1665 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 283 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyval.operationExpressionVal) = new FunctionCallExpression(
+											std::shared_ptr<Identifier>((yyvsp[-3].identifierVal)), 
+											std::shared_ptr<ArgumentsList>((yyvsp[-1].argumentsListyVal)));
+									}
+#line 1767 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 47:
-#line 182 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "program start" << endl; }
-#line 1671 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 290 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										ArgumentsList* argsList = new ArgumentsList();
+										(yyval.argumentsListyVal) = argsList;
+									}
+#line 1776 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 48:
-#line 183 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "arguments_list COMMA argument" << endl; }
-#line 1677 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 294 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										(yyvsp[-2].argumentsListyVal)->add(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal)));
+										(yyval.argumentsListyVal) = (yyvsp[-2].argumentsListyVal);
+									}
+#line 1785 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 49:
-#line 184 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "argument" << endl; }
-#line 1683 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 298 "SimpleScript.y" /* yacc.c:1652  */
+    { 
+										ArgumentsList* argsList = new ArgumentsList();
+										argsList->add(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal)));
+
+										(yyval.argumentsListyVal) = argsList;
+									}
+#line 1796 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 50:
-#line 187 "SimpleScript.y" /* yacc.c:1652  */
-    { cout<< "operation_expression" << endl; }
-#line 1689 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 306 "SimpleScript.y" /* yacc.c:1652  */
+    { (yyval.operationExpressionVal) = (yyvsp[0].operationExpressionVal); }
+#line 1802 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 51:
-#line 190 "SimpleScript.y" /* yacc.c:1652  */
+#line 309 "SimpleScript.y" /* yacc.c:1652  */
     { cout<<"VAR variable declaration"<<endl;}
-#line 1695 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1808 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 52:
-#line 193 "SimpleScript.y" /* yacc.c:1652  */
+#line 312 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration_list COMMA" << endl; }
-#line 1701 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1814 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 53:
-#line 194 "SimpleScript.y" /* yacc.c:1652  */
+#line 313 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration in variable_declaration_list" << endl; }
-#line 1707 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1820 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 54:
-#line 197 "SimpleScript.y" /* yacc.c:1652  */
+#line 316 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration =" << endl; }
-#line 1713 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1826 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 55:
-#line 198 "SimpleScript.y" /* yacc.c:1652  */
+#line 317 "SimpleScript.y" /* yacc.c:1652  */
     { cout<< "variable_declaration id" << (yyvsp[0].stringVal) << endl; }
-#line 1719 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1832 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 56:
-#line 201 "SimpleScript.y" /* yacc.c:1652  */
+#line 320 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Function* functionPtr = new Function(std::shared_ptr<ParametersList>((yyvsp[-2].parametersListVal)), 
 											std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
@@ -1729,11 +1842,11 @@ yyreduce:
 
 										delete [] (yyvsp[-4].stringVal);
 									}
-#line 1733 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1846 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 57:
-#line 210 "SimpleScript.y" /* yacc.c:1652  */
+#line 329 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Function* functionPtr = new Function(std::shared_ptr<ParametersList>((yyvsp[-2].parametersListVal)), 
 											std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
@@ -1741,99 +1854,99 @@ yyreduce:
 										(yyval.statementVal) = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr));
 
 									}
-#line 1745 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1858 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 58:
-#line 219 "SimpleScript.y" /* yacc.c:1652  */
+#line 338 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										cout<< "program start" << endl; 
 										ParametersList* paramsList = new ParametersList();
 										(yyval.parametersListVal) = paramsList;
 									}
-#line 1755 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1868 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 59:
-#line 224 "SimpleScript.y" /* yacc.c:1652  */
+#line 343 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyvsp[-2].parametersListVal)->add((yyvsp[0].stringVal));
 										(yyval.parametersListVal) = (yyvsp[-2].parametersListVal);
 									}
-#line 1764 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1877 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 60:
-#line 228 "SimpleScript.y" /* yacc.c:1652  */
+#line 347 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										ParametersList* paramsList = new ParametersList();
 										paramsList->add((yyvsp[0].stringVal));
 
 										(yyval.parametersListVal) = paramsList;
 									}
-#line 1775 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1888 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 61:
-#line 236 "SimpleScript.y" /* yacc.c:1652  */
+#line 355 "SimpleScript.y" /* yacc.c:1652  */
     { (yyval.statementsListVal) = (yyvsp[-1].statementsListVal); }
-#line 1781 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1894 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 62:
-#line 239 "SimpleScript.y" /* yacc.c:1652  */
+#line 358 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ReturnStatement(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal)));
 									}
-#line 1789 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1902 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 63:
-#line 244 "SimpleScript.y" /* yacc.c:1652  */
+#line 363 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new IterationStatement(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1798 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1911 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 64:
-#line 250 "SimpleScript.y" /* yacc.c:1652  */
+#line 369 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ConditionalStatement(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1807 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1920 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 65:
-#line 254 "SimpleScript.y" /* yacc.c:1652  */
+#line 373 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ConditionalStatement(std::shared_ptr<OperationExpression>((yyvsp[-4].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[-2].statementsListVal)), std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1816 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1929 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 66:
-#line 260 "SimpleScript.y" /* yacc.c:1652  */
+#line 379 "SimpleScript.y" /* yacc.c:1652  */
     { (yyval.statementsListVal) = (yyvsp[-1].statementsListVal); }
-#line 1822 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1935 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 67:
-#line 261 "SimpleScript.y" /* yacc.c:1652  */
+#line 380 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										StatementsList* stmtsList = new StatementsList();
 										stmtsList->add(std::shared_ptr<Statement>((yyvsp[0].statementVal)));
 
 										(yyval.statementsListVal) = stmtsList;
 									}
-#line 1833 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1946 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 68:
-#line 269 "SimpleScript.y" /* yacc.c:1652  */
+#line 388 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier(*((yyvsp[-2].identifierVal)), (yyvsp[0].stringVal));
 										(yyval.identifierVal) = id;
@@ -1841,11 +1954,11 @@ yyreduce:
 										delete (yyvsp[-2].identifierVal);
 										delete [] (yyvsp[0].stringVal);
 									}
-#line 1845 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1958 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 69:
-#line 276 "SimpleScript.y" /* yacc.c:1652  */
+#line 395 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier(*((yyvsp[-3].identifierVal)), (yyvsp[-1].stringVal));
 										(yyval.identifierVal) = id;
@@ -1853,21 +1966,21 @@ yyreduce:
 										delete (yyvsp[-3].identifierVal);
 										delete [] (yyvsp[-1].stringVal);
 									}
-#line 1857 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1970 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 70:
-#line 283 "SimpleScript.y" /* yacc.c:1652  */
+#line 402 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier((yyvsp[0].stringVal));
 										(yyval.identifierVal) = id;
 										delete [] (yyvsp[0].stringVal);
 									}
-#line 1867 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1980 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
 
-#line 1871 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1984 "SimpleScript.tab.cpp" /* yacc.c:1652  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2098,5 +2211,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 291 "SimpleScript.y" /* yacc.c:1918  */
+#line 410 "SimpleScript.y" /* yacc.c:1918  */
 

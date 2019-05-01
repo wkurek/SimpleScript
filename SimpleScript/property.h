@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <memory>
 using namespace std;
 
 
@@ -23,11 +24,11 @@ public:
 };
 
 class PropertyList {
-    list<Property> list;
+    list<shared_ptr<Property>> list;
 
 public:
-    void add(Property);
-    Object generateObject();
+    void add(shared_ptr<Property>);
+	Object generateObject();
 };
 
 #endif // PROPERTY_H_INCLUDED

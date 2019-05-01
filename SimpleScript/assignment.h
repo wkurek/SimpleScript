@@ -33,11 +33,11 @@ public:
 
 class ObjectAssignment : public OperationExpression {
 	shared_ptr<Identifier> identifierPtr;
-    Object object;
+	shared_ptr<Object> objectPtr;
 
 public:
-    ObjectAssignment(shared_ptr<Identifier> idPtr, Object obj)
-        : identifierPtr(move(idPtr)), object(obj) {}
+    ObjectAssignment(shared_ptr<Identifier> idPtr, shared_ptr<Object> objPtr)
+        : identifierPtr(move(idPtr)), objectPtr(move(objPtr)) {}
 
 	Variable evaluate(Object&) const;
 };

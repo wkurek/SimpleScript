@@ -15,6 +15,7 @@
 	#include "operation_expression.h"
 	#include "statement.h"
 	#include "assignment.h"
+	#include "property.h"
 
     #include "SimpleScript.tab.h"
 
