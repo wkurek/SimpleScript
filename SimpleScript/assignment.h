@@ -8,6 +8,7 @@ using namespace std;
 #include "function.h"
 #include "variable.h"
 #include "operation_expression.h"
+#include "property.h"
 
 class OperationExpressionAssignment : public OperationExpression {
 	shared_ptr<Identifier> identifierPtr;
@@ -31,13 +32,13 @@ public:
 	Variable evaluate(Object&) const;
 };
 
-class ObjectAssignment : public OperationExpression {
+class ObjectLiteralAssignment : public OperationExpression {
 	shared_ptr<Identifier> identifierPtr;
-	shared_ptr<Object> objectPtr;
+	shared_ptr<ObjectLiteral> objectLiteralPtr;
 
 public:
-    ObjectAssignment(shared_ptr<Identifier> idPtr, shared_ptr<Object> objPtr)
-        : identifierPtr(move(idPtr)), objectPtr(move(objPtr)) {}
+	ObjectLiteralAssignment(shared_ptr<Identifier> idPtr, shared_ptr<ObjectLiteral> olPtr)
+        : identifierPtr(move(idPtr)), objectLiteralPtr(move(olPtr)) {}
 
 	Variable evaluate(Object&) const;
 };

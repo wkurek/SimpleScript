@@ -51,6 +51,7 @@
 	Property* propertyVal;
 	ArgumentsList* argumentsListyVal;
 	OperationExpressionsList* operationExpressionsListVal;
+	ObjectLiteral* objectLiteralVal;
 }
 
 %token<integerVal> INTEGER_T "integer"
@@ -98,9 +99,9 @@
 %type<operationExpressionVal> argument
 %type<operationExpressionVal> function_call_expression
 %type<parametersListVal> parameters_list
-%type<objectVal> object_literal
 %type<propertyListVal> properties_names_and_values
 %type<propertyVal> property_name_and_value
+%type<objectLiteralVal> object_literal
 %type<argumentsListyVal> arguments_list
 %type<operationExpressionsListVal> variable_declaration_list
 %type<operationExpressionVal> variable_declaration
@@ -151,7 +152,8 @@ assignment_expression           : identifier ASSIGN operation_expression {
 
 									}
                                 | identifier ASSIGN object_literal { 
-										$$ = new ObjectAssignment(std::shared_ptr<Identifier>($1), std::shared_ptr<Object>($3));
+										$$ = new ObjectLiteralAssignment(std::shared_ptr<Identifier>($1), 
+											std::shared_ptr<ObjectLiteral>($3));
 									}
 								| INC identifier {
 										Variable one = Variable(1);
@@ -180,8 +182,7 @@ assignment_expression           : identifier ASSIGN operation_expression {
                                 ;
 
 object_literal                  : OPEN_BRACE properties_names_and_values CLOSE_BRACE { 
-										Object obj = $2->generateObject();
-										$$ = new Object(obj);
+										$$ = new ObjectLiteral(shared_ptr<PropertyList>($2));
 									}
                                 ;
 
@@ -202,11 +203,17 @@ properties_names_and_values     : /* empty object */ {
                                 ;
 
 property_name_and_value         : IDENTIFIER COLON operation_expression { 
-										//Variable var = $3->
-										//$$ = new Property();
+										$$ = new Property($1, std::shared_ptr<OperationExpression>($3));
 									}
-                                | IDENTIFIER COLON function_declaration_statement { cout<< "program start" << endl; }
-                                | IDENTIFIER COLON object_literal { cout<< "program start" << endl; }
+                                | IDENTIFIER COLON function_declaration_statement {
+										FunctionDeclarationStatement* fdstmtPtr = dynamic_cast<FunctionDeclarationStatement*> ($3);
+										Function funct = fdstmtPtr->getFunction();
+
+										$$ = new Property($1, std::shared_ptr<Function>(new Function(funct)));
+									}
+                                | IDENTIFIER COLON object_literal { 
+										$$ = new Property($1, std::shared_ptr<ObjectLiteral>($3));
+									}
                                 ;
 
 operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS { $$ = $2; }

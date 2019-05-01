@@ -6,6 +6,7 @@ using namespace std;
 #include "variable.h"
 #include "operation_expression.h"
 #include "assignment.h"
+#include "property.h"
 
 Variable OperationExpressionAssignment::evaluate(Object& scope) const {
     Variable var = this->expressionPtr->evaluate(scope);
@@ -36,8 +37,10 @@ Variable FunctionAssignment::evaluate(Object& scope) const {
 	return Variable(shared_ptr<Function>(new Function(this->funct)));
 }
 
-Variable ObjectAssignment::evaluate(Object& scope) const {
-    scope.getObject(*(this->identifierPtr)) = *(this->objectPtr);
+Variable ObjectLiteralAssignment::evaluate(Object& scope) const {
+	Variable var = this->objectLiteralPtr->evaluate(scope);
 
-	return Variable(this->objectPtr);
+	scope.getObject(*(this->identifierPtr)) = var.getObject();
+
+	return var;
 }

@@ -111,8 +111,9 @@ union YYSTYPE
 	Property* propertyVal;
 	ArgumentsList* argumentsListyVal;
 	OperationExpressionsList* operationExpressionsListVal;
+	ObjectLiteral* objectLiteralVal;
 
-#line 116 "SimpleScript.tab.h" /* yacc.c:1921  */
+#line 117 "SimpleScript.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;
