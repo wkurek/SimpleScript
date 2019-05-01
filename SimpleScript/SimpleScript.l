@@ -16,6 +16,7 @@
 	#include "statement.h"
 	#include "assignment.h"
 	#include "property.h"
+	#include "program.h"
 
     #include "SimpleScript.tab.h"
 

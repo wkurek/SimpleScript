@@ -542,14 +542,15 @@ char *yytext;
 	#include "statement.h"
 	#include "assignment.h"
 	#include "property.h"
+	#include "program.h"
 
     #include "SimpleScript.tab.h"
 
 
     extern int yylex();
     extern void yyerror(const char*, char);
-#line 551 "SimpleScript.flex.cpp"
 #line 552 "SimpleScript.flex.cpp"
+#line 553 "SimpleScript.flex.cpp"
 
 #define INITIAL 0
 
@@ -763,10 +764,10 @@ YY_DECL
 		}
 
 	{
-#line 33 "SimpleScript.l"
+#line 34 "SimpleScript.l"
 
 
-#line 769 "SimpleScript.flex.cpp"
+#line 770 "SimpleScript.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -835,213 +836,213 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 35 "SimpleScript.l"
+#line 36 "SimpleScript.l"
 { /* single line comment, ignore */cout << "single line comment, ignore" << endl; }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 36 "SimpleScript.l"
+#line 37 "SimpleScript.l"
 { /* multiple line comment, ignore */ cout << "multiple line comment, ignore" << endl; }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 37 "SimpleScript.l"
+#line 38 "SimpleScript.l"
 { /* whitespace, ignore */  }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 38 "SimpleScript.l"
+#line 39 "SimpleScript.l"
 { return PLUS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 39 "SimpleScript.l"
+#line 40 "SimpleScript.l"
 { return MINUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 40 "SimpleScript.l"
+#line 41 "SimpleScript.l"
 { return ASTERISK; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "SimpleScript.l"
+#line 42 "SimpleScript.l"
 { return SLASH; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 42 "SimpleScript.l"
+#line 43 "SimpleScript.l"
 { return INC; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "SimpleScript.l"
+#line 44 "SimpleScript.l"
 { return DEC; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 44 "SimpleScript.l"
+#line 45 "SimpleScript.l"
 { return NOT; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 45 "SimpleScript.l"
+#line 46 "SimpleScript.l"
 { return OPEN_PARENTHESIS; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 46 "SimpleScript.l"
+#line 47 "SimpleScript.l"
 { return CLOSE_PARENTHESIS; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "SimpleScript.l"
+#line 48 "SimpleScript.l"
 { return OPEN_BRACKET; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 48 "SimpleScript.l"
+#line 49 "SimpleScript.l"
 { return CLOSE_BRACKET; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 49 "SimpleScript.l"
+#line 50 "SimpleScript.l"
 { return ASSIGN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "SimpleScript.l"
+#line 51 "SimpleScript.l"
 { return EQUAL; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 51 "SimpleScript.l"
+#line 52 "SimpleScript.l"
 { return NOT_EQUAL; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 52 "SimpleScript.l"
+#line 53 "SimpleScript.l"
 { return LESS_THAN; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 53 "SimpleScript.l"
+#line 54 "SimpleScript.l"
 { return GREATER_THAN; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 54 "SimpleScript.l"
+#line 55 "SimpleScript.l"
 { return LESS_EQUAL_THAN; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 55 "SimpleScript.l"
+#line 56 "SimpleScript.l"
 { return GREATER_EQUAL_THAN; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 56 "SimpleScript.l"
+#line 57 "SimpleScript.l"
 { return OR; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 57 "SimpleScript.l"
+#line 58 "SimpleScript.l"
 { return AND; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 58 "SimpleScript.l"
+#line 59 "SimpleScript.l"
 { return COLON; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 59 "SimpleScript.l"
+#line 60 "SimpleScript.l"
 { return COMMA; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 60 "SimpleScript.l"
+#line 61 "SimpleScript.l"
 { return DOT; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 61 "SimpleScript.l"
+#line 62 "SimpleScript.l"
 { return OPEN_BRACE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 62 "SimpleScript.l"
+#line 63 "SimpleScript.l"
 { return CLOSE_BRACE; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 63 "SimpleScript.l"
+#line 64 "SimpleScript.l"
 { return IF; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 64 "SimpleScript.l"
+#line 65 "SimpleScript.l"
 { return ELSE; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 65 "SimpleScript.l"
+#line 66 "SimpleScript.l"
 { return WHILE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 66 "SimpleScript.l"
+#line 67 "SimpleScript.l"
 { return VAR; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 67 "SimpleScript.l"
+#line 68 "SimpleScript.l"
 { return FUNCTION_T; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 68 "SimpleScript.l"
+#line 69 "SimpleScript.l"
 { return RETURN; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 70 "SimpleScript.l"
+#line 71 "SimpleScript.l"
 { istringstream(string(yytext)) >> yylval.integerVal; return INTEGER_T; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 72 "SimpleScript.l"
+#line 73 "SimpleScript.l"
 { istringstream(string(yytext)) >> yylval.floatVal; return FLOAT_T; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 74 "SimpleScript.l"
+#line 75 "SimpleScript.l"
 { istringstream(string(yytext)) >> boolalpha >> yylval.booleanVal; return BOOLEAN_T; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 76 "SimpleScript.l"
+#line 77 "SimpleScript.l"
 { yylval.stringVal = _strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 78 "SimpleScript.l"
+#line 79 "SimpleScript.l"
 { yylval.stringVal = _strdup(yytext); return STRING; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 80 "SimpleScript.l"
+#line 81 "SimpleScript.l"
 { yyerror("undefined token", yytext[0]); yyterminate(); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 82 "SimpleScript.l"
+#line 83 "SimpleScript.l"
 ECHO;
 	YY_BREAK
-#line 1044 "SimpleScript.flex.cpp"
+#line 1045 "SimpleScript.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2058,5 +2059,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 82 "SimpleScript.l"
+#line 83 "SimpleScript.l"
 

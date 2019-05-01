@@ -95,7 +95,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 39 "SimpleScript.y" /* yacc.c:1921  */
+#line 40 "SimpleScript.y" /* yacc.c:1921  */
 
     int integerVal;
     float floatVal;

@@ -159,6 +159,7 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="operation_expression.cpp" />
     <ClCompile Include="primitive.cpp" />
+    <ClCompile Include="program.cpp" />
     <ClCompile Include="property.cpp" />
     <ClCompile Include="SimpleScript.cpp" />
     <ClCompile Include="SimpleScript.flex.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="operation_expression.h" />
     <ClInclude Include="primitive.h" />
+    <ClInclude Include="program.h" />
     <ClInclude Include="property.h" />
     <ClInclude Include="SimpleScript.tab.h" />
     <ClInclude Include="statement.h" />

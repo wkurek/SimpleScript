@@ -15,6 +15,7 @@
 	#include "statement.h"
 	#include "assignment.h"
 	#include "property.h"
+	#include "program.h"
 
     extern int yylex(void);
     extern int yylineno;
@@ -108,8 +109,10 @@
 
 
 %%
-program                         : statements_list { cout<< "---- END ----" << endl;}
-                                | /* empty statements list */ {cout<< "empty statements_list" << endl;}
+program                         : statements_list { 
+										Program(std::shared_ptr<StatementsList>($1)).evaluate();
+									}
+                                | /* empty statements list */
                                 ;
 
 statements_list                 : statements_list statement {
