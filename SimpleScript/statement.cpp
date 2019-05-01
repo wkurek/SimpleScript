@@ -21,15 +21,15 @@ void StatementsList::evaluate(Object& scope) {
 
 void ConditionalStatement::evaluate(Object& scope) {
     if(this->conditionExpressionPtr->evaluate(scope)) {
-        this->trueStatementList.evaluate(scope);
+        (*(this->trueStatementListPtr)).evaluate(scope);
     } {
-        this->falseStatementList.evaluate(scope);
+		(*(this->falseStatementListPtr)).evaluate(scope);
     }
 }
 
 void IterationStatement::evaluate(Object& scope) {
     while(this->conditionExpressionPtr->evaluate(scope)) {
-        this->statementsList.evaluate(scope);
+		(*(this->statementsListPtr)).evaluate(scope);
     }
 }
 
@@ -39,10 +39,17 @@ void ReturnStatement::evaluate(Object& scope) {
 }
 
 void FunctionDeclarationStatement::evaluate(Object& scope) {
+	//Check for anonymous function declaration
+	if (this->functionPtr == nullptr) return;
+
     if(scope.hasPrimitive(this->identifier)) scope.removePrimitive(this->identifier);
     if(scope.hasObject(this->identifier)) scope.removeObject(this->identifier);
 
     scope.getFunction(this->identifier) = *(this->functionPtr);
+}
+
+Variable FunctionDeclarationStatement::getFunctionVariable() {
+	return Variable(this->functionPtr);
 }
 
 void ExpressionStatement::evaluate(Object& scope) {

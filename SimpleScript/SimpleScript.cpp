@@ -21,7 +21,7 @@ int main()
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(new Identifier(aIdentifier)),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 

@@ -1,4 +1,4 @@
-%error-verbose
+%define parse.error verbose
 
 %{
     #include <iostream>
@@ -44,6 +44,7 @@
 	StatementsList* statementsListVal;
 	Statement* statementVal;
 	OperationExpression* operationExpressionVal;
+	ParametersList* parametersListVal;
 }
 
 %token<integerVal> INTEGER_T "integer"
@@ -83,7 +84,12 @@
 %type<statementVal> conditional_statement
 %type<statementVal> iteration_statement
 %type<statementVal> return_statement
+%type<statementVal> expression_statement
+%type<statementVal> function_declaration_statement
+%type<statementVal> variable_declaration_statement
 %type<operationExpressionVal> operation_expression
+%type<operationExpressionVal> assignment_expression
+%type<parametersListVal> parameters_list
 
 
 %%
@@ -111,11 +117,18 @@ statement                       : expression_statement
                                 | conditional_statement
                                 ;
 
-expression_statement            : assignment_expression { cout<< "program start" << endl; }
-                                | operation_expression { cout<< "program start" << endl; }
+expression_statement            : assignment_expression { 
+										$$ = new ExpressionStatement(std::shared_ptr<OperationExpression>($1)); 
+									}
+                                | operation_expression { 
+										$$ = new ExpressionStatement(std::shared_ptr<OperationExpression>($1)); 
+									}
                                 ;
 
-assignment_expression           : identifier ASSIGN operation_expression { cout<< "assignment_expression operation_expression" << endl; }
+assignment_expression           : identifier ASSIGN operation_expression { 
+										$$ = new OperationExpressionAssignment(std::shared_ptr<Identifier>($1), 
+												std::shared_ptr<OperationExpression>($3));
+									}
                                 | identifier ASSIGN function_declaration_statement { cout<< "identifier ASSIGN function_declaration_statement" << endl; }
                                 | identifier ASSIGN object_literal { cout<< "identifier ASSIGN object_literal" << endl; }
                                 ;
@@ -179,16 +192,41 @@ variable_declaration            : assignment_expression { cout<< "variable_decla
                                 | IDENTIFIER { cout<< "variable_declaration id" << $1 << endl; }
                                 ;
 
-function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
-                                | FUNCTION_T OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { cout<< "program start" << endl; }
+function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { 
+										Function* functionPtr = new Function(std::shared_ptr<ParametersList>($4), 
+											std::shared_ptr<StatementsList>($6));
+
+										$$ = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr), 
+											Identifier($2));
+
+									}
+                                | FUNCTION_T OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { 
+										Function* functionPtr = new Function(std::shared_ptr<ParametersList>($3), 
+											std::shared_ptr<StatementsList>($5));
+
+										$$ = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr));
+
+									}
                                 ;
 
-parameters_list                 : /* empty parameters list */ { cout<< "program start" << endl; }
-                                | parameters_list COMMA IDENTIFIER { cout<< "program start" << endl; }
-                                | IDENTIFIER { cout<< "program start" << endl; }
+parameters_list                 : /* empty parameters list */ { 
+										cout<< "program start" << endl; 
+										ParametersList* paramsList = new ParametersList();
+										$$ = paramsList;
+									}
+                                | parameters_list COMMA IDENTIFIER { 
+										$1->add($3);
+										$$ = $1;
+									}
+                                | IDENTIFIER { 
+										ParametersList* paramsList = new ParametersList();
+										paramsList->add($1);
+
+										$$ = paramsList;
+									}
                                 ;
 
-function_body                   : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $1; }
+function_body                   : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $2; }
                                 ;
 
 return_statement                : RETURN operation_expression { 
@@ -197,7 +235,6 @@ return_statement                : RETURN operation_expression {
                                 ;
 
 iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block { 
-										cout<< "iteration_statement" << endl; 
 										$$ = new IterationStatement(std::shared_ptr<OperationExpression>($3), 
 												std::shared_ptr<StatementsList>($5));
 									}
@@ -213,7 +250,7 @@ conditional_statement           : IF OPEN_PARENTHESIS operation_expression CLOSE
 									}
                                 ;
 
-block                           : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $1; }
+block                           : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $2; }
                                 | statement { 
 										StatementsList* stmtsList = new StatementsList();
 										stmtsList->add(std::shared_ptr<Statement>($1));

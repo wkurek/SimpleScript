@@ -95,15 +95,19 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 37 "SimpleScript.y" /* yacc.c:1921  */
+#line 38 "SimpleScript.y" /* yacc.c:1921  */
 
     int integerVal;
     float floatVal;
     bool booleanVal;
     char* stringVal;
 	Identifier* identifierVal;
+	StatementsList* statementsListVal;
+	Statement* statementVal;
+	OperationExpression* operationExpressionVal;
+	ParametersList* parametersListVal;
 
-#line 107 "SimpleScript.tab.h" /* yacc.c:1921  */
+#line 111 "SimpleScript.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

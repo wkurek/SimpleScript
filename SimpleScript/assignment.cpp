@@ -11,33 +11,33 @@ Variable OperationExpressionAssignment::evaluate(Object& scope) const {
     Variable var = this->expressionPtr->evaluate(scope);
 
     if(var.isPrimitive()) {
-        scope.getPrimitive(this->identifier) = var.getPrimitive();
+        scope.getPrimitive(*(this->identifierPtr)) = var.getPrimitive();
 
-        scope.removeObject(this->identifier);
-        scope.removeFunction(this->identifier);
+        scope.removeObject(*(this->identifierPtr));
+        scope.removeFunction(*(this->identifierPtr));
     } else if(var.isObject()) {
-        scope.getObject(this->identifier) = var.getObject();
+        scope.getObject(*(this->identifierPtr)) = var.getObject();
 
-        scope.removePrimitive(this->identifier);
-        scope.removeFunction(this->identifier);
+        scope.removePrimitive(*(this->identifierPtr));
+        scope.removeFunction(*(this->identifierPtr));
     } else if(var.isFunction()) {
-        scope.getFunction(this->identifier) = var.getFunction();
+        scope.getFunction(*(this->identifierPtr)) = var.getFunction();
 
-        scope.removePrimitive(this->identifier);
-        scope.removeObject(this->identifier);
+        scope.removePrimitive(*(this->identifierPtr));
+        scope.removeObject(*(this->identifierPtr));
     }
 
 	return var;
 }
 
 Variable FunctionAssignment::evaluate(Object& scope) const {
-    scope.getFunction(this->identifier) = this->funct;
+    scope.getFunction(*(this->identifierPtr)) = this->funct;
 
 	return Variable(shared_ptr<Function>(new Function(this->funct)));
 }
 
 Variable ObjectAssignment::evaluate(Object& scope) const {
-    scope.getObject(this->identifier) = this->object;
+    scope.getObject(*(this->identifierPtr)) = this->object;
 
 	return Variable(shared_ptr<Object>(new Object(this->object)));
 }

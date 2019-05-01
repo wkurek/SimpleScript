@@ -11,7 +11,7 @@ using namespace std;
 #include "operation_expression.h"
 #include "object.h"
 
-void ParametersList::add(string& str) {
+void ParametersList::add(string str) {
     this->parametersList.push_back(str);
 }
 

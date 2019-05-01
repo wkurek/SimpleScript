@@ -33,28 +33,28 @@ public:
 class ConditionalStatement : public Statement {
     shared_ptr<OperationExpression> conditionExpressionPtr;
 
-    StatementsList trueStatementList;
-    StatementsList falseStatementList;
+	shared_ptr<StatementsList> trueStatementListPtr;
+	shared_ptr<StatementsList> falseStatementListPtr;
 
 public:
     ConditionalStatement(shared_ptr<OperationExpression> oePtr,
-        StatementsList trueStmtList, StatementsList falseStmtList)
-            : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList),
-                falseStatementList(falseStmtList) {}
+		shared_ptr<StatementsList> trueStmtListPtr, shared_ptr<StatementsList> falseStmtListPtr)
+            : conditionExpressionPtr(move(oePtr)), trueStatementListPtr(move(trueStmtListPtr)),
+			falseStatementListPtr(move(falseStmtListPtr)) {}
 
-    ConditionalStatement(shared_ptr<OperationExpression> oePtr, StatementsList trueStmtList)
-        : conditionExpressionPtr(move(oePtr)), trueStatementList(trueStmtList) {}
+    ConditionalStatement(shared_ptr<OperationExpression> oePtr, shared_ptr<StatementsList> trueStmtListPtr)
+        : conditionExpressionPtr(move(oePtr)), trueStatementListPtr(move(trueStmtListPtr)) {}
 
 	virtual void evaluate(Object&);
 };
 
 class IterationStatement : public Statement {
     shared_ptr<OperationExpression> conditionExpressionPtr;
-    StatementsList statementsList;
+	shared_ptr<StatementsList> statementsListPtr;
 
 public:
-    IterationStatement(shared_ptr<OperationExpression> conditionExprPtr, StatementsList stmtList)
-        : conditionExpressionPtr(move(conditionExprPtr)), statementsList(stmtList) {}
+    IterationStatement(shared_ptr<OperationExpression> conditionExprPtr, shared_ptr<StatementsList> stmtsListPtr)
+        : conditionExpressionPtr(move(conditionExprPtr)), statementsListPtr(move(stmtsListPtr)) {}
 
 	virtual void evaluate(Object&);
 };
@@ -77,7 +77,11 @@ public:
     FunctionDeclarationStatement(shared_ptr<Function> functPtr, Identifier id)
         : functionPtr(move(functPtr)), identifier(id) {}
 
+	FunctionDeclarationStatement(shared_ptr<Function> functPtr)
+		: functionPtr(move(functPtr)), identifier(nullptr) {}
+
 	virtual void evaluate(Object&);
+	Variable getFunctionVariable();
 };
 
 class ExpressionStatement : public Statement {

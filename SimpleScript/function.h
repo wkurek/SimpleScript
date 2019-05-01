@@ -22,7 +22,7 @@ class ParametersList {
     list<string> parametersList;
 
 public:
-    void add(string&);
+    void add(string);
     list<string>::iterator begin();
     list<string>::iterator end();
 

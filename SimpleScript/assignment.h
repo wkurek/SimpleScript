@@ -10,34 +10,34 @@ using namespace std;
 #include "operation_expression.h"
 
 class OperationExpressionAssignment : public OperationExpression {
-    Identifier identifier;
+	shared_ptr<Identifier> identifierPtr;
     shared_ptr<OperationExpression> expressionPtr;
 
 public:
-    OperationExpressionAssignment(Identifier id, shared_ptr<OperationExpression> ePtr)
-        : identifier(id), expressionPtr(move(ePtr)) {}
+    OperationExpressionAssignment(shared_ptr<Identifier> idPtr, shared_ptr<OperationExpression> ePtr)
+        : identifierPtr(move(idPtr)), expressionPtr(move(ePtr)) {}
 
     Variable evaluate(Object&) const;
 };
 
 class FunctionAssignment : public OperationExpression {
-    Identifier identifier;
+	shared_ptr<Identifier> identifierPtr;
     Function funct;
 
 public:
-    FunctionAssignment(Identifier id, Function f)
-        : identifier(id), funct(f) {}
+    FunctionAssignment(shared_ptr<Identifier> idPtr, Function f)
+        : identifierPtr(move(idPtr)), funct(f) {}
 
 	Variable evaluate(Object&) const;
 };
 
 class ObjectAssignment : public OperationExpression {
-    Identifier identifier;
+	shared_ptr<Identifier> identifierPtr;
     Object object;
 
 public:
-    ObjectAssignment(Identifier id, Object obj)
-        : identifier(id), object(obj) {}
+    ObjectAssignment(shared_ptr<Identifier> idPtr, Object obj)
+        : identifierPtr(move(idPtr)), object(obj) {}
 
 	Variable evaluate(Object&) const;
 };
