@@ -110,8 +110,9 @@ union YYSTYPE
 	PropertyList* propertyListVal;
 	Property* propertyVal;
 	ArgumentsList* argumentsListyVal;
+	OperationExpressionsList* operationExpressionsListVal;
 
-#line 115 "SimpleScript.tab.h" /* yacc.c:1921  */
+#line 116 "SimpleScript.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

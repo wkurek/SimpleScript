@@ -50,6 +50,7 @@
 	PropertyList* propertyListVal;
 	Property* propertyVal;
 	ArgumentsList* argumentsListyVal;
+	OperationExpressionsList* operationExpressionsListVal;
 }
 
 %token<integerVal> INTEGER_T "integer"
@@ -101,6 +102,8 @@
 %type<propertyListVal> properties_names_and_values
 %type<propertyVal> property_name_and_value
 %type<argumentsListyVal> arguments_list
+%type<operationExpressionsListVal> variable_declaration_list
+%type<operationExpressionVal> variable_declaration
 
 
 %%
@@ -306,15 +309,35 @@ arguments_list                  : /* empty arguments list */ {
 argument                        : operation_expression { $$ = $1; }
                                 ;
 
-variable_declaration_statement  : VAR variable_declaration_list { cout<<"VAR variable declaration"<<endl;}
+variable_declaration_statement  : VAR variable_declaration_list { 
+										$$ = new VariableDeclarationStatement(
+											std::shared_ptr<OperationExpressionsList>($2));
+									}
                                 ;
 
-variable_declaration_list       : variable_declaration_list COMMA variable_declaration { cout<< "variable_declaration_list COMMA" << endl; }
-                                | variable_declaration { cout<< "variable_declaration in variable_declaration_list" << endl; }
+variable_declaration_list       : variable_declaration_list COMMA variable_declaration { 
+										$1->add(std::shared_ptr<OperationExpression>($3));
+
+										$$ = $1;
+									}
+                                | variable_declaration { 
+										OperationExpressionsList* list = new OperationExpressionsList();
+										list->add(std::shared_ptr<OperationExpression>($1));
+
+										$$ = list;
+									}
                                 ;
 
-variable_declaration            : assignment_expression { cout<< "variable_declaration =" << endl; }
-                                | IDENTIFIER { cout<< "variable_declaration id" << $1 << endl; }
+variable_declaration            : assignment_expression { $$ = $1; }
+                                | IDENTIFIER {
+										Primitive zeroPrimitive = Primitive(0);
+										Variable zero = Variable(zeroPrimitive);
+										ConstantExpression zeroConstantExpression =
+											ConstantExpression(std::shared_ptr<Variable>(new Variable(zero)));
+										
+										$$ = new OperationExpressionAssignment(std::shared_ptr<Identifier>(new Identifier($1)), 
+												std::shared_ptr<OperationExpression>(new ConstantExpression(zeroConstantExpression)));
+									}
                                 ;
 
 function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { 
