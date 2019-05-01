@@ -14,5 +14,8 @@ void Program::evaluate() {
 	}
 	catch (ParseException parseException) {
 		cerr << parseException.what() << endl;
+	} 
+	catch (ReturnVariable returnVariable) {
+		cerr << "Program returned value" << returnVariable.getVariable() << endl;
 	}
 }

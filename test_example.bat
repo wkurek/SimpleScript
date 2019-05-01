@@ -1,0 +1,1 @@
+SimpleScript\x64\Release\SimpleScript.exe C:\Users\Wojtek\source\repos\examples\example1.js

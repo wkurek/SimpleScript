@@ -27,6 +27,9 @@ Variable Property::evaluate(Object& scope) {
 	else if (this->isFunction()) {
 		return Variable(this->functionPtr);
 	}
+	else {
+		return Variable();
+	}
 }
 
 Variable PropertyList::evaluate(Object& scope) {
