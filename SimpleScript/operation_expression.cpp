@@ -3,6 +3,7 @@
 #include "operation_expression.h"
 #include "object.h"
 #include "variable.h"
+#include "exception.h"
 
 Variable ConstantExpression::evaluate(Object& scope) const {
     return *(this->variablePtr);
@@ -25,6 +26,10 @@ Variable IdentifierExpression::evaluate(Object& scope) const {
 }
 
 Variable FunctionCallExpression::evaluate(Object& scope) const {
+	if (!scope.hasFunction(*(this->identifierPtr))) {
+		throw UndefinedFunctionException(*(this->identifierPtr));
+	}
+
 	Function function = scope.getFunction(*(this->identifierPtr));
 
 	return function.call(scope, *(this->argumentsPtr));

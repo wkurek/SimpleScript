@@ -1,3 +1,9 @@
+#include <stdexcept>
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
 #include "identifier.h"
 
 Identifier::Identifier(string properyName) {
@@ -38,4 +44,18 @@ Identifier Identifier::getTail() {
 
 bool Identifier::hasTail() {
     return this->propertiesNames.size() > 1;
+}
+
+Identifier::operator std::string() const {
+	string str;
+
+	for (int i = 0; i < this->propertiesNames.size(); ++i) {
+		str.append(this->propertiesNames[i]);
+
+		if (i < (this->propertiesNames.size() - 1)) {
+			str.append(".");
+		}
+	}
+
+	return str;
 }

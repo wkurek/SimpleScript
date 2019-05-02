@@ -4,11 +4,11 @@ using namespace std;
 #include "exception.h"
 #include "variable.h"
 
-const char* ParseException::what() const throw() {
+const string ParseException::what() const throw() {
    return this->message;
 }
 
-const char* ReturnVariable::what() const throw() {
+const string ReturnVariable::what() const throw() {
    return "ReturnVariable";
 }
 

@@ -1,6 +1,8 @@
 #ifndef IDENTIFIER_H_INCLUDED
 #define IDENTIFIER_H_INCLUDED
 
+#include <stdexcept>
+#include <iostream>
 #include <vector>
 #include <string>
 using namespace std;
@@ -14,6 +16,8 @@ public:
     Identifier(string);
     Identifier(Identifier, string);
     Identifier(Identifier, string, bool);
+
+	operator std::string() const;
 
     string getHead();
     Identifier getTail();

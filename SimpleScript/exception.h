@@ -5,16 +5,17 @@
 using namespace std;
 
 #include "variable.h"
+#include "identifier.h"
 
 class Variable;
 
 class ParseException {
-    const char* message;
+	string message;
 
 public:
-    ParseException(const char* msg) : message(msg) {}
+    ParseException(string msg) : message(msg) {}
 
-    const char* what() const throw();
+	const string what() const throw();
 };
 
 class ReturnVariable {
@@ -24,9 +25,15 @@ public:
     ReturnVariable(shared_ptr<Variable> varPtr)
         : variablePtr(move(varPtr)) {}
 
-    const char* what() const throw();
+    const string what() const throw();
     Variable getVariable() const;
 
+};
+
+class UndefinedFunctionException : public ParseException {
+public:
+	UndefinedFunctionException(Identifier id)
+		: ParseException("Undefined function:\t" + id.operator std::string()) {}
 };
 
 #endif // EXCEPTION_H_INCLUDED

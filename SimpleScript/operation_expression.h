@@ -8,6 +8,7 @@ using namespace std;
 #include "object.h"
 #include "variable.h"
 #include "function.h"
+#include "exception.h"
 
 class Object;
 class Variable;
