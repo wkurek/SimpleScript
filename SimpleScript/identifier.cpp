@@ -2,9 +2,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex> 
 using namespace std;
 
 #include "identifier.h"
+#include "exception.h"
+
+#define IDENTIFIER_REGEX "[_a-zA-Z$]([_0-9a-zA-Z])*"
 
 Identifier::Identifier(string properyName) {
     this->propertiesNames.push_back(properyName);
@@ -20,7 +24,12 @@ Identifier::Identifier(Identifier parent, string childPropertyName, bool quotati
 		childPropertyName = childPropertyName
 			.substr(1, childPropertyName.length() - 2);
 
-		//TODO: check if valid indetifier
+		regex identifierRegex(IDENTIFIER_REGEX);
+
+		if (!regex_match(childPropertyName, identifierRegex)) {
+			cerr << "[ERROR]\tInvalid identifier: " << childPropertyName << endl;
+			throw InvalidIdentifierException(childPropertyName);
+		}
 	}
 
 	this->propertiesNames = parent.propertiesNames;

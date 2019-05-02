@@ -27,7 +27,8 @@ Variable IdentifierExpression::evaluate(Object& scope) const {
 
 Variable FunctionCallExpression::evaluate(Object& scope) const {
 	if (!scope.hasFunction(*(this->identifierPtr))) {
-		throw UndefinedFunctionException(*(this->identifierPtr));
+		throw UndefinedFunctionException(
+			this->identifierPtr->operator std::string());
 	}
 
 	Function function = scope.getFunction(*(this->identifierPtr));
@@ -56,6 +57,10 @@ Variable Multiplication::evaluate(Object& scope) const {
 }
 
 Variable Division::evaluate(Object& scope) const {
+	if (this->expression2Ptr->evaluate(scope) == 0) {
+		throw ZeroDivisionException();
+	}
+
     return (this->expression1Ptr->evaluate(scope)) / (this->expression2Ptr->evaluate(scope));
 }
 

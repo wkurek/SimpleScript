@@ -3,9 +3,10 @@ using namespace std;
 
 #include "exception.h"
 #include "variable.h"
+#include "identifier.h"
 
 const string ParseException::what() const throw() {
-   return this->message;
+   return "[ERROR]\t" + this->message;
 }
 
 const string ReturnVariable::what() const throw() {

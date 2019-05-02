@@ -10,6 +10,7 @@ using namespace std;
 #include "variable.h"
 #include "operation_expression.h"
 #include "object.h"
+#include "exception.h"
 
 void ParametersList::add(string str) {
     this->parametersList.push_back(str);
@@ -53,7 +54,7 @@ Object Function::generateLocalScope(Object parentScope, ArgumentsList args) {
     Object localScope(parentScope);
 
     if(args.size() < this->parametersListPtr->size()) {
-        throw invalid_argument("not enought params passed to function");
+		throw ParameterMismatchException(this->parametersListPtr->size(), args.size());
     }
 
     list<shared_ptr<OperationExpression>>::iterator argIt = args.begin();

@@ -5,7 +5,6 @@
 using namespace std;
 
 #include "variable.h"
-#include "identifier.h"
 
 class Variable;
 
@@ -30,10 +29,28 @@ public:
 
 };
 
+class ZeroDivisionException : public ParseException {
+public:
+	ZeroDivisionException()
+		: ParseException("Division by zero") {}
+};
+
 class UndefinedFunctionException : public ParseException {
 public:
-	UndefinedFunctionException(Identifier id)
-		: ParseException("Undefined function:\t" + id.operator std::string()) {}
+	UndefinedFunctionException(string functionName)
+		: ParseException("Undefined function: " + functionName + "()") {}
+};
+
+class ParameterMismatchException : public ParseException {
+public:
+	ParameterMismatchException(unsigned int expected, unsigned int passed)
+		: ParseException("Not enough parameters passed to function.") {}
+};
+
+class InvalidIdentifierException : public ParseException {
+public:
+	InvalidIdentifierException(string str)
+		: ParseException("Invalid identifier: " + str) {}
 };
 
 #endif // EXCEPTION_H_INCLUDED

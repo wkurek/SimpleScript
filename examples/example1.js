@@ -28,10 +28,10 @@ object["property"] = object.act(2 * 4);
 
 var i = 12;
 while (i > 0) {
-  var sum = 4 + 10;
+  var sum = 4 + i;
   --i;
 }
 
-c = false;
+c = j;
 
-log("test" + " abcde");
+log(c);

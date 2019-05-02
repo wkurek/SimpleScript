@@ -61,7 +61,5 @@ void VariableDeclarationStatement::evaluate(Object& scope) {
 }
 
 void LogStatement::evaluate(Object& scope) {
-
-	cout << "local scope:\t" << scope << endl;
 	cout << this->identifierExpressionPtr->evaluate(scope) << endl;
 }

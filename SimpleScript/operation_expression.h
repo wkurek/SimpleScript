@@ -14,6 +14,7 @@ class Object;
 class Variable;
 class Function;
 class ArgumentsList;
+class Identifier;
 
 class OperationExpression {
 public:
