@@ -1628,7 +1628,7 @@ yyreduce:
   case 30:
 #line 238 "SimpleScript.y" /* yacc.c:1652  */
     { 
-										Primitive primitive = Primitive(std::string((yyvsp[0].stringVal)));
+										Primitive primitive = Primitive(std::string((yyvsp[0].stringVal)), true);
 										(yyval.operationExpressionVal) = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
 
 									}
@@ -1987,7 +1987,7 @@ yyreduce:
   case 69:
 #line 430 "SimpleScript.y" /* yacc.c:1652  */
     { 
-										Identifier* id = new Identifier(*((yyvsp[-3].identifierVal)), (yyvsp[-1].stringVal));
+										Identifier* id = new Identifier(*((yyvsp[-3].identifierVal)), (yyvsp[-1].stringVal), true);
 										(yyval.identifierVal) = id;
 
 										delete (yyvsp[-3].identifierVal);

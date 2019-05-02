@@ -236,7 +236,7 @@ operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PA
 										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
 									}
                                 | STRING_T { 
-										Primitive primitive = Primitive(std::string($1));
+										Primitive primitive = Primitive(std::string($1), true);
 										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
 
 									}
@@ -428,7 +428,7 @@ identifier                      : identifier DOT IDENTIFIER {
 										delete [] $3;
 									}
                                 | identifier OPEN_BRACKET STRING_T CLOSE_BRACKET { 
-										Identifier* id = new Identifier(*($1), $3);
+										Identifier* id = new Identifier(*($1), $3, true);
 										$$ = id;
 
 										delete $1;

@@ -1,3 +1,8 @@
+#define BOOLEAN_TRUE true
+#define BOOLEAN_FALSE false
+
+#define QUOTATION "\""
+
 #include "primitive.h"
 
 bool Primitive::isInteger() {
@@ -41,9 +46,10 @@ ostream& operator<<(ostream& out, const Primitive& primitive) {
     } else if (primitive.type == FLOAT) {
         return out << primitive.floatVal;
     } else if (primitive.type == BOOLEAN) {
-        return out << primitive.boolVal;
+		if (primitive.boolVal) return out << BOOLEAN_TRUE;
+		else return out << BOOLEAN_FALSE;
     } else if (primitive.type == STRING) {
-        return out << primitive.stringVal;
+        return out << QUOTATION << primitive.stringVal << QUOTATION;
     } else return out;
 }
 

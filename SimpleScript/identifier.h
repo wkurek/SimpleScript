@@ -13,6 +13,7 @@ class Identifier {
 public:
     Identifier(string);
     Identifier(Identifier, string);
+    Identifier(Identifier, string, bool);
 
     string getHead();
     Identifier getTail();

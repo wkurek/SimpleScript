@@ -9,6 +9,18 @@ Identifier::Identifier(Identifier parent, string childPropertyName) {
     this->propertiesNames.push_back(childPropertyName);
 }
 
+Identifier::Identifier(Identifier parent, string childPropertyName, bool quotation) {
+	if (quotation) {
+		childPropertyName = childPropertyName
+			.substr(1, childPropertyName.length() - 2);
+
+		//TODO: check if valid indetifier
+	}
+
+	this->propertiesNames = parent.propertiesNames;
+	this->propertiesNames.push_back(childPropertyName);
+}
+
 Identifier::Identifier(vector<string> properties) {
     this->propertiesNames = properties;
 }
