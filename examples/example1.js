@@ -32,4 +32,6 @@ while (i > 0) {
   --i;
 }
 
+c = false;
+
 log("test" + " abcde");

@@ -1,5 +1,5 @@
-#define BOOLEAN_TRUE true
-#define BOOLEAN_FALSE false
+#define BOOLEAN_TRUE "true"
+#define BOOLEAN_FALSE "false"
 
 #define QUOTATION "\""
 
