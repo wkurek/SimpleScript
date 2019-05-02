@@ -15,6 +15,7 @@ class Object;
 class Function;
 class OperationExpression;
 class OperationExpressionsList;
+class IdentifierExpression;
 
 class Statement {
 public:
@@ -100,6 +101,16 @@ class VariableDeclarationStatement : public Statement {
 public:
 	VariableDeclarationStatement(shared_ptr<OperationExpressionsList> opExprListPtr)
         : operationExpressionsListPtr(move(opExprListPtr)) {}
+
+	virtual void evaluate(Object&);
+};
+
+class LogStatement : public Statement {
+	shared_ptr<IdentifierExpression> identifierExpressionPtr;
+
+public:
+	LogStatement(shared_ptr<IdentifierExpression> iePtr)
+		: identifierExpressionPtr(move(iePtr)) {}
 
 	virtual void evaluate(Object&);
 };

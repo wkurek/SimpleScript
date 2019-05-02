@@ -2,6 +2,7 @@
 
 %{
     #include <iostream>
+	#include <string>
 	#include <memory>
     using namespace std;
 
@@ -68,7 +69,7 @@
 %token IF                   "if"
 %token WHILE                "while"
 %token VAR                  "var"
-%token FUNCTION_T             "function"
+%token FUNCTION_T           "function"
 %token RETURN               "return"
 
 
@@ -159,7 +160,8 @@ assignment_expression           : identifier ASSIGN operation_expression {
 											std::shared_ptr<ObjectLiteral>($3));
 									}
 								| INC identifier {
-										Variable one = Variable(1);
+										Primitive onePrimitive = Primitive(1);
+										Variable one = Variable(onePrimitive);
 										ConstantExpression oneConstantExpression =
 											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
@@ -171,7 +173,8 @@ assignment_expression           : identifier ASSIGN operation_expression {
 												std::shared_ptr<OperationExpression>(expression));
 									}
                                 | DEC identifier {
-										Variable one = Variable(1);
+										Primitive onePrimitive = Primitive(1);
+										Variable one = Variable(onePrimitive);
 										ConstantExpression oneConstantExpression =
 											ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
@@ -233,8 +236,9 @@ operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PA
 										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
 									}
                                 | STRING_T { 
-										Primitive primitive = Primitive($1);
+										Primitive primitive = Primitive(std::string($1));
 										$$ = new ConstantExpression(std::shared_ptr<Variable>(new Variable(primitive))); 
+
 									}
                                 | operation_expression AND operation_expression { 
 										$$ = new LogicalAnd(std::shared_ptr<OperationExpression>($1), 

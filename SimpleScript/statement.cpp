@@ -59,3 +59,9 @@ void ExpressionStatement::evaluate(Object& scope) {
 void VariableDeclarationStatement::evaluate(Object& scope) {
 	this->operationExpressionsListPtr->evaluate(scope);
 }
+
+void LogStatement::evaluate(Object& scope) {
+
+	cout << "local scope:\t" << scope << endl;
+	cout << this->identifierExpressionPtr->evaluate(scope) << endl;
+}

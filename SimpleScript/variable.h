@@ -21,8 +21,6 @@ class Variable {
     shared_ptr<Object> objectPtr;
     shared_ptr<Function> functionPtr;
 
-    friend ostream& operator<< (ostream&, Variable);
-
 public:
     Variable():type(PRIMITIVE), primitivePtr(new Primitive()) {}
     Variable(Primitive p):type(PRIMITIVE), primitivePtr(new Primitive(p)) {}
@@ -30,7 +28,7 @@ public:
     Variable(shared_ptr<Object> oPtr):type(OBJECT), objectPtr(move(oPtr)) {}
     Variable(shared_ptr<Function> fPtr):type(FUNCTION), functionPtr(move(fPtr)) {}
 
-    friend ostream& operator<< (ostream&, Variable&);
+    friend ostream& operator<< (ostream&, Variable);
     friend bool     operator== (const Variable&, const Variable&);
     friend bool     operator!= (const Variable&, const Variable&);
     friend bool     operator<  (const Variable&, const Variable&);

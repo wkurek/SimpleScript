@@ -1,6 +1,8 @@
 #include "object.h"
 #include "statement.h"
 #include "exception.h"
+#include "statement.h"
+#include "function.h"
 
 #include <memory>
 using namespace std;
@@ -12,5 +14,6 @@ public:
 	Program(shared_ptr<StatementsList> slPtr)
 		: statementsListPtr(move(slPtr)) {}
 
+	void generateEmbeddedConstructs(Object&);
 	void evaluate();
 };

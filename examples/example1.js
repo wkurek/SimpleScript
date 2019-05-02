@@ -31,3 +31,5 @@ while (i > 0) {
   var sum = 4 + 10;
   --i;
 }
+
+log("test" + " abcde");
