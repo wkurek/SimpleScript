@@ -517,9 +517,9 @@ static const yytype_uint16 yyrline[] =
      192,   196,   200,   208,   211,   217,   222,   223,   227,   231,
      235,   239,   243,   247,   251,   255,   259,   263,   267,   271,
      275,   279,   283,   287,   290,   291,   296,   303,   307,   311,
-     319,   322,   328,   333,   341,   342,   353,   362,   371,   376,
-     380,   388,   391,   396,   402,   406,   412,   413,   421,   428,
-     435
+     319,   322,   328,   333,   341,   342,   353,   361,   370,   374,
+     378,   386,   389,   394,   400,   404,   410,   411,   419,   426,
+     433
 };
 #endif
 
@@ -1865,13 +1865,12 @@ yyreduce:
 										(yyval.statementVal) = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr), 
 											std::shared_ptr<Identifier>(new Identifier((yyvsp[-4].stringVal))));
 
-										delete [] (yyvsp[-4].stringVal);
 									}
-#line 1871 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1870 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 57:
-#line 362 "SimpleScript.y" /* yacc.c:1652  */
+#line 361 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Function* functionPtr = new Function(std::shared_ptr<ParametersList>((yyvsp[-2].parametersListVal)), 
 											std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
@@ -1879,99 +1878,98 @@ yyreduce:
 										(yyval.statementVal) = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr));
 
 									}
-#line 1883 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1882 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 58:
-#line 371 "SimpleScript.y" /* yacc.c:1652  */
+#line 370 "SimpleScript.y" /* yacc.c:1652  */
     { 
-										cout<< "program start" << endl; 
 										ParametersList* paramsList = new ParametersList();
 										(yyval.parametersListVal) = paramsList;
 									}
-#line 1893 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1891 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 59:
-#line 376 "SimpleScript.y" /* yacc.c:1652  */
+#line 374 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyvsp[-2].parametersListVal)->add((yyvsp[0].stringVal));
 										(yyval.parametersListVal) = (yyvsp[-2].parametersListVal);
 									}
-#line 1902 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1900 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 60:
-#line 380 "SimpleScript.y" /* yacc.c:1652  */
+#line 378 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										ParametersList* paramsList = new ParametersList();
 										paramsList->add((yyvsp[0].stringVal));
 
 										(yyval.parametersListVal) = paramsList;
 									}
-#line 1913 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1911 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 61:
-#line 388 "SimpleScript.y" /* yacc.c:1652  */
+#line 386 "SimpleScript.y" /* yacc.c:1652  */
     { (yyval.statementsListVal) = (yyvsp[-1].statementsListVal); }
-#line 1919 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1917 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 62:
-#line 391 "SimpleScript.y" /* yacc.c:1652  */
+#line 389 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ReturnStatement(std::shared_ptr<OperationExpression>((yyvsp[0].operationExpressionVal)));
 									}
-#line 1927 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1925 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 63:
-#line 396 "SimpleScript.y" /* yacc.c:1652  */
+#line 394 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new IterationStatement(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1936 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1934 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 64:
-#line 402 "SimpleScript.y" /* yacc.c:1652  */
+#line 400 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ConditionalStatement(std::shared_ptr<OperationExpression>((yyvsp[-2].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1945 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1943 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 65:
-#line 406 "SimpleScript.y" /* yacc.c:1652  */
+#line 404 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										(yyval.statementVal) = new ConditionalStatement(std::shared_ptr<OperationExpression>((yyvsp[-4].operationExpressionVal)), 
 												std::shared_ptr<StatementsList>((yyvsp[-2].statementsListVal)), std::shared_ptr<StatementsList>((yyvsp[0].statementsListVal)));
 									}
-#line 1954 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1952 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 66:
-#line 412 "SimpleScript.y" /* yacc.c:1652  */
+#line 410 "SimpleScript.y" /* yacc.c:1652  */
     { (yyval.statementsListVal) = (yyvsp[-1].statementsListVal); }
-#line 1960 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1958 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 67:
-#line 413 "SimpleScript.y" /* yacc.c:1652  */
+#line 411 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										StatementsList* stmtsList = new StatementsList();
 										stmtsList->add(std::shared_ptr<Statement>((yyvsp[0].statementVal)));
 
 										(yyval.statementsListVal) = stmtsList;
 									}
-#line 1971 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1969 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 68:
-#line 421 "SimpleScript.y" /* yacc.c:1652  */
+#line 419 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier(*((yyvsp[-2].identifierVal)), (yyvsp[0].stringVal));
 										(yyval.identifierVal) = id;
@@ -1979,11 +1977,11 @@ yyreduce:
 										delete (yyvsp[-2].identifierVal);
 										delete [] (yyvsp[0].stringVal);
 									}
-#line 1983 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1981 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 69:
-#line 428 "SimpleScript.y" /* yacc.c:1652  */
+#line 426 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier(*((yyvsp[-3].identifierVal)), (yyvsp[-1].stringVal));
 										(yyval.identifierVal) = id;
@@ -1991,21 +1989,21 @@ yyreduce:
 										delete (yyvsp[-3].identifierVal);
 										delete [] (yyvsp[-1].stringVal);
 									}
-#line 1995 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 1993 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
   case 70:
-#line 435 "SimpleScript.y" /* yacc.c:1652  */
+#line 433 "SimpleScript.y" /* yacc.c:1652  */
     { 
 										Identifier* id = new Identifier((yyvsp[0].stringVal));
 										(yyval.identifierVal) = id;
 										delete [] (yyvsp[0].stringVal);
 									}
-#line 2005 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 2003 "SimpleScript.tab.cpp" /* yacc.c:1652  */
     break;
 
 
-#line 2009 "SimpleScript.tab.cpp" /* yacc.c:1652  */
+#line 2007 "SimpleScript.tab.cpp" /* yacc.c:1652  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2236,5 +2234,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 443 "SimpleScript.y" /* yacc.c:1918  */
+#line 441 "SimpleScript.y" /* yacc.c:1918  */
 

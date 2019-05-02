@@ -837,13 +837,13 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 36 "SimpleScript.l"
-{ /* single line comment, ignore */cout << "single line comment, ignore" << endl; }
+{ /* single line comment, ignore */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
 #line 37 "SimpleScript.l"
-{ /* multiple line comment, ignore */ cout << "multiple line comment, ignore" << endl; }
+{ /* multiple line comment, ignore */ }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
@@ -1030,7 +1030,7 @@ case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
 #line 79 "SimpleScript.l"
-{ yylval.stringVal = _strdup(yytext); return STRING; }
+{ yylval.stringVal = _strdup(yytext); return STRING_T; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP

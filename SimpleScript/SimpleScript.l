@@ -33,8 +33,8 @@ string \"(\\.|[^"\\])*\"
 
 %%
 
-"\/\/"[^\r\n]*              { /* single line comment, ignore */cout << "single line comment, ignore" << endl; }
-"/*"([^*]|(\*+[^*/]))*\*+\/ { /* multiple line comment, ignore */ cout << "multiple line comment, ignore" << endl; }
+"\/\/"[^\r\n]*              { /* single line comment, ignore */ }
+"/*"([^*]|(\*+[^*/]))*\*+\/ { /* multiple line comment, ignore */ }
 [ \t\n\r;]                  { /* whitespace, ignore */  }
 "+"                         { return PLUS; }
 "-"                         { return MINUS; }
@@ -76,7 +76,7 @@ string \"(\\.|[^"\\])*\"
 
 {identifier}    { yylval.stringVal = _strdup(yytext); return IDENTIFIER; }
 
-{string}        { yylval.stringVal = _strdup(yytext); return STRING; }
+{string}        { yylval.stringVal = _strdup(yytext); return STRING_T; }
 
 .               { yyerror("undefined token", yytext[0]); yyterminate(); }
 

@@ -357,7 +357,6 @@ function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS paramet
 										$$ = new FunctionDeclarationStatement(std::shared_ptr<Function>(functionPtr), 
 											std::shared_ptr<Identifier>(new Identifier($2)));
 
-										delete [] $2;
 									}
                                 | FUNCTION_T OPEN_PARENTHESIS parameters_list CLOSE_PARENTHESIS function_body { 
 										Function* functionPtr = new Function(std::shared_ptr<ParametersList>($3), 
@@ -369,7 +368,6 @@ function_declaration_statement  : FUNCTION_T IDENTIFIER OPEN_PARENTHESIS paramet
                                 ;
 
 parameters_list                 : /* empty parameters list */ { 
-										cout<< "program start" << endl; 
 										ParametersList* paramsList = new ParametersList();
 										$$ = paramsList;
 									}
