@@ -9,14 +9,17 @@
 #include <string>
 using namespace std;
 
-void Program::generateEmbeddedConstructs(Object& scope) {
+#define PARAM_NAME "x"
+#define LOG_FUNCTION_NAME "log"
+
+Function Program::generateLogFunction() {
 	ParametersList* paramsListPtr = new ParametersList();
 
-	string paramName = "x";
+	string paramName = PARAM_NAME;
 	paramsListPtr->add(paramName);
 
 	Identifier* id = new Identifier(paramName);
-	IdentifierExpression* ie = 
+	IdentifierExpression* ie =
 		new IdentifierExpression(shared_ptr<Identifier>(id));
 
 	LogStatement* stmt = new LogStatement(shared_ptr<IdentifierExpression>(ie));
@@ -24,12 +27,16 @@ void Program::generateEmbeddedConstructs(Object& scope) {
 	StatementsList* stmtsListPtr = new StatementsList();
 	stmtsListPtr->add(shared_ptr<Statement>(stmt));
 
-	Function funct = Function(shared_ptr<ParametersList>(paramsListPtr), 
+	Function funct = Function(shared_ptr<ParametersList>(paramsListPtr),
 		shared_ptr<StatementsList>(stmtsListPtr));
 
-	string functionName = "log";
+	return funct;
+}
+
+void Program::generateEmbeddedConstructs(Object& scope) {
+	string functionName = LOG_FUNCTION_NAME;
 	Identifier functionId =  Identifier(functionName);
-	scope.getFunction(functionId) = funct;
+	scope.getFunction(functionId) = generateLogFunction();
 }
 
 void Program::evaluate() {

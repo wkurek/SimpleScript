@@ -14,6 +14,8 @@ public:
 	Program(shared_ptr<StatementsList> slPtr)
 		: statementsListPtr(move(slPtr)) {}
 
+	Function generateLogFunction();
+
 	void generateEmbeddedConstructs(Object&);
 	void evaluate();
 };
