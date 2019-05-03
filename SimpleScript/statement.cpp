@@ -22,7 +22,7 @@ void StatementsList::evaluate(Object& scope) {
 void ConditionalStatement::evaluate(Object& scope) {
     if(this->conditionExpressionPtr->evaluate(scope)) {
         (*(this->trueStatementListPtr)).evaluate(scope);
-    } {
+    } else if (this->falseStatementListPtr != nullptr) {
 		(*(this->falseStatementListPtr)).evaluate(scope);
     }
 }

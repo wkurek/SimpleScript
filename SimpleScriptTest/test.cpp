@@ -17,6 +17,8 @@
 #include "../SimpleScript/statement.cpp"
 #include "../SimpleScript/assignment.h"
 #include "../SimpleScript/assignment.cpp"
+#include "../SimpleScript/property.h"
+#include "../SimpleScript/property.cpp"
 
 #include <string>
 #include <memory>
@@ -336,24 +338,27 @@ TEST(OperationExpression, Should_Assign_Constant_To_Variable_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression = 
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable result = aExpressionAssignment.evaluate(globalScope);
 
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
 }
 
 
@@ -365,20 +370,24 @@ TEST(OperationExpression, Should_Assign_Addition_Constant_To_Variable_Properly) 
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression = 
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Identifier bIdentifier = Identifier("b");
-	Variable sumVariable = Variable(INTEGER_VALUE_B);
+	std::shared_ptr<Identifier> bIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("b"));
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable sumVariable = Variable(bPrimitive);
 	ConstantExpression sumConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(sumVariable)));
 
@@ -386,7 +395,7 @@ TEST(OperationExpression, Should_Assign_Addition_Constant_To_Variable_Properly) 
 
 
 	OperationExpressionAssignment bExpressionAssignment =
-		OperationExpressionAssignment(bIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(bIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(sumConstantExpression)), 
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)))));
@@ -394,18 +403,18 @@ TEST(OperationExpression, Should_Assign_Addition_Constant_To_Variable_Properly) 
 	Variable result = bExpressionAssignment.evaluate(globalScope);
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(bIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(bIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*bIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*bIdentifier).isInteger());
 
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
 
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
-	EXPECT_EQ(globalScope.getPrimitive(bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 }
 
 TEST(OperationExpression, Should_Assign_Subtraction_From_Self) {
@@ -416,19 +425,21 @@ TEST(OperationExpression, Should_Assign_Subtraction_From_Self) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
 
-	Variable variable1 = Variable(INTEGER_VALUE_A);
+	Primitive primitive1 = Primitive(INTEGER_VALUE_A);
+	Variable variable1 = Variable(primitive1);
 	ConstantExpression constantExpression1 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable1)));
 
-	Variable variable2 = Variable(INTEGER_VALUE_B);
+	Primitive primitive2 = Primitive(INTEGER_VALUE_B);
+	Variable variable2 = Variable(primitive2);
 	ConstantExpression constantExpression2 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable2)));
 
 
 	OperationExpressionAssignment expressionAssignment1 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Multiplication(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression1)),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression2)))));
@@ -437,9 +448,9 @@ TEST(OperationExpression, Should_Assign_Subtraction_From_Self) {
 
 
 	OperationExpressionAssignment expressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Subtraction(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression1)))));
 
 	Variable result = expressionAssignment2.evaluate(globalScope);
@@ -449,12 +460,12 @@ TEST(OperationExpression, Should_Assign_Subtraction_From_Self) {
 	EXPECT_TRUE(firstAssignmentResult.isPrimitive());
 	EXPECT_TRUE(result.isPrimitive());
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 
 	EXPECT_EQ(firstAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A * INTEGER_VALUE_B);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), 
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), 
 		(INTEGER_VALUE_A * INTEGER_VALUE_B) - INTEGER_VALUE_A);
 
 }
@@ -466,19 +477,21 @@ TEST(OperationExpression, Should_Assign_Constants_Multiplication) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
 
-	Variable variable1 = Variable(INTEGER_VALUE_A);
+	Primitive primitive1 = Primitive(INTEGER_VALUE_A);
+	Variable variable1 = Variable(primitive1);
 	ConstantExpression constantExpression1 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable1)));
 
-	Variable variable2 = Variable(INTEGER_VALUE_B);
+	Primitive primitive2 = Primitive(INTEGER_VALUE_B);
+	Variable variable2 = Variable(primitive2);
 	ConstantExpression constantExpression2 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable2)));
 
 
 	OperationExpressionAssignment expressionAssignment1 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Multiplication(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression1)),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression2)))));
@@ -487,8 +500,8 @@ TEST(OperationExpression, Should_Assign_Constants_Multiplication) {
 
 	EXPECT_TRUE(result.isPrimitive());
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A * INTEGER_VALUE_B);
@@ -504,66 +517,72 @@ TEST(OperationExpression, Should_Assign_Variables_Subtraction_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
+	 
+	std::shared_ptr<Identifier> bIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("b"));
 
-	Identifier bIdentifier = Identifier("b");
-	Variable sumVariable = Variable(INTEGER_VALUE_B);
+	Primitive sumPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable sumVariable = Variable(sumPrimitive);
 	ConstantExpression sumConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(sumVariable)));
 
-	IdentifierExpression aIdExpression = IdentifierExpression(aIdentifier);
+	IdentifierExpression aIdExpression = IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier));
 
 
 	OperationExpressionAssignment bExpressionAssignment =
-		OperationExpressionAssignment(bIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(bIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(sumConstantExpression)),
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)))));
 
 	Variable bAssignmentResult = bExpressionAssignment.evaluate(globalScope);
 
-	Identifier cIdentifier = Identifier("c");
+	std::shared_ptr<Identifier> cIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("c"));
 
 	OperationExpressionAssignment cExpressionAssignment =
-		OperationExpressionAssignment(cIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(cIdentifier),
 			std::shared_ptr<OperationExpression>(new Multiplication(
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)),
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(bIdentifier)))));
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(bIdentifier))))));
 
 	Variable result = cExpressionAssignment.evaluate(globalScope);
 
 
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 	EXPECT_TRUE(bAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(bIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(bIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*bIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*bIdentifier).isInteger());
 
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(cIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(cIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*cIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*cIdentifier).isInteger());
 
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
 	EXPECT_EQ(bAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 	
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A * (INTEGER_VALUE_A + INTEGER_VALUE_B));
-	EXPECT_EQ(globalScope.getPrimitive(cIdentifier).getInteger(), INTEGER_VALUE_A * (INTEGER_VALUE_A + INTEGER_VALUE_B));
+	EXPECT_EQ(globalScope.getPrimitive(*cIdentifier).getInteger(), INTEGER_VALUE_A * (INTEGER_VALUE_A + INTEGER_VALUE_B));
 }
 
 TEST(OperationExpression, Should_Increment_Variable_Properly) {
@@ -574,38 +593,41 @@ TEST(OperationExpression, Should_Increment_Variable_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment expressionAssignment1 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable assignmentResult = expressionAssignment1.evaluate(globalScope);
 
-	Variable one = Variable(1);
+	Primitive onePrimitive = Primitive(1);
+	Variable one = Variable(onePrimitive);
 	ConstantExpression oneConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
 	OperationExpressionAssignment expressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)))));
 
 	Variable result = expressionAssignment2.evaluate(globalScope);
 
 	EXPECT_TRUE(assignmentResult.isPrimitive());
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 	EXPECT_EQ(assignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A + 1);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A + 1);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A + 1);
 }
 
 TEST(OperationExpression, Should_Negate_Variable_Properly) {
@@ -616,19 +638,21 @@ TEST(OperationExpression, Should_Negate_Variable_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
 
-	Variable variable1 = Variable(INTEGER_VALUE_A);
+	Primitive primitive1 = Primitive(INTEGER_VALUE_A);
+	Variable variable1 = Variable(primitive1);
 	ConstantExpression constantExpression1 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable1)));
 
-	Variable variable2 = Variable(INTEGER_VALUE_B);
+	Primitive primitive2 = Primitive(INTEGER_VALUE_B);
+	Variable variable2 = Variable(primitive2);
 	ConstantExpression constantExpression2 =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(variable2)));
 
 
 	OperationExpressionAssignment expressionAssignment1 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Multiplication(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression1)),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression2)))));
@@ -637,9 +661,9 @@ TEST(OperationExpression, Should_Negate_Variable_Properly) {
 
 
 	OperationExpressionAssignment expressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Negation(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)))));
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))))));
 
 	Variable result = expressionAssignment2.evaluate(globalScope);
 
@@ -647,12 +671,12 @@ TEST(OperationExpression, Should_Negate_Variable_Properly) {
 	EXPECT_TRUE(firstAssignmentResult.isPrimitive());
 	EXPECT_TRUE(result.isPrimitive());
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 
 	EXPECT_EQ(firstAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A * INTEGER_VALUE_B);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(),
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(),
 		-(INTEGER_VALUE_A * INTEGER_VALUE_B));
 }
 
@@ -664,7 +688,7 @@ TEST(OperationExpression, Should_Logically_Negate_Boolean_Variable_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
 
 	Variable variable1 = Variable(BOOLEAN_VALUE_TRUE);
 	ConstantExpression constantExpression1 =
@@ -672,16 +696,16 @@ TEST(OperationExpression, Should_Logically_Negate_Boolean_Variable_Properly) {
 
 
 	OperationExpressionAssignment expressionAssignment1 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(constantExpression1)));
 
 	Variable firstAssignmentResult = expressionAssignment1.evaluate(globalScope);
 
 
 	OperationExpressionAssignment expressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new LogicalNot(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)))));
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))))));
 
 	Variable result = expressionAssignment2.evaluate(globalScope);
 
@@ -689,12 +713,12 @@ TEST(OperationExpression, Should_Logically_Negate_Boolean_Variable_Properly) {
 	EXPECT_TRUE(firstAssignmentResult.isPrimitive());
 	EXPECT_TRUE(result.isPrimitive());
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isBoolean());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isBoolean());
 
 
 	EXPECT_EQ(firstAssignmentResult.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getBoolean(), BOOLEAN_VALUE_FALSE);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getBoolean(), BOOLEAN_VALUE_FALSE);
 }
 
 TEST(OperationExpression, Should_Compare_Variables_Properly) {
@@ -706,66 +730,71 @@ TEST(OperationExpression, Should_Compare_Variables_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Identifier bIdentifier = Identifier("b");
-	Variable sumVariable = Variable(INTEGER_VALUE_B);
+	std::shared_ptr<Identifier> bIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("b"));
+
+	Primitive sumPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable sumVariable = Variable(sumPrimitive);
 	ConstantExpression sumConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(sumVariable)));
 
-	IdentifierExpression aIdExpression = IdentifierExpression(aIdentifier);
+	IdentifierExpression aIdExpression = IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier));
 
 
 	OperationExpressionAssignment bExpressionAssignment =
-		OperationExpressionAssignment(bIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(bIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(sumConstantExpression)),
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)))));
 
 	Variable bAssignmentResult = bExpressionAssignment.evaluate(globalScope);
 
-	Identifier cIdentifier = Identifier("c");
+	Identifier* cIdentifier = new Identifier("c");
 
 	OperationExpressionAssignment cExpressionAssignment =
-		OperationExpressionAssignment(cIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(cIdentifier),
 			std::shared_ptr<OperationExpression>(new GreaterThanOrEqualTo(
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)),
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(bIdentifier)))));
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(bIdentifier))))));
 
 	Variable result = cExpressionAssignment.evaluate(globalScope);
 
 
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 	EXPECT_TRUE(bAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(bIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(bIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*bIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*bIdentifier).isInteger());
 
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(cIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(cIdentifier).isBoolean());
+	EXPECT_TRUE(globalScope.hasPrimitive(*cIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*cIdentifier).isBoolean());
 
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
 	EXPECT_EQ(bAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*bIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 
 	EXPECT_EQ(result.getPrimitive().getBoolean(), BOOLEAN_VALUE_FALSE);
-	EXPECT_EQ(globalScope.getPrimitive(cIdentifier).getBoolean(), BOOLEAN_VALUE_FALSE);
+	EXPECT_EQ(globalScope.getPrimitive(*cIdentifier).getBoolean(), BOOLEAN_VALUE_FALSE);
 }
 
 TEST(OperationExpression, Should_Compare_Variable_And_Constant_Properly) {
@@ -776,23 +805,26 @@ TEST(OperationExpression, Should_Compare_Variable_And_Constant_Properly) {
 
 	Object globalScope = Object();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(std::shared_ptr<Identifier>(aIdentifier)),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Identifier bIdentifier = Identifier("b");
-	IdentifierExpression aIdExpression = IdentifierExpression(aIdentifier);
+	std::shared_ptr<Identifier> bIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("b"));
+	IdentifierExpression aIdExpression = IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier));
 
 	OperationExpressionAssignment bExpressionAssignment =
-		OperationExpressionAssignment(bIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(bIdentifier),
 			std::shared_ptr<OperationExpression>(new Equals(
 				std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)),
 				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdExpression)))));
@@ -800,19 +832,19 @@ TEST(OperationExpression, Should_Compare_Variable_And_Constant_Properly) {
 	Variable result = bExpressionAssignment.evaluate(globalScope);
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
 
 	EXPECT_TRUE(result.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(bIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(bIdentifier).isBoolean());
+	EXPECT_TRUE(globalScope.hasPrimitive(*bIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*bIdentifier).isBoolean());
 
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
 
 	EXPECT_EQ(result.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
-	EXPECT_EQ(globalScope.getPrimitive(bIdentifier).getBoolean(), BOOLEAN_VALUE_TRUE);
+	EXPECT_EQ(globalScope.getPrimitive(*bIdentifier).getBoolean(), BOOLEAN_VALUE_TRUE);
 }
 
 /* STATEMENTS */
@@ -824,15 +856,18 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_True_Condition) {
 
 	Object globalScope = Object();
 
-	StatementsList trueStatementsList = StatementsList();
+	StatementsList* trueStatementsList = new StatementsList();
 
-		Identifier aIdentifier = Identifier("a");
-		Variable aVariable = Variable(INTEGER_VALUE_A);
+		std::shared_ptr<Identifier> aIdentifier = 
+			std::shared_ptr<Identifier>(new Identifier("a"));
+
+		Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+		Variable aVariable = Variable(aPrimitive);
 		ConstantExpression aConstantExpression =
 			ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 		OperationExpressionAssignment aExpressionAssignment =
-			OperationExpressionAssignment(aIdentifier,
+			OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 		ExpressionStatement expressionStatement = ExpressionStatement(
@@ -840,7 +875,7 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_True_Condition) {
 				new OperationExpressionAssignment(aExpressionAssignment))
 		);
 
-	trueStatementsList.add(
+	trueStatementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 
 	ConstantExpression condition = ConstantExpression(
@@ -850,15 +885,15 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_True_Condition) {
 	ConditionalStatement conditionalStatement = ConditionalStatement(
 		std::shared_ptr<OperationExpression>(
 			new ConstantExpression(condition)),
-		trueStatementsList
+		std::shared_ptr<StatementsList>(trueStatementsList)
 	);
 
 	conditionalStatement.evaluate(globalScope);
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
 }
 
 TEST(ConditionalStatement, Should_Not_Execute_Positive_Block_When_Condition_Evaluates_To_False) {
@@ -869,34 +904,37 @@ TEST(ConditionalStatement, Should_Not_Execute_Positive_Block_When_Condition_Eval
 
 	Object globalScope = Object();
 
-	StatementsList trueStatementsList = StatementsList();
+	StatementsList* trueStatementsList = new StatementsList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Variable bVariable = Variable(INTEGER_VALUE_B);
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable bVariable = Variable(bPrimitive);
 	ConstantExpression bConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(bVariable)));
 
 	GreaterThan condition = GreaterThan(
-		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 		std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 	);
 
 	Variable conditionResult = condition.evaluate(globalScope);
 
 	OperationExpressionAssignment aExpressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 			)));
 
@@ -907,26 +945,26 @@ TEST(ConditionalStatement, Should_Not_Execute_Positive_Block_When_Condition_Eval
 			new OperationExpressionAssignment(aExpressionAssignment2))
 	);
 
-	trueStatementsList.add(
+	trueStatementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 
 
 	ConditionalStatement conditionalStatement = ConditionalStatement(
 		std::shared_ptr<OperationExpression>(
 			new GreaterThan(condition)),
-		trueStatementsList
+		std::shared_ptr<StatementsList>(trueStatementsList)
 	);
 
 	conditionalStatement.evaluate(globalScope);
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 	EXPECT_TRUE(conditionResult.getPrimitive().isBoolean());
 
 	EXPECT_EQ(conditionResult.getPrimitive().getBoolean(), BOOLEAN_VALUE_FALSE);
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A);
 }
 
 
@@ -934,38 +972,43 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_Condition_Evaluate
 	/*
 		a = 12
 		if ( a <= 13 ) { a = a + 13 }
+		else {  }
 	*/
 
 	Object globalScope = Object();
 
-	StatementsList trueStatementsList = StatementsList();
+	StatementsList* trueStatementsList = new StatementsList();
+	StatementsList* falseStatementsList = new StatementsList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Variable bVariable = Variable(INTEGER_VALUE_B);
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable bVariable = Variable(bPrimitive);
 	ConstantExpression bConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(bVariable)));
 
 	LessThanOrEqualTo condition = LessThanOrEqualTo(
-		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 		std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 	);
 
 	Variable conditionResult = condition.evaluate(globalScope);
 
 	OperationExpressionAssignment aExpressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 			)));
 
@@ -976,26 +1019,26 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_Condition_Evaluate
 			new OperationExpressionAssignment(aExpressionAssignment2))
 	);
 
-	trueStatementsList.add(
+	trueStatementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 
 
 	ConditionalStatement conditionalStatement = ConditionalStatement(
 		std::shared_ptr<OperationExpression>(
 			new LessThanOrEqualTo(condition)),
-		trueStatementsList
+		std::shared_ptr<StatementsList>(trueStatementsList)
 	);
 
 	conditionalStatement.evaluate(globalScope);
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 	EXPECT_TRUE(conditionResult.getPrimitive().isBoolean());
 
 	EXPECT_EQ(conditionResult.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A + INTEGER_VALUE_B);
 }
 
 TEST(ConditionalStatement, Should_Execute_False_Block_When_Condition_Evaluates_To_False) {
@@ -1007,35 +1050,38 @@ TEST(ConditionalStatement, Should_Execute_False_Block_When_Condition_Evaluates_T
 
 	Object globalScope = Object();
 
-	StatementsList trueStatementsList = StatementsList();
-	StatementsList falseStatementsList = StatementsList();
+	StatementsList* trueStatementsList = new StatementsList();
+	StatementsList* falseStatementsList = new StatementsList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Variable bVariable = Variable(INTEGER_VALUE_B);
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable bVariable = Variable(bPrimitive);
 	ConstantExpression bConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(bVariable)));
 
 	GreaterThan condition = GreaterThan(
-		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 		std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 	);
 
 	Variable conditionResult = condition.evaluate(globalScope);
 
 	OperationExpressionAssignment aExpressionAssignment2 =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Multiplication(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 			)));
 
@@ -1046,27 +1092,27 @@ TEST(ConditionalStatement, Should_Execute_False_Block_When_Condition_Evaluates_T
 			new OperationExpressionAssignment(aExpressionAssignment2))
 	);
 
-	falseStatementsList.add(
+	falseStatementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 
 
 	ConditionalStatement conditionalStatement = ConditionalStatement(
 		std::shared_ptr<OperationExpression>(
 			new GreaterThan(condition)),
-		trueStatementsList,
-		falseStatementsList
+		std::shared_ptr<StatementsList>(trueStatementsList),
+		std::shared_ptr<StatementsList>(falseStatementsList)
 	);
 
 	conditionalStatement.evaluate(globalScope);
 
 	EXPECT_TRUE(constantAssignmentResult.isPrimitive());
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 	EXPECT_TRUE(conditionResult.getPrimitive().isBoolean());
 
 	EXPECT_EQ(conditionResult.getPrimitive().getBoolean(), BOOLEAN_VALUE_FALSE);
 	EXPECT_EQ(constantAssignmentResult.getPrimitive().getInteger(), INTEGER_VALUE_A);
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_A * INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_A * INTEGER_VALUE_B);
 }
 
 
@@ -1074,7 +1120,8 @@ TEST(ReturnStatement, Should_Throw_ReturnVariable_Exception) {
 
 	Object globalScope = Object();
 
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
@@ -1093,7 +1140,8 @@ TEST(ReturnStatement, Should_Throw_Filled_ReturnVariable_Exception) {
 
 	Object globalScope = Object();
 
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
@@ -1120,36 +1168,41 @@ TEST(IterationStatement, Should_Iterate_While_Condition_Is_True) {
 
 	Object globalScope = Object();
 
-	StatementsList statementsList = StatementsList();
+	StatementsList* statementsList = new StatementsList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Variable bVariable = Variable(INTEGER_VALUE_B);
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable bVariable = Variable(bPrimitive);
 	ConstantExpression bConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(bVariable)));
 
 	LessThan condition = LessThan(
-		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 		std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 	);
 
-	Variable one = Variable(1);
+	Primitive onePrimitive = Primitive(1);
+	Variable one = Variable(onePrimitive);
 	ConstantExpression oneConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
 	OperationExpressionAssignment loopExpression =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)))));
 
 	ExpressionStatement expressionStatement = ExpressionStatement(
@@ -1157,21 +1210,21 @@ TEST(IterationStatement, Should_Iterate_While_Condition_Is_True) {
 			new OperationExpressionAssignment(loopExpression))
 	);
 
-	statementsList.add(
+	statementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 
 
 	IterationStatement iterationStatement = IterationStatement(
 		std::shared_ptr<OperationExpression>(new LessThan(condition)),
-		statementsList
+		std::shared_ptr<StatementsList>(statementsList)
 	);
 
 	iterationStatement.evaluate(globalScope);
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_B);
 }
 
 TEST(IterationStatement, Should_Iterate_Certain_number_Of_Times) {
@@ -1185,36 +1238,41 @@ TEST(IterationStatement, Should_Iterate_Certain_number_Of_Times) {
 
 	Object globalScope = Object();
 
-	StatementsList statementsList = StatementsList();
+	StatementsList* statementsList = new StatementsList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	Variable constantAssignmentResult = aExpressionAssignment.evaluate(globalScope);
 
-	Variable bVariable = Variable(INTEGER_VALUE_B);
+	Primitive bPrimitive = Primitive(INTEGER_VALUE_B);
+	Variable bVariable = Variable(bPrimitive);
 	ConstantExpression bConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(bVariable)));
 
 	LessThan condition = LessThan(
-		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+		std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 		std::shared_ptr<OperationExpression>(new ConstantExpression(bConstantExpression))
 	);
 
-	Variable one = Variable(1);
+	Primitive onePrimitive = Primitive(1);
+	Variable one = Variable(onePrimitive);
 	ConstantExpression oneConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(one)));
 
 	OperationExpressionAssignment loopExpression =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new Addition(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)))));
 
 	ExpressionStatement expressionStatement = ExpressionStatement(
@@ -1222,12 +1280,13 @@ TEST(IterationStatement, Should_Iterate_Certain_number_Of_Times) {
 			new OperationExpressionAssignment(loopExpression))
 	);
 
-	Identifier bIdentifier = Identifier("b");
+	std::shared_ptr<Identifier> bIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("b"));
 
 	OperationExpressionAssignment loopExpression1 =
-		OperationExpressionAssignment(bIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(bIdentifier),
 			std::shared_ptr<OperationExpression>(new Subtraction(
-				std::shared_ptr<OperationExpression>(new IdentifierExpression(bIdentifier)),
+				std::shared_ptr<OperationExpression>(new IdentifierExpression(std::shared_ptr<Identifier>(bIdentifier))),
 				std::shared_ptr<OperationExpression>(new ConstantExpression(oneConstantExpression)))));
 
 	ExpressionStatement expressionStatement1 = ExpressionStatement(
@@ -1235,28 +1294,28 @@ TEST(IterationStatement, Should_Iterate_Certain_number_Of_Times) {
 			new OperationExpressionAssignment(loopExpression1))
 	);
 
-	statementsList.add(
+	statementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement)));
 	
-	statementsList.add(
+	statementsList->add(
 		std::shared_ptr<Statement>(new ExpressionStatement(expressionStatement1)));
 
 
 	IterationStatement iterationStatement = IterationStatement(
 		std::shared_ptr<OperationExpression>(new LessThan(condition)),
-		statementsList
+		std::shared_ptr<StatementsList>(statementsList)
 	);
 
 	iterationStatement.evaluate(globalScope);
 
-	EXPECT_TRUE(globalScope.hasPrimitive(aIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(aIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*aIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*aIdentifier).isInteger());
 
-	EXPECT_TRUE(globalScope.hasPrimitive(bIdentifier));
-	EXPECT_TRUE(globalScope.getPrimitive(bIdentifier).isInteger());
+	EXPECT_TRUE(globalScope.hasPrimitive(*bIdentifier));
+	EXPECT_TRUE(globalScope.getPrimitive(*bIdentifier).isInteger());
 
-	EXPECT_EQ(globalScope.getPrimitive(aIdentifier).getInteger(), INTEGER_VALUE_B);
-	EXPECT_EQ(globalScope.getPrimitive(bIdentifier).getInteger(), -(INTEGER_VALUE_B - INTEGER_VALUE_A));
+	EXPECT_EQ(globalScope.getPrimitive(*aIdentifier).getInteger(), INTEGER_VALUE_B);
+	EXPECT_EQ(globalScope.getPrimitive(*bIdentifier).getInteger(), -(INTEGER_VALUE_B - INTEGER_VALUE_A));
 }
 
 /* FUNCTION */
@@ -1271,9 +1330,10 @@ TEST(Function, Should_Be_SuccessFully_Constructed_With_No_Parameters) {
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
-	Identifier functionIdentifier = Identifier("doSomething");
+	Identifier* functionIdentifier = new Identifier("doSomething");
 
-	FunctionAssignment functionAssignemnt = FunctionAssignment(functionIdentifier, function);
+	FunctionAssignment functionAssignemnt = FunctionAssignment(
+		std::shared_ptr<Identifier>(functionIdentifier), function);
 
 	ExpressionStatement expressionStatement = ExpressionStatement(
 		std::shared_ptr<OperationExpression>(
@@ -1282,7 +1342,7 @@ TEST(Function, Should_Be_SuccessFully_Constructed_With_No_Parameters) {
 
 	expressionStatement.evaluate(globalScope);
 
-	EXPECT_TRUE(globalScope.hasFunction(functionIdentifier));
+	EXPECT_TRUE(globalScope.hasFunction(*functionIdentifier));
 }
 
 TEST(Function, Should_Be_Called_Successfully_When_Passed_Proper_Number_Of_Arguments) {
@@ -1304,8 +1364,8 @@ TEST(Function, Should_Be_Called_Successfully_When_Passed_Proper_Number_Of_Argume
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
-
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
@@ -1342,8 +1402,8 @@ TEST(Function, Should_Be_Called_Successfully_When_Passed_Greater_Number_Of_Argum
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
-
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
@@ -1383,8 +1443,8 @@ TEST(Function, Should_Throw_Exception_When_Passed_Not_Enough_Arguments) {
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
-
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
@@ -1404,13 +1464,16 @@ TEST(Function, Should_Create_Isolated_Scope) {
 	StatementsList statementsList = StatementsList();
 	ParametersList parametersList = ParametersList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	ExpressionStatement expressionAssignmentStatement = ExpressionStatement(
@@ -1430,9 +1493,12 @@ TEST(Function, Should_Create_Isolated_Scope) {
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
+	Identifier* functIdentifier = new Identifier("funct");
+
+	globalScope.getFunction(*functIdentifier) = function;
 
 	FunctionCallExpression functionCallExpression = FunctionCallExpression(
-		std::shared_ptr<Function>(new Function(function)),
+		std::shared_ptr<Identifier>(functIdentifier),
 		std::shared_ptr<ArgumentsList>(new ArgumentsList(argumentsList))
 	);
 
@@ -1443,7 +1509,7 @@ TEST(Function, Should_Create_Isolated_Scope) {
 
 	expressionStatement.evaluate(globalScope);
 
-	EXPECT_FALSE(globalScope.hasPrimitive(aIdentifier));
+	EXPECT_FALSE(globalScope.hasPrimitive(*aIdentifier));
 }
 
 TEST(Function, Should_Return_Variables_Properly) {
@@ -1453,13 +1519,16 @@ TEST(Function, Should_Return_Variables_Properly) {
 	StatementsList statementsList = StatementsList();
 	ParametersList parametersList = ParametersList();
 
-	Identifier aIdentifier = Identifier("a");
-	Variable aVariable = Variable(INTEGER_VALUE_A);
+	std::shared_ptr<Identifier> aIdentifier = 
+		std::shared_ptr<Identifier>(new Identifier("a"));
+
+	Primitive aPrimitive = Primitive(INTEGER_VALUE_A);
+	Variable aVariable = Variable(aPrimitive);
 	ConstantExpression aConstantExpression =
 		ConstantExpression(std::shared_ptr<Variable>(new Variable(aVariable)));
 
 	OperationExpressionAssignment aExpressionAssignment =
-		OperationExpressionAssignment(aIdentifier,
+		OperationExpressionAssignment(std::shared_ptr<Identifier>(aIdentifier),
 			std::shared_ptr<OperationExpression>(new ConstantExpression(aConstantExpression)));
 
 	ExpressionStatement expressionAssignmentStatement = ExpressionStatement(
@@ -1472,7 +1541,7 @@ TEST(Function, Should_Return_Variables_Properly) {
 			new ExpressionStatement(expressionAssignmentStatement))
 	);
 
-	IdentifierExpression aIdentifierExpression = IdentifierExpression(aIdentifier);
+	IdentifierExpression aIdentifierExpression = IdentifierExpression(std::shared_ptr<Identifier>(aIdentifier));
 
 	ReturnStatement returnStatement = ReturnStatement(
 		std::shared_ptr<OperationExpression>(new IdentifierExpression(aIdentifierExpression))
@@ -1490,9 +1559,13 @@ TEST(Function, Should_Return_Variables_Properly) {
 		std::shared_ptr<ParametersList>(new ParametersList(parametersList)),
 		std::shared_ptr<StatementsList>(new StatementsList(statementsList)));
 
+	Identifier* functIdentifier = new Identifier("funct");
+
+	globalScope.getFunction(*functIdentifier) = function;
+
 
 	FunctionCallExpression functionCallExpression = FunctionCallExpression(
-		std::shared_ptr<Function>(new Function(function)),
+		std::shared_ptr<Identifier>(functIdentifier),
 		std::shared_ptr<ArgumentsList>(new ArgumentsList(argumentsList))
 	);
 
