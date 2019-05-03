@@ -32,6 +32,10 @@ while (i > 0) {
   --i;
 }
 
-c = j;
+c = 12;
+
+if (c < 14) {
+  log("positive");
+}
 
 log(c);

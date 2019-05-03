@@ -972,11 +972,13 @@ TEST(ConditionalStatement, Should_Execute_Positive_Block_When_Condition_Evaluate
 	/*
 		a = 12
 		if ( a <= 13 ) { a = a + 13 }
+		else {  }
 	*/
 
 	Object globalScope = Object();
 
 	StatementsList* trueStatementsList = new StatementsList();
+	StatementsList* falseStatementsList = new StatementsList();
 
 	std::shared_ptr<Identifier> aIdentifier = std::shared_ptr<Identifier>(new Identifier("a"));
 

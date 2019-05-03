@@ -44,7 +44,7 @@ public:
 			falseStatementListPtr(move(falseStmtListPtr)) {}
 
     ConditionalStatement(shared_ptr<OperationExpression> oePtr, shared_ptr<StatementsList> trueStmtListPtr)
-        : conditionExpressionPtr(move(oePtr)), trueStatementListPtr(move(trueStmtListPtr)) {}
+        : conditionExpressionPtr(move(oePtr)), trueStatementListPtr(move(trueStmtListPtr)), falseStatementListPtr(nullptr) {}
 
 	virtual void evaluate(Object&);
 };
