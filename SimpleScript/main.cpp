@@ -1,51 +1,31 @@
 #include <iostream>
-#include "identifier.h"
 
-#include "object.h"
-#include "primitive.h"
-#include "function.h"
-#include "variable.h"
-#include "property.h"
-#include "operation_expression.h"
-#include "assignment.h"
+extern int yyparse();
+extern FILE* yyin;
 
 using namespace std;
 
-
-int main()
+int main(int argc, char** argv)
 {
-    Identifier identifier("parentName");
-    Identifier identifirChild(identifier, "childNameA");
-    Identifier identifirChild1(identifirChild, "childNameB2");
-    Identifier identifirChild2(identifier, "childNameA2");
+	if (argc <= 1) {
+		if (argv[0])
+			std::cerr << "Usage: " << argv[0] << " <file_path>" << std::endl;
+		else
+			std::cerr << "Usage: <program name> <file_path>" << std::endl;
 
-    Primitive a(71), b(10), c(true);
-    Object scope, var, var2;
-    string str = "abcdef";
+		exit(1);
+	} else if (argc > 1) {
+		fopen_s(&yyin, argv[1], "r+");
 
+		if (yyin == NULL) {
+			std::cerr << "error: could not open file \"" << argv[1] << "\" for reading" << std::endl;
+			std::cerr << "Usage: <program name> <file_path>" << std::endl;
+			
+			exit(1);
+		}
 
-    scope.getObject(identifier) = var;
-    scope.getObject(identifirChild) = var2;
-    scope.getPrimitive(identifirChild1) = str;
+		yyparse();
+	}
 
-    cout << scope.getObject(identifier) << endl;
-
-    //cout << scope.getObject(identifier)  << endl;
-
-    //cout << scope.getPrimitive(identifirChild1) << endl;
-    //scope.removeObject(identifirChild);
-    //cout << scope.getPrimitive(identifirChild1) << endl;
-
-    //Variable val(scope.getObject(identifier));
-    //cout << val.getObject() << endl;
-
-    //Property prop(str, val);
-    //cout << prop << endl;
-
-    PropertyList plist;
-//    plist.add(prop);
-
-//    Object obliteral = plist.generateObject();
-    //cout << obliteral << endl;
-    return 0;
+	return 0;
 }

@@ -156,12 +156,12 @@
     <ClCompile Include="exception.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="identifier.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="operation_expression.cpp" />
     <ClCompile Include="primitive.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="property.cpp" />
-    <ClCompile Include="SimpleScript.cpp" />
     <ClCompile Include="SimpleScript.flex.cpp" />
     <ClCompile Include="SimpleScript.tab.cpp" />
     <ClCompile Include="statement.cpp" />
