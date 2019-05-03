@@ -5,7 +5,7 @@ Prosty język skryptowy bazowany na języku JavaScript i pozwalający na wykonyw
 ## Gramatyka
 
 Specyfikacja gramatyki języka formlanego w [formacie EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form).
-Gramatyka języka pozwala na wykonywanie operacji arytmetycznych (dodawanie, odejmowanie, mnożenie, dzielenie i negacja) oraz operacji logicznych (`AND`, `OR`, `NOT`). Wspierane są liczby całkowite oraz zmiennoprzecinkowe, zmienne typu Boolean oraz łańcuchy znaków. Dostępny jest operator przypisania, preinkrementacji jak i predekrementacji.
+Gramatyka języka pozwala na wykonywanie operacji arytmetycznych (dodawanie, odejmowanie, mnożenie i dzielenie) oraz operacji logicznych (`AND`, `OR`, `NOT`). Wspierane są liczby całkowite oraz zmiennoprzecinkowe, zmienne typu Boolean oraz łańcuchy znaków. Dostępny jest operator przypisania, preinkrementacji jak i predekrementacji.
 Istnieje mozliwość definicji zmiennych oraz funkcji z zachowaniem globalnego/lokalnego zakresu (`scope`).
 Język umożliwia definiowanie obiektów w notacji zbliżonej do formatu JSON. Obiekty mogą zawierać inne obiekty oraz funkcje.
 Gramatyka umożliwia wykonywanie instrukcji warunkowych `if/else`, dostepne są operatory warunkowe (`==`, `!=`, `<=`, `<`, `>`, `>=`).

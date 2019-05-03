@@ -23,6 +23,8 @@ ExpressionStatement             = AssignmentExpression
 AssignmentExpression             = Identifier, "=", OperationExpression
                                 | Identifier, "=", FunctionDeclarationStatement
                                 | Identifier, "=", ObjectLiteral
+                                | "++", Identifier
+                                | "--", Identifier
                                 ;
 
 ObjectLiteral                   = "{", PropertiesNamesAndValues, "}"
@@ -57,8 +59,6 @@ OperationExpression             = "(", OperationExpression, ")"
                                 | OperationExpression, "*", OperationExpression
                                 | OperationExpression, "/", OperationExpression
                                 | "!", OperationExpression
-                                | "++", OperationExpression
-                                | "--", OperationExpression
                                 | FunctionCallExpression
                                 ;
 
@@ -109,7 +109,7 @@ Block                           = "{", StatementsList, "}"
                                 ;
 
 Identifier                      = Identifier, ".", Identifier (* object.property *)
-                                | Identifier, "[", (INTEGER | STRING), "]" (* object["field"] *)
+                                | Identifier, "[", STRING, "]" (* object["field"] *)
                                 | IDENTIFIER
                                 ;
 
