@@ -1,6 +1,19 @@
+y = 12;
+b12;
+
+log(y);
+
 var a = 1,
   b,
   c = false;
+
+
+function funct(a, b) {
+  if(a > b && b <= 99) return a+ b;
+  else if (b > 99) return "napis";
+  else return 777;
+}
+
 
 // dummy function
 function math(x, y, z) {
@@ -39,3 +52,7 @@ if (c < 14) {
 }
 
 log(c);
+
+log(funct(12, 9));
+log(funct(12, 890));
+log(funct(12, 15));

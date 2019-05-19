@@ -50,6 +50,6 @@ void Program::evaluate() {
 		cerr << parseException.what() << endl;
 	} 
 	catch (ReturnVariable returnVariable) {
-		cerr << "Program returned value" << returnVariable.getVariable() << endl;
+		cerr << "Program returned value:\t" << returnVariable.getVariable() << endl;
 	}
 }

@@ -66,6 +66,9 @@ class ReturnStatement : public Statement {
 public:
     ReturnStatement(shared_ptr<OperationExpression> exprPtr)
         : expressionPtr(move(exprPtr)) {}
+	
+	ReturnStatement()
+        : expressionPtr(nullptr) {}
 
 	virtual void evaluate(Object&);
 };

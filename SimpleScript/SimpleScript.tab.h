@@ -56,37 +56,38 @@ extern int yydebug;
     IDENTIFIER = 262,
     ASSIGN = 263,
     COLON = 264,
-    COMMA = 265,
-    OPEN_BRACE = 266,
-    CLOSE_BRACE = 267,
-    IF = 268,
-    WHILE = 269,
-    VAR = 270,
-    FUNCTION_T = 271,
-    RETURN = 272,
-    NO_ELSE = 273,
-    ELSE = 274,
-    AND = 275,
-    OR = 276,
-    LESS_THAN = 277,
-    LESS_EQUAL_THAN = 278,
-    GREATER_THAN = 279,
-    GREATER_EQUAL_THAN = 280,
-    EQUAL = 281,
-    NOT_EQUAL = 282,
-    PLUS = 283,
-    MINUS = 284,
-    ASTERISK = 285,
-    SLASH = 286,
-    INC = 287,
-    DEC = 288,
-    NOT = 289,
-    NO_FUNCTION_CALL = 290,
-    OPEN_PARENTHESIS = 291,
-    CLOSE_PARENTHESIS = 292,
-    DOT = 293,
-    OPEN_BRACKET = 294,
-    CLOSE_BRACKET = 295
+    SEMICOLON = 265,
+    COMMA = 266,
+    OPEN_BRACE = 267,
+    CLOSE_BRACE = 268,
+    IF = 269,
+    WHILE = 270,
+    VAR = 271,
+    FUNCTION_T = 272,
+    RETURN = 273,
+    NO_ELSE = 274,
+    ELSE = 275,
+    AND = 276,
+    OR = 277,
+    LESS_THAN = 278,
+    LESS_EQUAL_THAN = 279,
+    GREATER_THAN = 280,
+    GREATER_EQUAL_THAN = 281,
+    EQUAL = 282,
+    NOT_EQUAL = 283,
+    PLUS = 284,
+    MINUS = 285,
+    ASTERISK = 286,
+    SLASH = 287,
+    INC = 288,
+    DEC = 289,
+    NOT = 290,
+    NO_FUNCTION_CALL = 291,
+    OPEN_PARENTHESIS = 292,
+    CLOSE_PARENTHESIS = 293,
+    DOT = 294,
+    OPEN_BRACKET = 295,
+    CLOSE_BRACKET = 296
   };
 #endif
 
@@ -113,7 +114,7 @@ union YYSTYPE
 	OperationExpressionsList* operationExpressionsListVal;
 	ObjectLiteral* objectLiteralVal;
 
-#line 117 "SimpleScript.tab.h" /* yacc.c:1921  */
+#line 118 "SimpleScript.tab.h" /* yacc.c:1921  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -34,8 +34,18 @@ void IterationStatement::evaluate(Object& scope) {
 }
 
 void ReturnStatement::evaluate(Object& scope) {
-    throw ReturnVariable(shared_ptr<Variable>(
-		new Variable(this->expressionPtr->evaluate(scope))));
+	std::shared_ptr<Variable> variablePtr;
+
+	if (this->expressionPtr == nullptr) {
+		variablePtr = std::make_shared<Variable>();
+	}
+	else {
+		variablePtr = std::make_shared<Variable>(
+			this->expressionPtr->evaluate(scope));
+	}
+
+
+    throw ReturnVariable(variablePtr);
 }
 
 void FunctionDeclarationStatement::evaluate(Object& scope) {

@@ -63,6 +63,7 @@
 %token<stringVal> IDENTIFIER "IDENTIFIER"
 %token ASSIGN               "="
 %token COLON                ":"
+%token SEMICOLON            ";"
 %token COMMA                ","
 %token OPEN_BRACE           "{"
 %token CLOSE_BRACE          "}"
@@ -136,10 +137,10 @@ statement                       : expression_statement
                                 | conditional_statement
                                 ;
 
-expression_statement            : assignment_expression { 
+expression_statement            : assignment_expression delimiter { 
 										$$ = new ExpressionStatement(std::shared_ptr<OperationExpression>($1)); 
 									}
-                                | operation_expression { 
+                                | operation_expression delimiter { 
 										$$ = new ExpressionStatement(std::shared_ptr<OperationExpression>($1)); 
 									}
                                 ;
@@ -323,7 +324,7 @@ arguments_list                  : /* empty arguments list */ {
 argument                        : operation_expression { $$ = $1; }
                                 ;
 
-variable_declaration_statement  : VAR variable_declaration_list { 
+variable_declaration_statement  : VAR variable_declaration_list delimiter { 
 										$$ = new VariableDeclarationStatement(
 											std::shared_ptr<OperationExpressionsList>($2));
 									}
@@ -390,9 +391,12 @@ parameters_list                 : /* empty parameters list */ {
 function_body                   : OPEN_BRACE statements_list CLOSE_BRACE { $$ = $2; }
                                 ;
 
-return_statement                : RETURN operation_expression { 
+return_statement                : RETURN operation_expression delimiter { 
 										$$ = new ReturnStatement(std::shared_ptr<OperationExpression>($2));
 									}
+								| RETURN delimiter { 
+										$$ = new ReturnStatement();
+								}
                                 ;
 
 iteration_statement             : WHILE OPEN_PARENTHESIS operation_expression CLOSE_PARENTHESIS block { 
@@ -419,6 +423,9 @@ block                           : OPEN_BRACE statements_list CLOSE_BRACE { $$ = 
 										$$ = stmtsList;
 									}
                                 ;
+
+delimiter						: SEMICOLON
+								;
 
 identifier                      : identifier DOT IDENTIFIER { 
 										Identifier* id = new Identifier(*($1), $3);

@@ -35,7 +35,7 @@ string \"(\\.|[^"\\])*\"
 
 "\/\/"[^\r\n]*              { /* single line comment, ignore */ }
 "/*"([^*]|(\*+[^*/]))*\*+\/ { /* multiple line comment, ignore */ }
-[ \t\n\r;]                  { /* whitespace, ignore */  }
+[ \t\n\r]					{ /* whitespace, ignore */  }
 "+"                         { return PLUS; }
 "-"                         { return MINUS; }
 "*"                         { return ASTERISK; }
@@ -57,6 +57,7 @@ string \"(\\.|[^"\\])*\"
 "||"                        { return OR; }
 "&&"                        { return AND; }
 ":"                         { return COLON; }
+";"                         { return SEMICOLON; }
 ","                         { return COMMA; }
 "."                         { return DOT; }
 "{"                         { return OPEN_BRACE; }
