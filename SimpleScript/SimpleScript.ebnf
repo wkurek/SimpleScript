@@ -15,9 +15,8 @@ Statement                       = ExpressionStatement
                                 | CommentStatement
                                 ;
 
-ExpressionStatement             = AssignmentExpression
-                                | OperationExpression
-                                | FunctionCallExpression
+ExpressionStatement             = AssignmentExpression, DELIMITER
+                                | OperationExpression, DELIMITER
                                 ;
 
 AssignmentExpression             = Identifier, "=", OperationExpression
@@ -73,7 +72,7 @@ ArgumentsList                   = (*empty arguments list*)
 Argument                        = OperationExpression
                                 ;
 
-VariableDeclarationStatement    = VAR, VariableDeclarationList (* var a, b *)
+VariableDeclarationStatement    = VAR, VariableDeclarationList, DELIMITER (* var a, b; *)
                                 ;
 
 VariableDeclarationList         = VariableDeclarationList, ",", VariableDeclaration
@@ -95,7 +94,8 @@ ParametersList                  = (*empty parameters list*)
 FunctionBody                    = "{", StatementsList, "}"
                                 ;
 
-ReturnStatement                 = RETURN, OperationExpression
+ReturnStatement                 = RETURN, OperationExpression, DELIMITER
+ReturnStatement                 | RETURN, DELIMITER
                                 ;
 
 IterationStatement              = WHILE, "(", OperationExpression, ")", Block
@@ -160,4 +160,7 @@ SINGLE_LINE_COMMENT             = [^\r\n]*
                                 ;
 
 MULTIPLE_LINE_COMMENT           = ([^*]|(\*+[^*\/]))*
+                                ;
+
+DELIMITER                       = ";"
                                 ;

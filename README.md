@@ -10,6 +10,7 @@ Istnieje mozliwość definicji zmiennych oraz funkcji z zachowaniem globalnego/l
 Język umożliwia definiowanie obiektów w notacji zbliżonej do formatu JSON. Obiekty mogą zawierać inne obiekty oraz funkcje.
 Gramatyka umożliwia wykonywanie instrukcji warunkowych `if/else`, dostepne są operatory warunkowe (`==`, `!=`, `<=`, `<`, `>`, `>=`).
 Dostępna jest również instrukcja `while`.
+Instrukcje muszą byc kończone średnikiem `;`.
 
 W ramach języka zdefiniowana jest wbudowana, dostepna globalnie, funkcja `log()` pozwalająca na wyświetlanie danych w konsoli.
 
@@ -17,7 +18,7 @@ Istnieje możliwość wykorzystywanie komentarzy zarówno jedno jak i wielolinio
 
 [Zobacz całą gramatykę!](SimpleScript/SimpleScript.ebnf)
 
-Lexer zakłada pomijanie znaków białych oraz średnika (`[ \t\n\r;]`). W kontekście lexera pomijane są również komentarze, zarówno jedno jak i wieloliniowe.
+Lexer zakłada pomijanie znaków białych (`[ \t\n\r]`). W kontekście lexera pomijane są również komentarze, zarówno jedno jak i wieloliniowe.
 
 ## Przykłady użycia
 
