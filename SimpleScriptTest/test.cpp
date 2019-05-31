@@ -1738,3 +1738,47 @@ TEST(Parser, Should_Return_Valid_Boolean_Complex_Operation_Result) {
 	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isBoolean());
 	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getBoolean(), BOOLEAN_VALUE_FALSE);
 }
+
+TEST(Parser, Should_Construct_Simple_Object_From_JSON_Style_Literal) {
+	ostringstream inputStream;
+	inputStream << "var obj = { a: " << FLOAT_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; return obj.b;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A);
+}
+TEST(Parser, Should_Construct_Nested_Object_From_JSON_Style_Literal) {
+	ostringstream inputStream;
+	inputStream << "var obj = { a: " << FLOAT_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; obj2 = { obj: obj, c: true}; return obj2.obj.b;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A);
+}
+
+TEST(Parser, Should_Construct_Complex_Object_From_JSON_Style_Literal) {
+	ostringstream inputStream;
+	inputStream << "var obj = { a: " << FLOAT_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; obj2 = { obj: obj, c: function(x) { return x * 2; } }; return obj2.c(obj2.obj.b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A * 2);
+}
