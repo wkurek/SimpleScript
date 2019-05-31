@@ -291,6 +291,9 @@ operation_expression            : OPEN_PARENTHESIS operation_expression CLOSE_PA
 									}
                                 | NOT operation_expression { 
 										$$ = new LogicalNot(std::shared_ptr<OperationExpression>($2)); 
+									} 
+								| MINUS operation_expression { 
+										$$ = new Negation(std::shared_ptr<OperationExpression>($2)); 
 									}
                                 | function_call_expression { $$ = $1; }
                                 | identifier %prec NO_FUNCTION_CALL { 
