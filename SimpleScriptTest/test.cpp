@@ -1601,3 +1601,96 @@ TEST(Parser, YYPARSE_BASIC_TEST) {
 	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
 	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A);
 }
+TEST(Parser, Should_Fail_When_Wrongly_Placed_Semicolon) {
+	ostringstream inputStream;
+	inputStream << "var a =; " << INTEGER_VALUE_A << "; return a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_FAILITURE);
+}
+
+TEST(Parser, Should_Fail_When_Two_Semicolons) {
+	ostringstream inputStream;
+	inputStream << "var a = " << INTEGER_VALUE_A << ";; return a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_FAILITURE);
+}
+TEST(Parser, Should_Fail_When_Variable_Name_Starts_With_Number) {
+	ostringstream inputStream;
+	inputStream << "var 1a = " << INTEGER_VALUE_A << "; return 1a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_FAILITURE);
+}
+
+TEST(Parser, Should_Fail_When_Variable_Name_Starts_With_Symbol) {
+	ostringstream inputStream;
+	inputStream << "var @a = " << INTEGER_VALUE_A << "; return @a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_FAILITURE);
+}
+
+TEST(Parser, Should_Assign_Value_When_Valid_Variable_Name) {
+	ostringstream inputStream;
+	inputStream << "var a = " << INTEGER_VALUE_A << "; return a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A);
+}
+
+TEST(Parser, Should_Assign_Boolean_Value_When_Valid_Variable_Name) {
+	ostringstream inputStream;
+	inputStream << "var a = true; return a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isBoolean());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
+}
+TEST(Parser, Should_Assign_Float_Value_When_Valid_Variable_Name) {
+	ostringstream inputStream;
+	inputStream << "var a = " << FLOAT_MINUS_VALUE << "; return a;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_MINUS_VALUE);
+}
