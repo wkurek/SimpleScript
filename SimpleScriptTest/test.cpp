@@ -25,6 +25,7 @@
 #include "../SimpleScript/SimpleScript.tab.cpp"
 #include "../SimpleScript/SimpleScript.flex.cpp"
 
+#include <iostream>
 #include <string>
 #include <memory>
 using namespace std;
@@ -1587,13 +1588,16 @@ TEST(Function, Should_Return_Variables_Properly) {
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A);
 }
 
-TEST(Parser, YYPARSE_TEST) {
-	string input = "var a = 12; return a;";
+TEST(Parser, YYPARSE_BASIC_TEST) {
+	ostringstream inputStream;
+	inputStream << "var a = " << INTEGER_VALUE_A << "; return a;";
+
+	string input = inputStream.str();
 
 	yy_scan_string(input.c_str());
 	int result = yyparse();
 	yylex_destroy();
 
 	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
-	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), 12);
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A);
 }
