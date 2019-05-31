@@ -30,6 +30,7 @@
 using namespace std;
 
 extern int yyparse();
+extern Variable _PARSE_RESULT;
 
 #define INTEGER_VALUE_A 12
 #define INTEGER_VALUE_B 81
@@ -41,6 +42,9 @@ extern int yyparse();
 
 #define BOOLEAN_VALUE_TRUE true
 #define BOOLEAN_VALUE_FALSE false
+
+#define PARSE_RESULT_SUCCESS 0
+#define PARSE_RESULT_FAILITURE 1
 
 TEST(Primitive, Should_Contstruct_When_Passed_Int) {
 
@@ -1584,11 +1588,12 @@ TEST(Function, Should_Return_Variables_Properly) {
 }
 
 TEST(Parser, YYPARSE_TEST) {
-	string input = "var a = 12;";
+	string input = "var a = 12; return a;";
 
 	yy_scan_string(input.c_str());
 	int result = yyparse();
 	yylex_destroy();
 
-	EXPECT_EQ(result, 0);
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), 12);
 }

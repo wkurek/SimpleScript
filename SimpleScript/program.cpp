@@ -12,6 +12,8 @@ using namespace std;
 #define PARAM_NAME "x"
 #define LOG_FUNCTION_NAME "log"
 
+Variable _PARSE_RESULT;
+
 Function Program::generateLogFunction() {
 	ParametersList* paramsListPtr = new ParametersList();
 
@@ -50,6 +52,7 @@ void Program::evaluate() {
 		cerr << parseException.what() << endl;
 	} 
 	catch (ReturnVariable returnVariable) {
+		_PARSE_RESULT = returnVariable.getVariable();
 		cerr << "Program returned value:\t" << returnVariable.getVariable() << endl;
 	}
 }
