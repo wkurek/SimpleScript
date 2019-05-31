@@ -1694,3 +1694,47 @@ TEST(Parser, Should_Assign_Float_Value_When_Valid_Variable_Name) {
 	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
 	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_MINUS_VALUE);
 }
+
+TEST(Parser, Should_Return_Valid_Boolean_OR_Operation_Result) {
+	ostringstream inputStream;
+	inputStream << "var a = true; var b = false; return (a || b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isBoolean());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
+}
+
+TEST(Parser, Should_Return_Valid_Boolean_AND_Operation_Result) {
+	ostringstream inputStream;
+	inputStream << "var a = true; var b = false; return (a && !b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isBoolean());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getBoolean(), BOOLEAN_VALUE_TRUE);
+}
+TEST(Parser, Should_Return_Valid_Boolean_Complex_Operation_Result) {
+	ostringstream inputStream;
+	inputStream << "var a = true, b = false, c = 12; return (c < 12) || (a && b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isBoolean());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getBoolean(), BOOLEAN_VALUE_FALSE);
+}
