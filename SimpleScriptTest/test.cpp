@@ -19,10 +19,17 @@
 #include "../SimpleScript/assignment.cpp"
 #include "../SimpleScript/property.h"
 #include "../SimpleScript/property.cpp"
+#include "../SimpleScript/program.h"
+#include "../SimpleScript/program.cpp"
+#include "../SimpleScript/SimpleScript.tab.h"
+#include "../SimpleScript/SimpleScript.tab.cpp"
+#include "../SimpleScript/SimpleScript.flex.cpp"
 
 #include <string>
 #include <memory>
 using namespace std;
+
+extern int yyparse();
 
 #define INTEGER_VALUE_A 12
 #define INTEGER_VALUE_B 81
@@ -1574,4 +1581,14 @@ TEST(Function, Should_Return_Variables_Properly) {
 	EXPECT_TRUE(result.isPrimitive());
 	EXPECT_TRUE(result.getPrimitive().isInteger());
 	EXPECT_EQ(result.getPrimitive().getInteger(), INTEGER_VALUE_A);
+}
+
+TEST(Parser, YYPARSE_TEST) {
+	string input = "var a = 12;";
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, 0);
 }

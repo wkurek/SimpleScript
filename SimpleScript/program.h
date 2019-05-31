@@ -1,3 +1,6 @@
+#ifndef PROGRAM_H_INCLUDED
+#define PROGRAM_H_INCLUDED
+
 #include "object.h"
 #include "statement.h"
 #include "exception.h"
@@ -19,3 +22,5 @@ public:
 	void generateEmbeddedConstructs(Object&);
 	void evaluate();
 };
+
+#endif // PROGRAM_H_INCLUDED

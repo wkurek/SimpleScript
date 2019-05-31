@@ -4,5 +4,7 @@ SimpleScript/x64/
 SimpleScript/packages/
 SimpleScript/SimpleScript.report.txt
 SimpleScript/SimpleScript.graph.dot
+SimpleScript/SimpleScript.output
 SimpleScriptTest/Debug/
 SimpleScriptTest/x64/
+doc/
