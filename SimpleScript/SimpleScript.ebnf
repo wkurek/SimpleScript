@@ -58,6 +58,7 @@ OperationExpression             = "(", OperationExpression, ")"
                                 | OperationExpression, "*", OperationExpression
                                 | OperationExpression, "/", OperationExpression
                                 | "!", OperationExpression
+                                | "-", OperationExpression
                                 | FunctionCallExpression
                                 ;
 

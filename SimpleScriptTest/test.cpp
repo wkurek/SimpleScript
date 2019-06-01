@@ -1913,7 +1913,7 @@ TEST(Parser, Should_While_Loop_Until_Condition_Evaluates_To_True) {
 
 TEST(Parser, Should_Functione_Create_Its_Own_Scope) {
 	ostringstream inputStream;
-	inputStream << "var counter = 0, x = " << FLOAT_MINUS_VALUE << "; function funct() { var x = " << INTEGER_VALUE_A << "; ++counter; } funct(); return x;";
+	inputStream << "var counter = 0, x = " << FLOAT_MINUS_VALUE << "; function funct { var x = " << INTEGER_VALUE_A << "; ++counter; } funct(); return x;";
 
 	string input = inputStream.str();
 
