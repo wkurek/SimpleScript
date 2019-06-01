@@ -1782,3 +1782,147 @@ TEST(Parser, Should_Construct_Complex_Object_From_JSON_Style_Literal) {
 	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
 	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A * 2);
 }
+
+TEST(Parser, Should_Access_Object_Properties_With_Array_Notation) {
+	ostringstream inputStream;
+	inputStream << "var obj = { a: " << FLOAT_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; obj2 = { obj: obj, c: function(x) { return x * 2; } }; return obj2[\"c\"](obj2.obj.b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A * 2);
+}
+
+TEST(Parser, Should_Access_Global_Function) {
+	ostringstream inputStream;
+	inputStream << "function sum(x, y) { return x + y; } var obj = { a: " << INTEGER_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; obj2 = { obj: obj, c: function(x) { return x * 2; } }; return sum(obj2.obj.a, obj2.obj.b);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_A + INTEGER_MINUS_VALUE);
+}
+
+TEST(Parser, Should_Return_Break_Execution) {
+	ostringstream inputStream;
+	inputStream << "function sum(x, y) { return x + y; } var obj = { a: " << INTEGER_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; obj2 = { obj: obj, c: function(x) { return x * 2; } }; return obj2.obj.a; obj2.c(obj2.obj.a);";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_MINUS_VALUE);
+}
+TEST(Parser, Should_Be_Able_To_Return_Empty_Value) {
+	ostringstream inputStream;
+	inputStream << "function sum(x, y) { return x + y; } var obj = { a: " << INTEGER_MINUS_VALUE << ", b: "<< INTEGER_VALUE_A  << " }; return;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+}
+TEST(Parser, Should_Successfully_Chain_Variable_Declarations) {
+	ostringstream inputStream;
+	inputStream << "var x = " << INTEGER_MINUS_VALUE << ", b = "<< FLOAT_VALUE_B  << ", obj = { a: " << INTEGER_MINUS_VALUE << ", b: " << INTEGER_VALUE_A << " }; return b;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_VALUE_B);
+}
+TEST(Parser, Should_Execute_Positive_Block_When_Condtion_Evaluates_To_True) {
+	ostringstream inputStream;
+	inputStream << "var x =" << FLOAT_VALUE_A << ", y = 12, z = true; if(y >= 12 && z) { x = " << FLOAT_VALUE_B << "; } return x;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_VALUE_B);
+}
+
+TEST(Parser, Should_NOT_Execute_Positive_Block_When_Condtion_Evaluates_To_False) {
+	ostringstream inputStream;
+	inputStream << "var x =" << FLOAT_VALUE_A << ", y = 12, z = true; if(y < 12 && z) { x = " << FLOAT_VALUE_B << "; } return x;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_VALUE_A);
+}
+TEST(Parser, Should_Execute_Negative_Block_When_Condtion_Evaluates_To_False) {
+	ostringstream inputStream;
+	inputStream << "var x =" << FLOAT_VALUE_A << ", y = 12, z = true; if(y < 12 && z) { x = " << FLOAT_VALUE_B << "; } else { x = x * 5; } return x;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_VALUE_A * 5);
+}
+TEST(Parser, Should_While_Loop_Until_Condition_Evaluates_To_True) {
+	ostringstream inputStream;
+	inputStream << "var counter = 0; while(counter < " << INTEGER_VALUE_B << ") { ++counter; } return counter;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isInteger());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getInteger(), INTEGER_VALUE_B);
+}
+
+TEST(Parser, Should_Functione_Create_Its_Own_Scope) {
+	ostringstream inputStream;
+	inputStream << "var counter = 0, x = " << FLOAT_MINUS_VALUE << "; function funct() { var x = " << INTEGER_VALUE_A << "; ++counter; } funct(); return x;";
+
+	string input = inputStream.str();
+
+	yy_scan_string(input.c_str());
+	int result = yyparse();
+	yylex_destroy();
+
+	EXPECT_EQ(result, PARSE_RESULT_SUCCESS);
+	EXPECT_TRUE(_PARSE_RESULT.getPrimitive().isFloat());
+	EXPECT_EQ(_PARSE_RESULT.getPrimitive().getFloat(), FLOAT_MINUS_VALUE);
+}
+
